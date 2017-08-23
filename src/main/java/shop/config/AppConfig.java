@@ -1,9 +1,10 @@
 package shop.config;
 
-import shop.model.AddCustomer;
-import shop.model.impl.AddCustomerImpl;
+import shop.model.VerificationRequest;
+import shop.model.impl.VerificationRequestImpl;
+import shop.model.CustomerControll;
+import shop.model.impl.CustomerControllImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +12,13 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
 	@Bean
-	public AddCustomer addCustomer() {
-		return new AddCustomerImpl();
+	public VerificationRequest verificationRequest() {
+		return new VerificationRequestImpl();
+	}
+
+	@Bean
+	public CustomerControll customerControll() {
+		return CustomerControllImpl.newInstance();
 	}
 
 }
