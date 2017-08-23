@@ -1,6 +1,6 @@
 package shop.model;
 
-public interface CustomerControll {
+public interface CustomerUpdate {
 
 	String delitionmarkforall();
 	String deletemarked();

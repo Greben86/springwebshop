@@ -5,13 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import shop.model.CustomerControll;
+import shop.model.CustomerUpdate;
 
-public class CustomerControllImpl implements CustomerControll {
+public class CustomerUpdateImpl implements CustomerUpdate {
 	private static final String url = "jdbc:mysql://localhost:3306/webshop";
 	private Properties properties;
 
-	private CustomerControllImpl() {
+	private CustomerUpdateImpl() {
 		properties = new Properties();
 		properties.setProperty("user","root");
 		properties.setProperty("password","123");
@@ -19,8 +19,8 @@ public class CustomerControllImpl implements CustomerControll {
 		properties.setProperty("characterEncoding","cp1251");
 	}
 
-	static public CustomerControllImpl newInstance(){
-		return new CustomerControllImpl();
+	static public CustomerUpdateImpl newInstance(){
+		return new CustomerUpdateImpl();
 	}
 
 	@Override
