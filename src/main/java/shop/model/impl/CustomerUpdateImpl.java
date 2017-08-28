@@ -1,84 +1,59 @@
 package shop.model.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import shop.model.CustomerUpdate;
 
 public class CustomerUpdateImpl implements CustomerUpdate {
-	private static final String url = "jdbc:mysql://localhost:3306/webshop";
-	private Properties properties;
-
-	private CustomerUpdateImpl() {
-		properties = new Properties();
-		properties.setProperty("user","root");
-		properties.setProperty("password","123");
-		properties.setProperty("useUnicode","true");
-		properties.setProperty("characterEncoding","cp1251");
-	}
-
-	static public CustomerUpdateImpl newInstance(){
-		return new CustomerUpdateImpl();
-	}
+	@Autowired
+	private DriverManagerDataSource dataSource;
 
 	@Override
 	public String delitionmarkforall() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			try (
-				Connection connection = DriverManager.getConnection(url, properties);
-				Statement stmt = connection.createStatement()) {
+		try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
 
-					stmt.execute("UPDATE `customers` SET `deletionmark`='T';");
+			stmt.execute("UPDATE `customers` SET `deletionmark`='T';");
 
-					return "Deletion mark for all is Ok";
-			} catch (SQLException e) {
-				return e.toString();
-			}
-		} catch (ClassNotFoundException e) {
+			return "Deletion mark for all is Ok";
+		} catch (SQLException e) {
 			return e.toString();
 		}
 	}
 
 	@Override
 	public String deletemarked() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			try (
-				Connection connection = DriverManager.getConnection(url, properties);
-				Statement stmt = connection.createStatement()) {
+		try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
 
-					stmt.execute("DELETE FROM `customers` WHERE `deletionmark`='T';");
+			stmt.execute("DELETE FROM `customers` WHERE `deletionmark`='T';");
 
-					return "Delete marked is Ok";
-			} catch (SQLException e) {
-				return e.toString();
-			}
-		} catch (ClassNotFoundException e) {
+			return "Delete marked is Ok";
+		} catch (SQLException e) {
 			return e.toString();
 		}
 	}
 
 	@Override
 	public String update(String ref, String name, String number, String pass) {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			try (
-				Connection connection = DriverManager.getConnection(url, properties);
-				Statement stmt = connection.createStatement()) {
+		try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
 
-					stmt.execute("DELETE FROM `customers` WHERE `ref`='"+ref+"';");					
-					stmt.executeUpdate(
-						"INSERT INTO `customers` (`ref`, `number`, `name`, `pass`) "+
-						"VALUES ('"+ref+"', '"+number+"', '"+name+"', '"+pass+"');");
+			stmt.execute("DELETE FROM `customers` WHERE `ref`='"+ref+"';");					
+			stmt.executeUpdate(
+				"INSERT INTO `customers` (`ref`, `number`, `name`, `pass`) "+
+				"VALUES ('"+ref+"', '"+number+"', '"+name+"', '"+pass+"');");
 
-					return name + " is Ok";
-			} catch (SQLException e) {
-				return e.toString();
-			}
-		} catch (ClassNotFoundException e) {
+			return name + " is Ok";
+		} catch (SQLException e) {
 			return e.toString();
 		}
 	}

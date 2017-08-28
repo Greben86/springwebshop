@@ -8,15 +8,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import shop.model.VerificationRequest;
-import shop.model.CustomerUpdate;;
+import shop.model.CustomerAuth;
+import shop.model.CustomerUpdate;
 
 @Controller
-@RequestMapping("/customers")
+@RequestMapping("/customers") 
 public class CustomerController {
     @Autowired
     private VerificationRequest verificationRequest;
 	@Autowired
-	private CustomerUpdate customerControll;
+    private CustomerUpdate customerControll;
+    @Autowired
+    private CustomerAuth customerAuth;
 
     @RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
@@ -43,7 +46,7 @@ public class CustomerController {
     @RequestMapping(value = "/update", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String updateCustomer(
-        @RequestParam("key") String key,
+        @RequestParam("key") String key, 
         @RequestParam("ref") String ref,
         @RequestParam("name") String name,
         @RequestParam("in") String number,
@@ -55,5 +58,15 @@ public class CustomerController {
             return "Acces denied";
         }        
 
+    }
+
+    @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String checkPass(@RequestParam("in") String number, @RequestParam("pass") String pass) {
+        if (customerAuth.checkPass(number, pass)){
+            return "Ok";
+        } else {
+            return "Fail";
+        }     
     }
 }
