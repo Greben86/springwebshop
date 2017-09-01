@@ -60,6 +60,20 @@ public class CustomerController {
 
     }
 
+    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String deleteByRef(
+        @RequestParam("key") String key, 
+        @RequestParam("ref") String ref){ 
+
+        if (verificationRequest.verify(key)) {
+            return customerControll.deleteByRef(ref);
+        } else {
+            return "Acces denied";
+        }        
+
+    }
+
     @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String checkPass(@RequestParam("in") String number, @RequestParam("pass") String pass) {

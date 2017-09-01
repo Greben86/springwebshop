@@ -18,8 +18,8 @@ public class AppConfig {
 	@Bean
     public DriverManagerDataSource dataSource() {
 		Properties properties = new Properties();
-		properties.setProperty("user","root");
-		properties.setProperty("password","123");
+		properties.setProperty("user","webapp");
+		properties.setProperty("password","ros1nf0rm");
 		properties.setProperty("useUnicode","true");
 		properties.setProperty("characterEncoding","cp1251");
 

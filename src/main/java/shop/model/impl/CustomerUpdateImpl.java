@@ -57,4 +57,18 @@ public class CustomerUpdateImpl implements CustomerUpdate {
 			return e.toString();
 		}
 	}
+
+	@Override
+	public String deleteByRef(String ref) {
+		try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
+
+			stmt.execute("DELETE FROM `customers` WHERE `ref`='"+ref+"';");
+
+			return ref + " is Deleted";
+		} catch (SQLException e) {
+			return e.toString();
+		}
+	}
 }

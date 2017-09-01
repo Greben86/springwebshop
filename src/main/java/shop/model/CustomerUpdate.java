@@ -5,4 +5,5 @@ public interface CustomerUpdate {
 	String delitionmarkforall();
 	String deletemarked();
 	String update(String ref, String name, String number, String pass);
+	String deleteByRef(String ref);
 }

@@ -10,7 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import shop.model.CustomerAuth;
 
-public class CustomerAuthImpl implements CustomerAuth {
+public class CustomerAuthImpl implements CustomerAuth { 
     @Autowired
     private DriverManagerDataSource dataSource;
 
