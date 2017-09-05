@@ -3,9 +3,16 @@ package shop.model.impl;
 import shop.model.VerificationRequest;
 
 public class VerificationRequestImpl implements VerificationRequest { 
+    private String key;
+
+    private VerificationRequestImpl() {}
+
+    public VerificationRequestImpl(String key) {
+        this.key = new String(key);
+    }
 
     @Override
     public Boolean verify(String key) {
-        return "052b15e78378eb6c82164b63c27be0b1".equals(key);
+        return this.key.equals(key);
     }
 }
