@@ -16,7 +16,7 @@ import shop.model.CustomerUpdate;
 public class CustomerController {
     @Autowired
     private VerificationRequest verificationRequest;
-	@Autowired
+    @Autowired
     private CustomerUpdate customerControll;
     @Autowired
     private CustomerAuth customerAuth;
