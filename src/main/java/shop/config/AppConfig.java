@@ -1,11 +1,9 @@
 package shop.config;
 
-import shop.model.VerificationRequest;
-import shop.model.impl.VerificationRequestImpl;
-import shop.model.CustomerUpdate;
-import shop.model.impl.CustomerUpdateImpl;
-import shop.model.CustomerAuth;
-import shop.model.impl.CustomerAuthImpl;
+import shop.model.*;
+import shop.model.impl.*;
+import shop.dao.*;
+import shop.dao.impl.*;
 
 import java.util.Properties;
 
@@ -51,6 +49,11 @@ public class AppConfig {
 	@Bean
 	public CustomerAuth customerAuth() {
 		return new CustomerAuthImpl();
+	}
+
+	@Bean
+	public CustomerDao customerDao() {
+		return new CustomerDaoImpl();
 	}
 
 }
