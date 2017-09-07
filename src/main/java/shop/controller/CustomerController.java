@@ -1,31 +1,33 @@
 package shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import shop.entity.Customer;
 import shop.model.VerificationRequest;
-import shop.model.CustomerAuth;
-import shop.model.CustomerUpdate;
+import shop.service.CustomerService;
 
-@Controller
+@RestController
 @RequestMapping("/customers") 
 public class CustomerController {
     @Autowired
     private VerificationRequest verificationRequest;
+    final private CustomerService customerService;
+
     @Autowired
-    private CustomerUpdate customerControll;
-    @Autowired
-    private CustomerAuth customerAuth;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String deletionMarkForAll(@RequestParam("key") String key){
         if (verificationRequest.verify(key)){
-            return customerControll.delitionmarkforall();
+            return customerService.delitionMarkForAll() ? "Ok" : "Fail";
         } else {
             return "Acces denied";
         } 
@@ -36,7 +38,7 @@ public class CustomerController {
     @ResponseBody
     public String deleteMarked(@RequestParam("key") String key){
         if (verificationRequest.verify(key)){
-            return customerControll.deletemarked();
+            return customerService.deleteMarked() ? "Ok" : "Fail";
         } else {
             return "Acces denied";
         }
@@ -53,7 +55,12 @@ public class CustomerController {
         @RequestParam("pass") String pass){ 
 
         if (verificationRequest.verify(key)) {
-            return customerControll.update(ref, name, number, pass);
+            Customer customer = new Customer();
+            customer.setRef(ref);
+            customer.setNumber(number);
+            customer.setName(name);
+            customer.setPass(pass);
+            return customerService.updateOrInsert(customer) ? "Ok" : "Fail";
         } else {
             return "Acces denied";
         }        
@@ -67,7 +74,7 @@ public class CustomerController {
         @RequestParam("ref") String ref){ 
 
         if (verificationRequest.verify(key)) {
-            return customerControll.deleteByRef(ref);
+            return customerService.deleteByRef(ref) ? "Ok" : "Fail";
         } else {
             return "Acces denied";
         }        
@@ -77,10 +84,6 @@ public class CustomerController {
     @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String checkPass(@RequestParam("in") String number, @RequestParam("pass") String pass) {
-        if (customerAuth.checkPass(number, pass)){
-            return "Ok";
-        } else {
-            return "Fail";
-        }     
+        return customerService.checkPass(number, pass) ? "Ok" : "Fail";   
     }
 }
