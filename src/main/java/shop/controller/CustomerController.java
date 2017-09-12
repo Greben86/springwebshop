@@ -1,12 +1,11 @@
 package shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.RestController;
 import shop.entity.Customer;
 import shop.model.VerificationRequest;
 import shop.service.CustomerService;
@@ -14,9 +13,9 @@ import shop.service.CustomerService;
 @RestController
 @RequestMapping("/customers") 
 public class CustomerController {
+    final private CustomerService customerService;
     @Autowired
     private VerificationRequest verificationRequest;
-    final private CustomerService customerService;
 
     @Autowired
     public CustomerController(CustomerService customerService) {

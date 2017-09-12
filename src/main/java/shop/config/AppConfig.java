@@ -4,6 +4,8 @@ import shop.model.*;
 import shop.model.impl.*;
 import shop.dao.*;
 import shop.dao.impl.*;
+import shop.service.*;
+import shop.service.impl.*;
 
 import java.util.Properties;
 
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -22,6 +25,7 @@ public class AppConfig {
 	private Environment enviroment;
 
 	@Bean
+	@Scope("singleton")
     public DriverManagerDataSource dataSource() {
 		Properties properties = new Properties();
 		properties.setProperty("user", enviroment.getRequiredProperty("database.user"));
@@ -37,21 +41,19 @@ public class AppConfig {
     }
 
 	@Bean
+	@Scope("singleton")
 	public VerificationRequest verificationRequest() {
 		return new VerificationRequestImpl(enviroment.getRequiredProperty("verification.key"));
 	}
 
 	@Bean
-	public CustomerUpdate customerControll() {
-		return new CustomerUpdateImpl();
+	@Scope("singleton")
+	public CustomerService customerService() {
+		return new CustomerServiceImpl();
 	}
 
 	@Bean
-	public CustomerAuth customerAuth() {
-		return new CustomerAuthImpl();
-	}
-
-	@Bean
+	@Scope("singleton")
 	public CustomerDao customerDao() {
 		return new CustomerDaoImpl();
 	}

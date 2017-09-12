@@ -2,4 +2,5 @@
 .project
 /.settings/*
 /.vscode/*
-/target/*
+/target/* 
+/target/
