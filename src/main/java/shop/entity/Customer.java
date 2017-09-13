@@ -1,6 +1,6 @@
 package shop.entity;
 
-public class Customer {
+public class Customer extends Object {
     private String ref;
     private String number;
     private String name;
@@ -49,5 +49,10 @@ public class Customer {
 
     public void setDeletionmark(Boolean deletionmark) {
         this.deletionmark = deletionmark;
+    }
+
+    @Override
+    public String toString() {
+        return "ref: " + ref + " number: " + number + " name: " + name + " pass: " + pass + " deletionmark: " + (deletionmark ? "true" : "false");
     }
 }
