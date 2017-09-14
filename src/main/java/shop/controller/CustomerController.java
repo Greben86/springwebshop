@@ -13,8 +13,8 @@ import shop.entity.Customer;
 import shop.model.VerificationRequest;
 import shop.service.CustomerService;
 
-@Controller
-@RequestMapping("/customers") 
+@RestController
+@RequestMapping("/customers")
 public class CustomerController {
     final private CustomerService customerService;
     @Autowired
@@ -49,20 +49,13 @@ public class CustomerController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String updateCustomer(@RequestBody Customer customer){ 
+    public String updateCustomer(@RequestParam(value="key", required=false) String key, @RequestBody Customer customer){ 
 
-        return customerService.updateOrInsert(customer) ? customer.getName() + " is Ok" : "Fail";
-        // if (verificationRequest.verify(key)) {
-        //     Customer customer = new Customer();
-        //     customer.setRef(ref);
-        //     customer.setNumber(number);
-        //     customer.setName(name);
-        //     customer.setPass(pass);
-        //     return customerService.updateOrInsert(customer) ? "Ok" : "Fail";
-        // } else {
-        //     return "Acces denied";
-        // }        
-
+        if (verificationRequest.verify(key)) {
+            return customerService.updateOrInsert(customer) ? customer.getName()+" is Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        }        
     }
 
     @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
@@ -86,7 +79,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/testpost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String testPost(@RequestBody Customer customer) {
-        return customer.toString();
+    public String testPost(@RequestBody String body) {
+        return body;
     }
 }
