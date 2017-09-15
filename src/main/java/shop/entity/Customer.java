@@ -1,6 +1,6 @@
 package shop.entity;
 
-public class Customer extends Object {
+public class Customer {
     private String ref;
     private String number;
     private String name;
@@ -53,6 +53,6 @@ public class Customer extends Object {
 
     @Override
     public String toString() {
-        return "ref: " + ref + " number: " + number + " name: " + name + " pass: " + pass + " deletionmark: " + (deletionmark ? "true" : "false");
+        return "[" + ref + "] " + name;
     }
 }
