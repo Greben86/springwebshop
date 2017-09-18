@@ -39,7 +39,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
     }
 
-    public Customer findByRef(String ref) {
+    public Customer findByRef(String ref) throws Exception {
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
@@ -55,10 +55,10 @@ public class CustomerDaoImpl implements CustomerDao {
     
                 return e;
             } else {
-                return null;
+                throw new Exception(ref + " not found");
             }            
 		} catch (SQLException e) {
-			return null;
+			throw new Exception(e);
 		}
     }
 

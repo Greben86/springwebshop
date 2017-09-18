@@ -10,7 +10,7 @@ public interface CustomerService {
     
     Boolean updateOrInsert(Customer customer);
     
-    Boolean deleteByRef(String ref);
+    Boolean deleteByRef(String ref) throws Exception;
     
     Boolean checkPass(String number, String pass);
 }

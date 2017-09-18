@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 @PropertySource(value = {"classpath:database.properties"})
-@PropertySource(value = {"classpath:verification.properties"})
+@PropertySource(value = {"classpath:verification.properties"}) 
 public class AppConfig {
 	@Autowired
 	private Environment enviroment;
@@ -38,7 +38,7 @@ public class AppConfig {
         dataSource.setUrl(enviroment.getRequiredProperty("database.url"));
 		dataSource.setConnectionProperties(properties);
         return dataSource;
-    }
+	}
 
 	@Bean
 	@Scope("singleton")

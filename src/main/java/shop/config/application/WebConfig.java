@@ -1,13 +1,17 @@
 package shop.config.application;
 
+import javax.servlet.MultipartConfigElement;
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.JstlView; 
 
 @Configuration
 @EnableWebMvc
@@ -20,7 +24,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
         viewResolver.setContentType("text/html; charset=utf-8");
-        return viewResolver;
+        return viewResolver; 
+    }
+
+    @Bean(name = "commonsMultipartResolver")
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }    
+    
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+    
+        factory.setMaxFileSize("10MB");
+        factory.setMaxRequestSize("10MB");
+    
+        return factory.createMultipartConfig();
     }
 
     @Override

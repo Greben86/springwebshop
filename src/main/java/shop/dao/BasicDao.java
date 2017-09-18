@@ -6,7 +6,7 @@ public interface BasicDao<T> {
 
     List<T> getList(String filter);
 
-    T findByRef(String ref);
+    T findByRef(String ref) throws Exception;
 
     T create(T entity);
 
