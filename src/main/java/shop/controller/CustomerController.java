@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
 import shop.entity.Customer;
 import shop.model.VerificationRequest;
 import shop.service.CustomerService;
@@ -23,7 +24,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String deletionMarkForAll(@RequestParam(value="key", required=false) String key){
         if (verificationRequest.verify(key)){
@@ -33,7 +34,7 @@ public class CustomerController {
         } 
     }
 
-    @RequestMapping(value = "/deletemarked", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/deletemarked", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String deleteMarked(@RequestParam(value="key", required=false) String key){
         if (verificationRequest.verify(key)){
@@ -49,7 +50,7 @@ public class CustomerController {
         return "GET not supported for update customer";       
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String update(@RequestParam(value="key", required=false) String key, @RequestBody Customer customer){ 
         if (verificationRequest.verify(key)) {
@@ -59,7 +60,7 @@ public class CustomerController {
         }        
     }
 
-    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String deleteByRef(@RequestParam(value="key", required=false) String key, @RequestParam(value="ref", required=true) String ref){ 
         try {
@@ -73,7 +74,7 @@ public class CustomerController {
         }        
     }
 
-    @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String checkPass(@RequestParam("in") String number, @RequestParam("pass") String pass) {
         return customerService.checkPass(number, pass) ? "Ok" : "Fail";   

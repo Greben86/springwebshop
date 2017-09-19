@@ -1,5 +1,6 @@
 package shop.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,15 +14,23 @@ import org.springframework.http.MediaType;
 import shop.entity.Good;
 import shop.model.VerificationRequest;
 
-@RestController
+import javax.servlet.http.HttpServletRequest;
+
+@Controller
 @RequestMapping("/goods")
 public class GoodController {
     @Autowired
     private VerificationRequest verificationRequest;
 
-    @RequestMapping(value = "/uploadimg", method = RequestMethod.POST, produces = MediaType.ALL_VALUE)
+	@RequestMapping(value="/upload", method=RequestMethod.GET)
 	@ResponseBody
-	public String uploadImg(@RequestBody MultipartFile file) {
+    public String provideUploadInfo() {
+        return "Вы можете загружать файл с использованием того же URL.";
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@ResponseBody
+	public String uploadImg(MultipartFile file) {
  
 		return "uploadimg: " + file;
 	}
