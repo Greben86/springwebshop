@@ -13,14 +13,21 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import shop.entity.Good;
 import shop.model.VerificationRequest;
+import shop.service.GoodService; 
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/goods")
 public class GoodController {
+	final private GoodService goodService;
     @Autowired
-    private VerificationRequest verificationRequest;
+	private VerificationRequest verificationRequest;
+	
+	@Autowired
+    public GoodController(GoodService goodService) {
+        this.goodService = goodService;
+    }
 
 	@RequestMapping(value="/upload", method=RequestMethod.GET)
 	@ResponseBody
@@ -30,7 +37,7 @@ public class GoodController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadImg(MultipartFile file) {
+	public String uploadImg(@RequestParam("file") MultipartFile file) {
  
 		return "uploadimg: " + file;
 	}
@@ -55,4 +62,50 @@ public class GoodController {
 	// 		return "You failed to upload " + name + " because the file was empty.";
 	// 	}
 	// }
+
+	@RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @ResponseBody
+    public String deletionMarkForAll(@RequestParam(value="key", required=false) String key){
+        if (verificationRequest.verify(key)){
+            return goodService.delitionMarkForAll() ? "Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        } 
+    }
+
+    @RequestMapping(value = "/deletemarked", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @ResponseBody
+    public String deleteMarked(@RequestParam(value="key", required=false) String key){
+        if (verificationRequest.verify(key)){
+            return goodService.deleteMarked() ? "Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        }
+    }
+
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+    @ResponseBody
+    public String updateInfo(){
+        return "GET not supported for update good";       
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){ 
+        if (verificationRequest.verify(key)) {
+            return goodService.updateOrInsert(good) ? good + " is Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        }        
+    }
+
+    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @ResponseBody
+    public String deleteByRef(@RequestParam(value="key", required=false) String key, @RequestParam(value="ref", required=true) String ref){ 
+        if (verificationRequest.verify(key)) {
+            return goodService.deleteByRef(ref) ? "Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        }      
+    }
 }

@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Boolean deleteByRef(String ref) throws Exception {
+	public Boolean deleteByRef(String ref) {
 		Customer entity = customerDao.findByRef(ref);
 		if (entity!=null) {
 			customerDao.delete(entity);

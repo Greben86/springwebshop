@@ -63,15 +63,11 @@ public class CustomerController {
     @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String deleteByRef(@RequestParam(value="key", required=false) String key, @RequestParam(value="ref", required=true) String ref){ 
-        try {
-            if (verificationRequest.verify(key)) {
-                return customerService.deleteByRef(ref) ? "Ok" : "Fail";
-            } else {
-                return "Acces denied";
-            }
-        } catch (Exception e) {
-            return e.getMessage();
-        }        
+        if (verificationRequest.verify(key)) {
+            return customerService.deleteByRef(ref) ? "Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        }      
     }
 
     @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")

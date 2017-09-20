@@ -1,7 +1,7 @@
 package shop.dao.impl;
 
-import shop.dao.CustomerDao;
-import shop.entity.Customer;
+import shop.dao.GoodDao;
+import shop.entity.Good;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -12,25 +12,28 @@ import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-public class CustomerDaoImpl implements CustomerDao {
+public class GoodDaoImpl implements GoodDao {
     @Autowired
 	private DriverManagerDataSource dataSource;
 
     @Override
-    public List<Customer> getList(String filter) {
-        List<Customer> result = new ArrayList<Customer>();
+    public List<Good> getList(String filter) {
+        List<Good> result = new ArrayList<Good>();
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `customers` " + (filter.equals("") ? "" : "WHERE "+filter));
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` " + (filter.equals("") ? "" : "WHERE "+filter));
             
             while (rs.next()) {
-                Customer e = new Customer();
+                Good e = new Good();
                 e.setRef(rs.getString("ref"));
-                e.setNumber(rs.getString("number"));
                 e.setName(rs.getString("name"));
-                e.setPass(rs.getString("pass"));
+                e.setDescription(rs.getString("description"));
+                e.setArticul(rs.getString("articul"));
+                e.setDimension(rs.getString("dimension"));
+                e.setPrice(rs.getFloat("price"));
+                e.setExist(rs.getBoolean("exist"));
                 result.add(e);
             }
 
@@ -39,21 +42,24 @@ public class CustomerDaoImpl implements CustomerDao {
 			return result;
 		}
     }
-
+    
     @Override
-    public Customer findByRef(String ref) {
+    public Good findByRef(String ref) {
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `customers` WHERE `ref`='"+ref+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` WHERE `ref`='"+ref+"'");
             
             if (rs.next()) {
-                Customer e = new Customer();
+                Good e = new Good();
                 e.setRef(rs.getString("ref"));
-                e.setNumber(rs.getString("number"));
                 e.setName(rs.getString("name"));
-                e.setPass(rs.getString("pass"));
+                e.setDescription(rs.getString("description"));
+                e.setArticul(rs.getString("articul"));
+                e.setDimension(rs.getString("dimension"));
+                e.setPrice(rs.getFloat("price"));
+                e.setExist(rs.getBoolean("exist"));
     
                 return e;
             } else {
@@ -63,35 +69,35 @@ public class CustomerDaoImpl implements CustomerDao {
 			return null;
 		}
     }
-
+    
     @Override
-    public Customer create(Customer entity) {
+    public Good create(Good entity) {
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
 			stmt.executeUpdate(
-				"INSERT INTO `customers` (`ref`, `number`, `name`, `pass`, `deletionmark`) "+
-				"VALUES ('"+entity.getRef()+"', '"+entity.getNumber()+"', '"+entity.getName()+"', '"+entity.getPass()+"', '"+(entity.getDeletionmark()?"T":"F")+"');");
+				"INSERT INTO `goods` (`ref`, `name`, `description`, `articul`, `dimension`, `price`, `exist`, `deletionmark`) "+
+				"VALUES ('"+entity.getRef()+"', '"+entity.getName()+"', '"+entity.getDescription()+"', '"+entity.getArticul()+"', '"+entity.getDimension()+"', "+entity.getPrice()+", '"+(entity.getExist()?"T":"F")+"', '"+(entity.getDeletionmark()?"T":"F")+"');");
 
 			return entity;
 		} catch (SQLException e) {
 			return entity;
 		}
     }
-
+    
     @Override
-    public Customer update(Customer entity) {
+    public Good update(Good entity) {
         return create(delete(entity));
     }
-
+    
     @Override
-    public Customer delete(Customer entity) {
+    public Good delete(Good entity) {
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-			stmt.execute("DELETE FROM `customers` WHERE `ref`='"+entity.getRef()+"';");
+			stmt.execute("DELETE FROM `goods` WHERE `ref`='"+entity.getRef()+"';");
 
 			return entity;
 		} catch (SQLException e) {
@@ -100,19 +106,22 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer findCustomerByNumber(String number) {
+    public Good findGoodByArticul(String articul) {
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `customers` WHERE `number`='"+number+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` WHERE `articul`='"+articul+"'");
             
             if (rs.next()) {
-                Customer e = new Customer();
+                Good e = new Good();
                 e.setRef(rs.getString("ref"));
-                e.setNumber(rs.getString("number"));
                 e.setName(rs.getString("name"));
-                e.setPass(rs.getString("pass"));
+                e.setDescription(rs.getString("description"));
+                e.setArticul(rs.getString("articul"));
+                e.setDimension(rs.getString("dimension"));
+                e.setPrice(rs.getFloat("price"));
+                e.setExist(rs.getBoolean("exist"));
     
                 return e;
             } else {

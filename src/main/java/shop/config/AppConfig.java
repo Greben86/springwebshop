@@ -58,4 +58,16 @@ public class AppConfig {
 		return new CustomerDaoImpl();
 	}
 
+	@Bean
+	@Scope("singleton")
+	public GoodService goodService() {
+		return new GoodServiceImpl();
+	}
+
+	@Bean
+	@Scope("singleton")
+	public GoodDao goodDao() { 
+		return new GoodDaoImpl();
+	}
+
 }

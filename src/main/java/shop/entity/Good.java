@@ -8,6 +8,11 @@ public class Good {
     private String dimension;
     private Float price;
     private Boolean exist;
+    private Boolean deletionmark;
+
+    public Good() {
+        deletionmark = false;
+    }
 
     public void setRef(String ref) {
         this.ref = ref;
@@ -63,6 +68,14 @@ public class Good {
 
     public Boolean getExist() {
         return exist;
+    }
+
+    public Boolean getDeletionmark() {
+        return deletionmark;
+    }
+
+    public void setDeletionmark(Boolean deletionmark) {
+        this.deletionmark = deletionmark;
     }
 
     @Override
