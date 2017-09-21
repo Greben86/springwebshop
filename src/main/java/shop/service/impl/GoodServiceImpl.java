@@ -8,7 +8,7 @@ import shop.service.GoodService;
 import shop.entity.Good;
 import shop.dao.GoodDao; 
 
-@Service("customerService")
+@Service("goodService")
 public class GoodServiceImpl implements GoodService {
 	@Autowired
 	private GoodDao goodDao;

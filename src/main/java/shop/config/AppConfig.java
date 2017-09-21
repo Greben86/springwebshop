@@ -14,8 +14,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
 
 @Configuration
 @PropertySource(value = {"classpath:database.properties"})
@@ -23,6 +27,20 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class AppConfig {
 	@Autowired
 	private Environment enviroment;
+
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipart = new CommonsMultipartResolver();
+		multipart.setMaxUploadSize(3 * 1024 * 1024);
+		return multipart;}
+	
+	@Bean
+	@Order(0)
+	public MultipartFilter multipartFilter() {
+		MultipartFilter multipartFilter = new MultipartFilter();
+		multipartFilter.setMultipartResolverBeanName("multipartResolver");
+		return multipartFilter;
+	}
 
 	@Bean
 	@Scope("singleton")

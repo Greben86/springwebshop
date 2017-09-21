@@ -29,17 +29,17 @@ public class GoodController {
         this.goodService = goodService;
     }
 
-	@RequestMapping(value="/upload", method=RequestMethod.GET)
-	@ResponseBody
+	@RequestMapping(value="/upload", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String provideUploadInfo() {
-        return "Вы можете загружать файл с использованием того же URL.";
+        return "upload";
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseBody
-	public String uploadImg(@RequestParam("file") MultipartFile file) {
- 
-		return "uploadimg: " + file;
+	public String uploadImg(@RequestParam(value="file", required=false) MultipartFile file) {
+
+        Long l = new Long(file.getSize());
+		return "upload1234567890: " + l;
 	}
 
     // @RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
