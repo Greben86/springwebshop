@@ -1,11 +1,12 @@
 package shop.controller;
 
-import org.springframework.stereotype.Controller;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,55 +14,38 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import shop.entity.Good;
 import shop.model.VerificationRequest;
+import shop.model.SaveFile;
 import shop.service.GoodService; 
 
-import javax.servlet.http.HttpServletRequest;
-
-@Controller
+@RestController
 @RequestMapping("/goods")
 public class GoodController {
 	final private GoodService goodService;
     @Autowired
-	private VerificationRequest verificationRequest;
+    private VerificationRequest verificationRequest;
+    @Autowired
+    private SaveFile saveFile;
 	
 	@Autowired
     public GoodController(GoodService goodService) {
         this.goodService = goodService;
     }
 
-	@RequestMapping(value="/upload", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value="/upload", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @ResponseBody
     public String provideUploadInfo() {
-        return "upload";
+        return "Not supported GET method";
     }
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
 	@ResponseBody
 	public String uploadImg(@RequestParam(value="file", required=false) MultipartFile file) {
-
-        Long l = new Long(file.getSize());
-		return "upload1234567890: " + l;
+        try(InputStream is = file.getInputStream();) {
+            return saveFile.save(file.getOriginalFilename(), is);
+        } catch (IOException e) {
+            return e.getMessage();
+        }        
 	}
-
-    // @RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
-	// @ResponseBody
-	// public String uploadImg(MultipartFile file) {
- 
-	// 	String name = null;
- 
-	// 	if (!file.isEmpty()) {
-	// 		try {
-	// 			byte[] bytes = file.getBytes();
- 
-	// 			name = file.getOriginalFilename();
- 
-	// 			return "You successfully uploaded file=" + name;
-	// 		} catch (Exception e) {
-	// 			return "You failed to upload " + name + " => " + e.getMessage();
-	// 		}
-	// 	} else {
-	// 		return "You failed to upload " + name + " because the file was empty.";
-	// 	}
-	// }
 
 	@RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody

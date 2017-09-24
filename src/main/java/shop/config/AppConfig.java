@@ -24,6 +24,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 @Configuration
 @PropertySource(value = {"classpath:database.properties"})
 @PropertySource(value = {"classpath:verification.properties"}) 
+@PropertySource(value = {"classpath:files.properties"})
 public class AppConfig {
 	@Autowired
 	private Environment enviroment;
@@ -66,6 +67,12 @@ public class AppConfig {
 
 	@Bean
 	@Scope("singleton")
+	public SaveFile saveFile() {
+		return new SaveFileImpl(enviroment.getRequiredProperty("save.directory"));
+	}
+
+	@Bean
+	@Scope("singleton")
 	public CustomerService customerService() {
 		return new CustomerServiceImpl();
 	}
@@ -87,5 +94,4 @@ public class AppConfig {
 	public GoodDao goodDao() { 
 		return new GoodDaoImpl();
 	}
-
 }
