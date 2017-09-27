@@ -32,6 +32,7 @@ public class GoodDaoImpl implements GoodDao {
                 e.setDescription(rs.getString("description"));
                 e.setArticul(rs.getString("articul"));
                 e.setDimension(rs.getString("dimension"));
+                e.setFilename(rs.getString("filename"));
                 e.setPrice(rs.getFloat("price"));
                 e.setExist(rs.getBoolean("exist"));
                 result.add(e);
@@ -58,6 +59,7 @@ public class GoodDaoImpl implements GoodDao {
                 e.setDescription(rs.getString("description"));
                 e.setArticul(rs.getString("articul"));
                 e.setDimension(rs.getString("dimension"));
+                e.setFilename(rs.getString("filename"));
                 e.setPrice(rs.getFloat("price"));
                 e.setExist(rs.getBoolean("exist"));
     
@@ -77,8 +79,17 @@ public class GoodDaoImpl implements GoodDao {
 			Statement stmt = connection.createStatement()) {
 
 			stmt.executeUpdate(
-				"INSERT INTO `goods` (`ref`, `name`, `description`, `articul`, `dimension`, `price`, `exist`, `deletionmark`) "+
-				"VALUES ('"+entity.getRef()+"', '"+entity.getName()+"', '"+entity.getDescription()+"', '"+entity.getArticul()+"', '"+entity.getDimension()+"', "+entity.getPrice()+", '"+(entity.getExist()?"T":"F")+"', '"+(entity.getDeletionmark()?"T":"F")+"');");
+				"INSERT INTO `goods` (`ref`, `name`, `description`, `articul`, `dimension`, `filename`, `price`, `exist`, `deletionmark`) "+
+                "VALUES ('"+entity.getRef()+
+                    "', '"+entity.getName()+
+                    "', '"+entity.getDescription()+
+                    "', '"+entity.getArticul()+
+                    "', '"+entity.getDimension()+
+                    "', '"+entity.getFilename()+
+                    "', "+entity.getPrice()+
+                    ", '"+(entity.getExist()?"T":"F")+
+                    "', '"+(entity.getDeletionmark()?"T":"F")+
+                "');");
 
 			return entity;
 		} catch (SQLException e) {
@@ -120,6 +131,7 @@ public class GoodDaoImpl implements GoodDao {
                 e.setDescription(rs.getString("description"));
                 e.setArticul(rs.getString("articul"));
                 e.setDimension(rs.getString("dimension"));
+                e.setFilename(rs.getString("filename"));
                 e.setPrice(rs.getFloat("price"));
                 e.setExist(rs.getBoolean("exist"));
     

@@ -6,6 +6,7 @@ public class Good {
     private String description;
     private String articul;
     private String dimension;
+    private String filename;
     private Float price;
     private Boolean exist;
     private Boolean deletionmark;
@@ -52,6 +53,14 @@ public class Good {
 
     public String getDimension() {
         return dimension;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getFilename() {
+        return filename;
     }
 
     public void setPrice(Float price) {

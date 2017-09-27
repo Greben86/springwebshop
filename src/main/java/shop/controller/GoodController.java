@@ -31,20 +31,25 @@ public class GoodController {
         this.goodService = goodService;
     }
 
-    @RequestMapping(value="/upload", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value="/uploadimg", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String provideUploadInfo() {
         return "Not supported GET method";
     }
     
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value = "/uploadimg", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
 	@ResponseBody
-	public String uploadImg(@RequestParam(value="file", required=false) MultipartFile file) {
-        try(InputStream is = file.getInputStream();) {
-            return saveFile.save(file.getOriginalFilename(), is);
-        } catch (IOException e) {
-            return e.getMessage();
-        }        
+    public String uploadImg(@RequestParam(value="key", required=false) String key, 
+                            @RequestParam(value="file", required=false) MultipartFile file) {
+        if (verificationRequest.verify(key)){
+            try(InputStream is = file.getInputStream();) {
+                return saveFile.save(file.getOriginalFilename(), is);
+            } catch (IOException e) {
+                return e.getMessage();
+            }
+        } else {
+            return "Acces denied";
+        }
 	}
 
 	@RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")

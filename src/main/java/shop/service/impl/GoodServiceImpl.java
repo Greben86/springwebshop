@@ -15,7 +15,7 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean delitionMarkForAll() {
-		List<Good> list = goodDao.getList("");
+		List<Good> list = goodDao.getList(""); 
 		for (int i=0; i<list.size(); i++) {
 			list.get(i).setDeletionmark(true);
 			goodDao.update(list.get(i));
