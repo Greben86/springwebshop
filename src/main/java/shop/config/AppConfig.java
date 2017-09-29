@@ -29,7 +29,7 @@ public class AppConfig {
 	@Autowired
 	private Environment enviroment;
 
-	@Bean
+	@Bean 
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipart = new CommonsMultipartResolver();
 		multipart.setMaxUploadSize(3 * 1024 * 1024);
