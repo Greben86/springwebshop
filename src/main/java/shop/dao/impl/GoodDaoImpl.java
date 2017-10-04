@@ -40,6 +40,9 @@ public class GoodDaoImpl implements GoodDao {
 
 			return result;
 		} catch (SQLException e) {
+            Good g = new Good();
+            g.setName(e.getMessage());
+            result.add(g);
 			return result;
 		}
     }

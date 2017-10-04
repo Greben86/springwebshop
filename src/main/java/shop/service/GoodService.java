@@ -1,5 +1,7 @@
 package shop.service;
 
+import java.util.List;
+
 import shop.entity.Good;
 
 public interface GoodService {
@@ -11,4 +13,6 @@ public interface GoodService {
     Boolean updateOrInsert(Good customer);
     
     Boolean deleteByRef(String ref);
+
+    List<Good> getCatalog();
 }

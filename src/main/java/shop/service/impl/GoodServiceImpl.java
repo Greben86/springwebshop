@@ -47,5 +47,10 @@ public class GoodServiceImpl implements GoodService {
 		} else {
 			return false;
 		}		
-    }
+	}
+	
+	@Override
+	public List<Good> getCatalog() {
+		return goodDao.getList("");
+	}
 }

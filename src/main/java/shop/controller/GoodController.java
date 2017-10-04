@@ -2,7 +2,7 @@ package shop.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,5 +96,11 @@ public class GoodController {
         } else {
             return "Acces denied";
         }      
+    }
+
+    @RequestMapping(value = "/catalog", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<Good> getCatalog() {
+        return goodService.getCatalog();
     }
 }
