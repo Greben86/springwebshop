@@ -1,6 +1,8 @@
 package shop.entity;
 
 public class Good {
+    private long id;
+    private long owner;
     private String ref;
     private String name;
     private String description;
@@ -13,6 +15,22 @@ public class Good {
 
     public Good() {
         deletionmark = false;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setOwner(long owner) {
+        this.owner = owner;
+    }
+
+    public long getOwner() {
+        return owner;
     }
 
     public void setRef(String ref) {
@@ -89,6 +107,6 @@ public class Good {
 
     @Override
     public String toString() {
-        return "[" + ref + "] " + name;
+        return "GOOD [" + name + "]";
     }
 }

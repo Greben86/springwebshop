@@ -18,15 +18,17 @@ public class GoodDaoImpl implements GoodDao {
 
     @Override
     public List<Good> getList(String filter) {
-        List<Good> result = new ArrayList<Good>();
         try (
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
             ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` " + (filter.equals("") ? "" : "WHERE "+filter));
             
+            List<Good> result = new ArrayList<Good>();
             while (rs.next()) {
                 Good e = new Good();
+                e.setId(rs.getLong("id"));
+                e.setOwner(rs.getLong("owner"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
@@ -37,13 +39,9 @@ public class GoodDaoImpl implements GoodDao {
                 e.setExist(rs.getBoolean("exist"));
                 result.add(e);
             }
-
 			return result;
 		} catch (SQLException e) {
-            Good g = new Good();
-            g.setName(e.getMessage());
-            result.add(g);
-			return result;
+			return null;
 		}
     }
     
@@ -57,6 +55,8 @@ public class GoodDaoImpl implements GoodDao {
             
             if (rs.next()) {
                 Good e = new Good();
+                e.setId(rs.getLong("id"));
+                e.setOwner(rs.getLong("owner"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
@@ -82,8 +82,10 @@ public class GoodDaoImpl implements GoodDao {
 			Statement stmt = connection.createStatement()) {
 
 			stmt.executeUpdate(
-				"INSERT INTO `goods` (`ref`, `name`, `description`, `articul`, `dimension`, `filename`, `price`, `exist`, `deletionmark`) "+
-                "VALUES ('"+entity.getRef()+
+				"INSERT INTO `goods` (`id`, `owner`, `ref`, `name`, `description`, `articul`, `dimension`, `filename`, `price`, `exist`, `deletionmark`) "+
+                "VALUES ("+entity.getId()+
+                    ", "+entity.getOwner()+
+                    ", '"+entity.getRef()+
                     "', '"+entity.getName()+
                     "', '"+entity.getDescription()+
                     "', '"+entity.getArticul()+
@@ -129,6 +131,8 @@ public class GoodDaoImpl implements GoodDao {
             
             if (rs.next()) {
                 Good e = new Good();
+                e.setId(rs.getLong("id"));
+                e.setOwner(rs.getLong("owner"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
