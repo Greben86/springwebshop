@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 public class Good {
     private long id;
     private long owner;
+    private Boolean folder;
     private String ref;
     private String name;
     private String description;
@@ -34,6 +35,14 @@ public class Good {
 
     public long getOwner() {
         return owner;
+    }
+
+    public void setFolder(boolean folder) {
+        this.folder = new Boolean(folder);
+    }
+
+    public Boolean getFolder() {
+        return folder;
     }
 
     public void setRef(String ref) {

@@ -29,6 +29,7 @@ public class GoodDaoImpl implements GoodDao {
                 Good e = new Good();
                 e.setId(rs.getLong("id"));
                 e.setOwner(rs.getLong("owner"));
+                e.setFolder(rs.getBoolean("folder"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
@@ -57,6 +58,7 @@ public class GoodDaoImpl implements GoodDao {
                 Good e = new Good();
                 e.setId(rs.getLong("id"));
                 e.setOwner(rs.getLong("owner"));
+                e.setFolder(rs.getBoolean("folder"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
@@ -82,10 +84,11 @@ public class GoodDaoImpl implements GoodDao {
 			Statement stmt = connection.createStatement()) {
 
 			stmt.executeUpdate(
-				"INSERT INTO `goods` (`id`, `owner`, `ref`, `name`, `description`, `articul`, `dimension`, `filename`, `price`, `exist`, `deletionmark`) "+
+				"INSERT INTO `goods` (`id`, `owner`, `folder`, `ref`, `name`, `description`, `articul`, `dimension`, `filename`, `price`, `exist`, `deletionmark`) "+
                 "VALUES ("+entity.getId()+
                     ", "+entity.getOwner()+
-                    ", '"+entity.getRef()+
+                    ", '"+(entity.getFolder()?"T":"F")+
+                    "', '"+entity.getRef()+
                     "', '"+entity.getName()+
                     "', '"+entity.getDescription()+
                     "', '"+entity.getArticul()+
@@ -133,6 +136,7 @@ public class GoodDaoImpl implements GoodDao {
                 Good e = new Good();
                 e.setId(rs.getLong("id"));
                 e.setOwner(rs.getLong("owner"));
+                e.setFolder(rs.getBoolean("folder"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
@@ -163,6 +167,7 @@ public class GoodDaoImpl implements GoodDao {
                 Good e = new Good();
                 e.setId(rs.getLong("id"));
                 e.setOwner(rs.getLong("owner"));
+                e.setFolder(rs.getBoolean("folder"));
                 e.setRef(rs.getString("ref"));
                 e.setName(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
