@@ -1,5 +1,8 @@
 package shop.entity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Good {
     private long id;
     private long owner;
@@ -82,7 +85,7 @@ public class Good {
     }
 
     public void setPrice(Float price) {
-        this.price = price;
+        this.price = (float) new BigDecimal(price).setScale(2, RoundingMode.UP).doubleValue();
     }
 
     public Float getPrice() {

@@ -50,7 +50,12 @@ public class GoodServiceImpl implements GoodService {
 	}
 	
 	@Override
-	public List<Good> getCatalog() {
-		return goodDao.getList("");
+	public List<Good> getCatalog(String filter) {
+		return goodDao.getList(filter);
+	}
+
+	@Override 
+	public Good getById(long id) {
+		return goodDao.getById(id);
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -101,6 +102,18 @@ public class GoodController {
     @RequestMapping(value = "/catalog", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<Good> getCatalog() {
-        return goodService.getCatalog();
+        return goodService.getCatalog("`OWNER`=0");
+    }
+
+    @RequestMapping(value = "/catalog/{folder}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<Good> getFolder(@PathVariable(value = "folder") String folder) {
+        return goodService.getCatalog("`OWNER`="+folder);
+    }
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Good getGood(@PathVariable(value = "id") String id) {
+        return goodService.getById(Long.parseLong(id));
     }
 }

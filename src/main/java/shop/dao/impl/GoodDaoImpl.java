@@ -122,6 +122,36 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
+    public Good getById(long id) {
+        try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` WHERE `id`="+id+"");
+            
+            if (rs.next()) {
+                Good e = new Good();
+                e.setId(rs.getLong("id"));
+                e.setOwner(rs.getLong("owner"));
+                e.setRef(rs.getString("ref"));
+                e.setName(rs.getString("name"));
+                e.setDescription(rs.getString("description"));
+                e.setArticul(rs.getString("articul"));
+                e.setDimension(rs.getString("dimension"));
+                e.setFilename(rs.getString("filename"));
+                e.setPrice(rs.getFloat("price"));
+                e.setExist(rs.getBoolean("exist"));
+    
+                return e;
+            } else {
+                return null;
+            }            
+		} catch (SQLException e) {
+			return null;
+		}
+    }
+
+    @Override
     public Good findGoodByArticul(String articul) {
         try (
 			Connection connection = dataSource.getConnection();
