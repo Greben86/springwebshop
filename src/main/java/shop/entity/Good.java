@@ -1,5 +1,7 @@
 package shop.entity;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -18,7 +20,22 @@ public class Good {
     private Boolean deletionmark;
 
     public Good() {
-        deletionmark = false;
+        setDeletionmark(false);
+    }
+
+    public Good(ResultSet set) throws SQLException {
+        setId(set.getLong("id"));
+        setOwner(set.getLong("owner"));
+        setFolder(set.getString("folder").equals("T") ? true : false);
+        setRef(set.getString("ref"));
+        setName(set.getString("name"));
+        setDescription(set.getString("description"));
+        setArticul(set.getString("articul"));
+        setDimension(set.getString("dimension"));
+        setFilename(set.getString("filename"));
+        setPrice(set.getFloat("price"));
+        setExist(set.getString("exist").equals("T") ? true : false);
+        setDeletionmark(false);
     }
 
     public void setId(long id) {

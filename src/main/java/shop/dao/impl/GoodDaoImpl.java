@@ -22,23 +22,11 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` " + (filter.equals("") ? "" : "WHERE "+filter));
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods`" + (filter.equals("") ? "" : " WHERE "+filter) + ";");
             
             List<Good> result = new ArrayList<Good>();
             while (rs.next()) {
-                Good e = new Good();
-                e.setId(rs.getLong("id"));
-                e.setOwner(rs.getLong("owner"));
-                e.setFolder(rs.getBoolean("folder"));
-                e.setRef(rs.getString("ref"));
-                e.setName(rs.getString("name"));
-                e.setDescription(rs.getString("description"));
-                e.setArticul(rs.getString("articul"));
-                e.setDimension(rs.getString("dimension"));
-                e.setFilename(rs.getString("filename"));
-                e.setPrice(rs.getFloat("price"));
-                e.setExist(rs.getBoolean("exist"));
-                result.add(e);
+                result.add(new Good(rs));
             }
 			return result;
 		} catch (SQLException e) {
@@ -52,23 +40,10 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` WHERE `ref`='"+ref+"'");
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `ref`='%s'", ref));
             
-            if (rs.next()) {
-                Good e = new Good();
-                e.setId(rs.getLong("id"));
-                e.setOwner(rs.getLong("owner"));
-                e.setFolder(rs.getBoolean("folder"));
-                e.setRef(rs.getString("ref"));
-                e.setName(rs.getString("name"));
-                e.setDescription(rs.getString("description"));
-                e.setArticul(rs.getString("articul"));
-                e.setDimension(rs.getString("dimension"));
-                e.setFilename(rs.getString("filename"));
-                e.setPrice(rs.getFloat("price"));
-                e.setExist(rs.getBoolean("exist"));
-    
-                return e;
+            if (rs.next()) {    
+                return new Good(rs);
             } else {
                 return null;
             }            
@@ -116,7 +91,7 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-			stmt.execute("DELETE FROM `goods` WHERE `ref`='"+entity.getRef()+"';");
+			stmt.execute(String.format("DELETE FROM `goods` WHERE `ref`='%s';", entity.getRef()));
 
 			return entity;
 		} catch (SQLException e) {
@@ -130,23 +105,10 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` WHERE `id`="+id+"");
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `id`=%d;", id));
             
-            if (rs.next()) {
-                Good e = new Good();
-                e.setId(rs.getLong("id"));
-                e.setOwner(rs.getLong("owner"));
-                e.setFolder(rs.getBoolean("folder"));
-                e.setRef(rs.getString("ref"));
-                e.setName(rs.getString("name"));
-                e.setDescription(rs.getString("description"));
-                e.setArticul(rs.getString("articul"));
-                e.setDimension(rs.getString("dimension"));
-                e.setFilename(rs.getString("filename"));
-                e.setPrice(rs.getFloat("price"));
-                e.setExist(rs.getBoolean("exist"));
-    
-                return e;
+            if (rs.next()) {    
+                return new Good(rs);
             } else {
                 return null;
             }            
@@ -161,23 +123,10 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods` WHERE `articul`='"+articul+"'");
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `articul`='%s'", articul));
             
-            if (rs.next()) {
-                Good e = new Good();
-                e.setId(rs.getLong("id"));
-                e.setOwner(rs.getLong("owner"));
-                e.setFolder(rs.getBoolean("folder"));
-                e.setRef(rs.getString("ref"));
-                e.setName(rs.getString("name"));
-                e.setDescription(rs.getString("description"));
-                e.setArticul(rs.getString("articul"));
-                e.setDimension(rs.getString("dimension"));
-                e.setFilename(rs.getString("filename"));
-                e.setPrice(rs.getFloat("price"));
-                e.setExist(rs.getBoolean("exist"));
-    
-                return e;
+            if (rs.next()) {    
+                return new Good(rs);
             } else {
                 return null;
             }            

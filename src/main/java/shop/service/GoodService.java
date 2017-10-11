@@ -18,5 +18,5 @@ public interface GoodService {
 
     List<Good> getList(Long owner);
 
-    Good getById(long id);
+    Good getById(Long id);
 }
