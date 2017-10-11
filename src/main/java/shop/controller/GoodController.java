@@ -99,16 +99,16 @@ public class GoodController {
         }      
     }
 
-    @RequestMapping(value = "/catalog", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/folders/{owner}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<Good> getCatalog() {
-        return goodService.getCatalog("`OWNER`=0");
+    public List<Good> getFolder(@PathVariable(value = "owner") String owner) {
+        return goodService.getFolders(Long.parseLong(owner));
     }
 
-    @RequestMapping(value = "/catalog/{folder}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/list/{owner}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<Good> getFolder(@PathVariable(value = "folder") String folder) {
-        return goodService.getCatalog("`OWNER`="+folder);
+    public List<Good> getCatalog(@PathVariable(value = "owner") String owner) {
+        return goodService.getList(Long.parseLong(owner));
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

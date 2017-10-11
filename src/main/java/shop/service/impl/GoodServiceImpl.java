@@ -50,8 +50,13 @@ public class GoodServiceImpl implements GoodService {
 	}
 	
 	@Override
-	public List<Good> getCatalog(String filter) {
-		return goodDao.getList(filter);
+	public List<Good> getFolders(Long owner) {
+		return goodDao.getList("`FOLDER`='T' AND `OWNER`="+owner.toString());
+	}
+
+	@Override
+	public List<Good> getList(Long owner) {
+		return goodDao.getList("`OWNER`="+owner.toString());
 	}
 
 	@Override 

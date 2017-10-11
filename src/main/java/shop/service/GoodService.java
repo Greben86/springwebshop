@@ -14,7 +14,9 @@ public interface GoodService {
     
     Boolean deleteByRef(String ref);
 
-    List<Good> getCatalog(String filter);
+    List<Good> getFolders(Long owner);
+
+    List<Good> getList(Long owner);
 
     Good getById(long id);
 }
