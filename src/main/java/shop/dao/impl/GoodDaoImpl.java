@@ -22,7 +22,7 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods`" + (filter.equals("") ? "" : " WHERE "+filter) + ";");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods`" + (filter.equals("") ? "" : " WHERE "+filter) + " ORDER BY folder DESC;");
             
             List<Good> result = new ArrayList<Good>();
             while (rs.next()) {
