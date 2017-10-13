@@ -13,4 +13,6 @@ public interface CustomerService {
     Boolean deleteByRef(String ref);
     
     Boolean checkPass(String number, String pass);
+
+    Customer getCustomerByRef(String ref);
 }

@@ -57,5 +57,10 @@ public class CustomerServiceImpl implements CustomerService {
 		} else {
 			return false;
 		}
-    }
+	}
+	
+	@Override
+	public Customer getCustomerByRef(String ref) {
+		return customerDao.findByRef(ref);
+	}
 }

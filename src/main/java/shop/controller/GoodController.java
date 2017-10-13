@@ -1,5 +1,8 @@
 package shop.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -16,6 +19,7 @@ import org.springframework.http.MediaType;
 import shop.entity.Good;
 import shop.model.VerificationRequest;
 import shop.model.SaveFile;
+import shop.model.ReadFile;
 import shop.service.GoodService; 
 
 @RestController
@@ -26,6 +30,8 @@ public class GoodController {
     private VerificationRequest verificationRequest;
     @Autowired
     private SaveFile saveFile;
+    @Autowired
+    private ReadFile readFile;
 	
 	@Autowired
     public GoodController(GoodService goodService) {
@@ -51,7 +57,7 @@ public class GoodController {
         } else {
             return "Acces denied";
         }
-	}
+    }
 
 	@RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
@@ -115,5 +121,20 @@ public class GoodController {
     @ResponseBody
     public Good getGood(@PathVariable(value = "id") String id) {
         return goodService.getById(Long.parseLong(id));
+    }
+
+    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    public byte[] getImage(@PathVariable(value = "id") String id) {
+        return readFile.read("good"+id+".jpg");
+        // File f = new File("/home/ftp/webshop/public/img/goods/good30059.jpg");
+        // try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));) {
+        //     byte[] buff = new byte[(int) f.length()];
+        //     in.read(buff, 0, buff.length);
+        //     return buff;
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        //     return null;
+		// }        
     }
 }

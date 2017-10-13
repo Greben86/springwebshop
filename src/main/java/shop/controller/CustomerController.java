@@ -1,6 +1,7 @@
 package shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,12 +68,18 @@ public class CustomerController {
             return customerService.deleteByRef(ref) ? "Ok" : "Fail";
         } else {
             return "Acces denied";
-        }      
+        }
     }
 
     @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String checkPass(@RequestParam("in") String number, @RequestParam("pass") String pass) {
         return customerService.checkPass(number, pass) ? "Ok" : "Fail";
+    }
+
+    @RequestMapping(value = "/get/{ref}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Customer getCustomerByRef(@PathVariable(value = "ref") String ref) {
+        return customerService.getCustomerByRef(ref);
     }
 }

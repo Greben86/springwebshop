@@ -74,6 +74,12 @@ public class AppConfig {
 
 	@Bean
 	@Scope("singleton")
+	public ReadFile readFile() {
+		return new ReadFileImpl(enviroment.getRequiredProperty("save.directory"));
+	}
+
+	@Bean
+	@Scope("singleton")
 	public CustomerService customerService() {
 		return new CustomerServiceImpl();
 	}
