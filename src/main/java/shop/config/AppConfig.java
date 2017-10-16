@@ -23,7 +23,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 
 @Configuration
 @PropertySource(value = {"classpath:database.properties"})
-@PropertySource(value = {"classpath:verification.properties"}) 
+@PropertySource(value = {"classpath:verification.properties"})
 @PropertySource(value = {"classpath:files.properties"})
 public class AppConfig {
 	@Autowired
@@ -57,6 +57,7 @@ public class AppConfig {
         dataSource.setDriverClassName(enviroment.getRequiredProperty("database.driver"));
         dataSource.setUrl(enviroment.getRequiredProperty("database.url"));
 		dataSource.setConnectionProperties(properties);
+
         return dataSource;
 	}
 
@@ -68,14 +69,8 @@ public class AppConfig {
 
 	@Bean
 	@Scope("singleton")
-	public SaveFile saveFile() {
-		return new SaveFileImpl(enviroment.getRequiredProperty("save.directory"));
-	}
-
-	@Bean
-	@Scope("singleton")
-	public ReadFile readFile() {
-		return new ReadFileImpl(enviroment.getRequiredProperty("save.directory"));
+	public FileControl fileControl() {
+		return new FileControlImpl(enviroment.getRequiredProperty("save.directory"));
 	}
 
 	@Bean

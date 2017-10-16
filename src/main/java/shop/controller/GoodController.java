@@ -1,8 +1,5 @@
 package shop.controller;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -18,9 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import shop.entity.Good;
 import shop.model.VerificationRequest;
-import shop.model.SaveFile;
-import shop.model.ReadFile;
-import shop.service.GoodService; 
+import shop.model.FileControl;
+import shop.service.GoodService;
 
 @RestController
 @RequestMapping("/goods")
@@ -29,9 +25,7 @@ public class GoodController {
     @Autowired
     private VerificationRequest verificationRequest;
     @Autowired
-    private SaveFile saveFile;
-    @Autowired
-    private ReadFile readFile;
+    private FileControl fileControl;
 	
 	@Autowired
     public GoodController(GoodService goodService) {
@@ -50,7 +44,7 @@ public class GoodController {
                             @RequestParam(value="file", required=false) MultipartFile file) {
         if (verificationRequest.verify(key)){
             try(InputStream is = file.getInputStream();) {
-                return saveFile.save(file.getOriginalFilename(), is);
+                return fileControl.save(file.getOriginalFilename(), is);
             } catch (IOException e) {
                 return e.getMessage();
             }
@@ -126,15 +120,12 @@ public class GoodController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public byte[] getImage(@PathVariable(value = "id") String id) {
-        return readFile.read("good"+id+".jpg");
-        // File f = new File("/home/ftp/webshop/public/img/goods/good30059.jpg");
-        // try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));) {
-        //     byte[] buff = new byte[(int) f.length()];
-        //     in.read(buff, 0, buff.length);
-        //     return buff;
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        //     return null;
-		// }        
+        Good good = goodService.getById(Long.parseLong(id));
+        if (good != null)
+        {
+            return fileControl.read(good.getFilename());
+        } else {
+            return null;
+        }
     }
 }
