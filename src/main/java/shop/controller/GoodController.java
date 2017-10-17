@@ -60,7 +60,7 @@ public class GoodController {
             return goodService.delitionMarkForAll() ? "Ok" : "Fail";
         } else {
             return "Acces denied";
-        } 
+        }
     }
 
     @RequestMapping(value = "/deletemarked", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
@@ -87,6 +87,22 @@ public class GoodController {
         } else {
             return "Acces denied";
         }        
+    }
+
+    @RequestMapping(value = "/updatelist", method = RequestMethod.GET)
+    @ResponseBody
+    public String updateListInfo() {
+        return "GET not supported for update goods";
+    }
+
+    @RequestMapping(value = "/updatelist", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String updateList(@RequestParam(value="key", required=false) String key, @RequestBody List<Good> list){
+        if (verificationRequest.verify(key)) {
+            return goodService.updateList(list) ? "Uploaded " + list.size() + " goods succesfull" : "Fail";
+        } else {
+            return "Acces denied";
+        }
     }
 
     @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
@@ -117,7 +133,7 @@ public class GoodController {
         return goodService.getById(Long.parseLong(id));
     }
 
-    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseBody
     public byte[] getImage(@PathVariable(value = "id") String id) {
         Good good = goodService.getById(Long.parseLong(id));
@@ -125,7 +141,7 @@ public class GoodController {
         {
             return fileControl.read(good.getFilename());
         } else {
-            return null;
+            return fileControl.read("");
         }
     }
 }

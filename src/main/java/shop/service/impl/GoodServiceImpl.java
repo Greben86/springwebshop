@@ -39,6 +39,14 @@ public class GoodServiceImpl implements GoodService {
 	}
 
 	@Override
+	public Boolean updateList(List<Good> list) {
+		for (int i=0; i<list.size(); i++) {
+			goodDao.update(list.get(i));
+		}
+		return true;
+	}
+
+	@Override
 	public Boolean deleteByRef(String ref) {
 		Good entity = goodDao.findByRef(ref);
 		if (entity!=null) {

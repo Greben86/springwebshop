@@ -5,6 +5,8 @@ import shop.model.FileControl;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,9 +34,25 @@ public class FileControlImpl implements FileControl {
         }
     }
 
+    private File getFile(String name) throws IOException {
+        if (!name.equals("")) {
+            return new File(path + name);
+        } else {
+            Resource resource = new ClassPathResource("/images/noimage.png");
+            return resource.getFile();
+        }
+    }
+
     @Override
     public byte[] read (String name) {
-        File f = new File(path + name);
+        File f;
+		try {
+			f = getFile(name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+		}
         try (FileInputStream fis = new FileInputStream(f);
             BufferedInputStream in = new BufferedInputStream(fis);) {
             byte[] buff = new byte[(int) f.length()];

@@ -11,6 +11,8 @@ public interface GoodService {
     Boolean deleteMarked();
     
     Boolean updateOrInsert(Good customer);
+
+    Boolean updateList(List<Good> list);
     
     Boolean deleteByRef(String ref);
 
