@@ -68,8 +68,8 @@ public class AppConfig {
 
 	@Bean
 	@Scope("singleton")
-	public FileControl fileControl() {
-		return new FileControlImpl(enviroment.getRequiredProperty("save.directory"));
+	public ImageControl imageControl() {
+		return new ImageControlImpl(enviroment.getRequiredProperty("save.directory"));
 	}
 
 	@Bean

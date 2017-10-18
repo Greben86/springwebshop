@@ -1,6 +1,6 @@
 package shop.model.impl;
 
-import shop.model.FileControl;
+import shop.model.ImageControl;
 
 import java.io.IOException;
 import java.io.FileOutputStream;
@@ -11,12 +11,12 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
-public class FileControlImpl implements FileControl {
+public class ImageControlImpl implements ImageControl {
     private String path;
 
-    private FileControlImpl () {}
+    private ImageControlImpl () {}
 
-    public FileControlImpl (String path) {
+    public ImageControlImpl (String path) {
         this.path = path;
     }
 
@@ -34,34 +34,37 @@ public class FileControlImpl implements FileControl {
         }
     }
 
-    private File getFile(String name) throws IOException {
-        if (!name.equals("")) {
-            return new File(path + name);
+    private File getFile(String name) {
+        File f = null;
+        if (!name.isEmpty()) {
+            f = new File(path + name);
         } else {
             Resource resource = new ClassPathResource("/images/noimage.png");
-            return resource.getFile();
+            try {
+				f = resource.getFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         }
+        return f;
     }
 
     @Override
-    public byte[] read (String name) {
-        File f;
-		try {
-			f = getFile(name);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-		}
-        try (FileInputStream fis = new FileInputStream(f);
-            BufferedInputStream in = new BufferedInputStream(fis);) {
-            byte[] buff = new byte[(int) f.length()];
-            in.read(buff, 0, buff.length);
-            return buff;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-		}
+    public byte[] read(String name) {
+        byte[] buff = null;
+        File f = getFile(name);        
+        if (f!=null) {
+            if (f.exists()) {
+                try (FileInputStream fis = new FileInputStream(f);
+                    BufferedInputStream in = new BufferedInputStream(fis);) {
+                    buff = new byte[(int) f.length()];
+                    in.read(buff, 0, buff.length);            
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return buff;
     }
 
     @Override

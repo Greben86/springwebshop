@@ -2,7 +2,7 @@ package shop.model;
 
 import java.io.InputStream;
 
-public interface FileControl {
+public interface ImageControl {
 
     String save(String name, InputStream stream);
 

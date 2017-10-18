@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import shop.entity.Good;
 import shop.model.VerificationRequest;
-import shop.model.FileControl;
+import shop.model.ImageControl;
 import shop.service.GoodService;
 
 @RestController
@@ -25,7 +25,7 @@ public class GoodController {
     @Autowired
     private VerificationRequest verificationRequest;
     @Autowired
-    private FileControl fileControl;
+    private ImageControl imageControl;
 	
 	@Autowired
     public GoodController(GoodService goodService) {
@@ -44,7 +44,7 @@ public class GoodController {
                             @RequestParam(value="file", required=false) MultipartFile file) {
         if (verificationRequest.verify(key)){
             try(InputStream is = file.getInputStream();) {
-                return fileControl.save(file.getOriginalFilename(), is);
+                return imageControl.save(file.getOriginalFilename(), is);
             } catch (IOException e) {
                 return e.getMessage();
             }
@@ -139,9 +139,9 @@ public class GoodController {
         Good good = goodService.getById(Long.parseLong(id));
         if (good != null)
         {
-            return fileControl.read(good.getFilename());
+            return imageControl.read(good.getFilename());
         } else {
-            return fileControl.read("");
+            return imageControl.read("");
         }
     }
 }
