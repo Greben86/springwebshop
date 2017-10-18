@@ -5,13 +5,15 @@ import shop.model.ImageControl;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.apache.log4j.Logger;
 
 public class ImageControlImpl implements ImageControl {
+    private static final Logger LOG = Logger.getLogger(ImageControlImpl.class);
     private String path;
 
     private ImageControlImpl () {}
@@ -30,20 +32,19 @@ public class ImageControlImpl implements ImageControl {
             }
             return "You successfully uploaded file=" + path + name;
         } catch (IOException e) {
-            return e.getMessage();
+            LOG.error("something going wrong " + e);
+            return "You failed uploaded file=" + path + name;            
         }
     }
 
     private File getFile(String name) {
-        File f = null;
-        if (!name.isEmpty()) {
-            f = new File(path + name);
-        } else {
+        File f = new File(path + name);
+        if (!f.exists()||!f.isFile()) {
             Resource resource = new ClassPathResource("/images/noimage.png");
             try {
 				f = resource.getFile();
 			} catch (IOException e) {
-				e.printStackTrace();
+                LOG.error("something going wrong " + e);
 			}
         }
         return f;
@@ -54,14 +55,12 @@ public class ImageControlImpl implements ImageControl {
         byte[] buff = null;
         File f = getFile(name);        
         if (f!=null) {
-            if (f.exists()) {
-                try (FileInputStream fis = new FileInputStream(f);
-                    BufferedInputStream in = new BufferedInputStream(fis);) {
-                    buff = new byte[(int) f.length()];
-                    in.read(buff, 0, buff.length);            
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try (FileInputStream fis = new FileInputStream(f);
+                BufferedInputStream in = new BufferedInputStream(fis);) {
+                buff = new byte[(int) f.length()];
+                in.read(buff, 0, buff.length);
+            } catch (IOException e) {
+                LOG.error("something going wrong " + e);
             }
         }
         return buff;
@@ -70,7 +69,7 @@ public class ImageControlImpl implements ImageControl {
     @Override
     public Boolean remove (String name) {
         File file = new File(path + name);
-    
+
         return file.delete();
     }
 

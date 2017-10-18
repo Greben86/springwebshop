@@ -95,7 +95,7 @@ public class GoodController {
         return "GET not supported for update goods";
     }
 
-    @RequestMapping(value = "/updatelist", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String updateList(@RequestParam(value="key", required=false) String key, @RequestBody List<Good> list){
         if (verificationRequest.verify(key)) {
@@ -105,9 +105,10 @@ public class GoodController {
         }
     }
 
-    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public String deleteByRef(@RequestParam(value="key", required=false) String key, @RequestParam(value="ref", required=true) String ref){ 
+    public String deleteByRef(@RequestParam(value="key", required=false) String key, 
+                              @RequestParam(value="ref", required=true) String ref){ 
         if (verificationRequest.verify(key)) {
             return goodService.deleteByRef(ref) ? "Ok" : "Fail";
         } else {

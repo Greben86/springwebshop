@@ -3,13 +3,14 @@ package shop.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.apache.log4j.Logger;
 import shop.service.GoodService;
 import shop.entity.Good;
 import shop.dao.GoodDao; 
 
 @Service("goodService")
 public class GoodServiceImpl implements GoodService {
+	private static final Logger LOG = Logger.getLogger(GoodServiceImpl.class);
 	@Autowired
 	private GoodDao goodDao;
 
@@ -40,9 +41,12 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean updateList(List<Good> list) {
+		LOG.info("Start update goods (count: " + list.size() + ")");
 		for (int i=0; i<list.size(); i++) {
+			LOG.info("Update good " + list.get(i).getName());
 			goodDao.update(list.get(i));
 		}
+		LOG.info("Finish update goods (count: " + list.size() + ")");
 		return true;
 	}
 
