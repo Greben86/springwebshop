@@ -1,7 +1,12 @@
 package shop.controller;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +49,7 @@ public class GoodController {
                             @RequestParam(value="file", required=false) MultipartFile file) {
         if (verificationRequest.verify(key)){
             try(InputStream is = file.getInputStream();) {
-                return imageControl.save(file.getOriginalFilename(), is);
+                return imageControl.save(file.getOriginalFilename() + ".good", is);
             } catch (IOException e) {
                 return e.getMessage();
             }
@@ -81,7 +86,21 @@ public class GoodController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){ 
+    public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){         
+        // try {
+        //     Collection<Good> readValues = new ObjectMapper().readValue(good, new TypeReference<Collection<Good>>() { });
+        //     return good;
+		// } catch (JsonParseException e) {
+		// 	// TODO Auto-generated catch block
+		// 	return e.getMessage();
+		// } catch (JsonMappingException e) {
+		// 	// TODO Auto-generated catch block
+		// 	return e.getMessage();
+		// } catch (IOException e) {
+		// 	// TODO Auto-generated catch block
+		// 	return e.getMessage();
+		// }
+        
         if (verificationRequest.verify(key)) {
             return goodService.updateOrInsert(good) ? good + " is Ok" : "Fail";
         } else {
@@ -140,7 +159,7 @@ public class GoodController {
         Good good = goodService.getById(Long.parseLong(id));
         if (good != null)
         {
-            return imageControl.read(good.getFilename());
+            return imageControl.read(id + ".good");
         } else {
             return imageControl.read("");
         }

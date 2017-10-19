@@ -9,33 +9,32 @@ public class Good {
     private long id;
     private long owner;
     private Boolean folder;
-    private String ref;
     private String name;
     private String description;
-    private String articul;
-    private String dimension;
-    private String filename;
+    private String article;
     private Float price;
-    private Boolean exist;
-    private Boolean deletionmark;
+    private Float instock;
 
     public Good() {
-        setDeletionmark(false);
+        id = 0;
+        owner = 0;
+        folder = false;
+        name = new String("");
+        description = new String("");
+        article = new String("");
+        price = new Float(0.0);
+        instock = new Float(0.0);
     }
 
     public Good(ResultSet set) throws SQLException {
         setId(set.getLong("id"));
         setOwner(set.getLong("owner"));
         setFolder(set.getString("folder").equals("T") ? true : false);
-        setRef(set.getString("ref"));
         setName(set.getString("name"));
         setDescription(set.getString("description"));
-        setArticul(set.getString("articul"));
-        setDimension(set.getString("dimension"));
-        setFilename(set.getString("filename"));
+        setArticle(set.getString("article"));
         setPrice(set.getFloat("price"));
-        setExist(set.getString("exist").equals("T") ? true : false);
-        setDeletionmark(false);
+        setInstock(set.getFloat("instock"));
     }
 
     public void setId(long id) {
@@ -62,14 +61,6 @@ public class Good {
         return folder;
     }
 
-    public void setRef(String ref) {
-        this.ref = ref;
-    }
-
-    public String getRef() {
-        return ref;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -86,28 +77,12 @@ public class Good {
         return description;
     }
 
-    public void setArticul(String articul) {
-        this.articul = articul;
+    public void setArticle(String article) {
+        this.article = article;
     }
 
-    public String getArticul() {
-        return articul;
-    }
-
-    public void setDimension(String dimension) {
-        this.dimension = dimension;
-    }
-
-    public String getDimension() {
-        return dimension;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public String getFilename() {
-        return filename;
+    public String getArticle() {
+        return article;
     }
 
     public void setPrice(Float price) {
@@ -118,20 +93,12 @@ public class Good {
         return price;
     }
 
-    public void setExist(Boolean exist) {
-        this.exist = exist;
+    public void setInstock(Float instock) {
+        this.instock = (float) new BigDecimal(instock).setScale(3, RoundingMode.UP).doubleValue();
     }
 
-    public Boolean getExist() {
-        return exist;
-    }
-
-    public Boolean getDeletionmark() {
-        return deletionmark;
-    }
-
-    public void setDeletionmark(Boolean deletionmark) {
-        this.deletionmark = deletionmark;
+    public Float getInstock() {
+        return instock;
     }
 
     @Override

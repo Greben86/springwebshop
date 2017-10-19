@@ -16,11 +16,11 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean delitionMarkForAll() {
-		List<Good> list = goodDao.getList(""); 
-		for (int i=0; i<list.size(); i++) {
-			list.get(i).setDeletionmark(true);
-			goodDao.update(list.get(i));
-		}
+		// List<Good> list = goodDao.getList(""); 
+		// for (int i=0; i<list.size(); i++) {
+		// 	list.get(i).setDeletionmark(true);
+		// 	goodDao.update(list.get(i));
+		// }
 		return true;
 	}
 
@@ -41,12 +41,6 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean updateList(List<Good> list) {
-		// LOG.info("Start update goods (count: " + list.size() + ")");
-		// for (int i=0; i<list.size(); i++) {
-		// 	LOG.info("Update good " + list.get(i).getName());
-		// 	goodDao.update(list.get(i));
-		// }
-		// LOG.info("Finish update goods (count: " + list.size() + ")");
 		goodDao.updateList(list);
 		return true;
 	}
