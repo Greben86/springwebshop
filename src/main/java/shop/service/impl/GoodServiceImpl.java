@@ -53,14 +53,12 @@ public class GoodServiceImpl implements GoodService {
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	}
 	
 	@Override
 	public List<Good> getFolders(Long owner) {
-		return goodDao.getList(
-			String.format("(`FOLDER`='T') AND (`OWNER`=%d)", owner), 
-			(Long id) -> goodDao.hasChild(id));
+		return goodDao.getList(String.format("(`FOLDER`='T') AND (`OWNER`=%d)", owner));
 	}
 
 	@Override

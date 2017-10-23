@@ -29,29 +29,17 @@ public class GoodDaoImpl implements GoodDao {
             ResultSet rs = stmt.executeQuery("SELECT * FROM `goods`" + (filter.equals("") ? "" : " WHERE "+filter) + " ORDER BY folder DESC;");
             
             List<Good> result = new ArrayList<Good>();
-            while (rs.next()) {
-                result.add(new Good(rs));
-            }
-			return result;
-		} catch (SQLException e) {
-			return null;
-		}
-    }
-
-    @Override
-    public List<Good> getList(String filter, Predicate<Long> c) {
-        try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
-
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods`" + (filter.equals("") ? "" : " WHERE "+filter) + " ORDER BY folder DESC;");
-            
-            List<Good> result = new ArrayList<Good>();
             Good good;
             while (rs.next()) {
                 good = new Good(rs);
-                if (c.test(good.getId()))
+                if (rs.getString("folder").equals("F"))
+                {
                     result.add(good);
+                } else
+                if (hasChild(good.getId()))
+                {
+                    result.add(good);
+                }                    
             }
 			return result;
 		} catch (SQLException e) {
@@ -246,11 +234,11 @@ public class GoodDaoImpl implements GoodDao {
 		}
     }
 
-    private Boolean findChild(ResultSet rs, Long owner) throws SQLException {
+    private Boolean findChild(ResultSet rs, long owner) throws SQLException {
         List<Long> buffer = new ArrayList<Long>();
         rs.first();
         while (rs.next()) {
-            if (owner.equals(rs.getLong("owner"))) {
+            if (owner==rs.getLong("owner")) {
                 if (rs.getString("folder").equals("F")) {
                     return true;
                 } else {
@@ -259,12 +247,11 @@ public class GoodDaoImpl implements GoodDao {
             }
         }
         for (Long id : buffer)
-            if (findChild(rs, id)) 
+            if (findChild(rs, id))
                 return true;
         return false;
     }
 
-    @Override
     public Boolean hasChild(long id) {
         try (
 			Connection connection = dataSource.getConnection();
@@ -272,7 +259,7 @@ public class GoodDaoImpl implements GoodDao {
 
             ResultSet rs = stmt.executeQuery("SELECT `id`, `owner`, `folder` FROM `goods` ORDER BY `id` ASC");
 
-			return findChild(rs, new Long(id));
+			return findChild(rs, id);
 		} catch (SQLException e) {
 			return false;
 		}
