@@ -7,7 +7,7 @@ public interface GoodDao extends BasicDao<Good> {
     
     Good getById(long id);
 
-    Good findGoodByArticul(String articul);
-
     String updateList(List<Good> list);
+
+    void deletionMarkList(String filter);
 }

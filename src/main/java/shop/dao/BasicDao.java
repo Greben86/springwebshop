@@ -8,9 +8,7 @@ public interface BasicDao<T> {
 
     T findByRef(String ref);
 
-    T create(T entity);
-
-    T update(T entity);
+    T updateOrInsert(T entity);
 
     T delete(T entity);
 }

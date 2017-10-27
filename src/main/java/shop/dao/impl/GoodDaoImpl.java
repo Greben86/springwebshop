@@ -4,7 +4,6 @@ import shop.dao.GoodDao;
 import shop.entity.Good;
 
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,48 +65,7 @@ public class GoodDaoImpl implements GoodDao {
     }
     
     @Override
-    public Good create(Good entity) {
-        // try (
-		// 	Connection connection = dataSource.getConnection();
-		// 	Statement stmt = connection.createStatement()) {
-
-        //     StringBuilder buff = new StringBuilder()
-        //         .append("INSERT INTO `goods` (")
-        //         .append("`id`, `owner`, `folder`, `ref`, `name`, `description`, `articul`, `filename`, `price`, `exist`, `deletionmark`")
-        //         .append(") VALUES (")
-        //         .append(entity.getId())
-        //         .append(", ").append(entity.getOwner())
-        //         .append(", '").append(entity.getFolder() ? "T" : "F").append("'")
-        //         .append(", '").append(entity.getRef()).append("'")
-        //         .append(", '").append(entity.getName()).append("'")
-        //         .append(", '").append(entity.getDescription()).append("'")
-        //         .append(", '").append(entity.getArticul()).append("'")
-        //         .append(", '").append(entity.getFilename()).append("'")
-        //         .append(", ").append(entity.getPrice())
-        //         .append(", '").append(entity.getExist() ? "T" : "F").append("'")
-        //         .append(", '").append(entity.getDeletionmark() ? "T" : "F").append("'")
-        //         .append(") ON DUPLICATE KEY UPDATE ")
-        //         .append(" `id`=").append(entity.getId())
-        //         .append(", `owner`=").append(entity.getOwner())
-        //         .append(", `folder`='").append(entity.getFolder() ? "T" : "F").append("'")
-        //         .append(", `ref`='").append(entity.getRef()).append("'")
-        //         .append(", `name`='").append(entity.getName()).append("'")
-        //         .append(", `description`='").append(entity.getDescription()).append("'")
-        //         .append(", `articul`='").append(entity.getArticul()).append("'")
-        //         .append(", `filename`='").append(entity.getFilename()).append("'")
-        //         .append(", `price`=").append(entity.getPrice())
-        //         .append(", `exist`='").append(entity.getExist() ? "T" : "F").append("'")
-        //         .append(", `deletionmark`='").append(entity.getDeletionmark() ? "T" : "F").append("'");
-		// 	stmt.executeUpdate(buff.toString());
-
-		// 	return entity;
-		// } catch (SQLException e) {
-			return entity;
-		// }
-    }
-    
-    @Override
-    public Good update(Good entity) {
+    public Good updateOrInsert(Good entity) { 
         StringBuilder sb = new StringBuilder()
             .append("INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) ")
             .append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') ")
@@ -173,7 +131,7 @@ public class GoodDaoImpl implements GoodDao {
 
                 ps.executeUpdate();
                 
-                LOG.info("update good " + entity.getName());
+                LOG.info("update good " + entity.toString());
             }
             connection.commit();
 
@@ -216,24 +174,6 @@ public class GoodDaoImpl implements GoodDao {
 		}
     }
 
-    @Override
-    public Good findGoodByArticul(String articul) {
-        try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
-
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `article`='%s'", articul));
-            
-            if (rs.next()) {    
-                return new Good(rs);
-            } else {
-                return null;
-            }            
-		} catch (SQLException e) {
-			return null;
-		}
-    }
-
     private Boolean findChild(ResultSet rs, long owner) throws SQLException {
         List<Long> buffer = new ArrayList<Long>();
         rs.first();
@@ -262,6 +202,18 @@ public class GoodDaoImpl implements GoodDao {
 			return findChild(rs, id);
 		} catch (SQLException e) {
 			return false;
+		}
+    }
+
+    @Override
+    public void deletionMarkList(String filter) {
+        try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
+
+            stmt.execute("UPDATE `goods` SET `deletionmark`='T'" + (filter.equals("") ? "" : " WHERE "+filter) + ";");
+		} catch (SQLException e) {
+			LOG.error(e);
 		}
     }
 }

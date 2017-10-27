@@ -101,8 +101,14 @@ public class Good {
         return instock;
     }
 
+    public String getFilename() {
+        StringBuilder sb = new StringBuilder(new Long(id).toString()).append(".good");
+
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
-        return "GOOD [" + name + "]";
+        return name;
     }
 }

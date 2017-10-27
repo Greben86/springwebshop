@@ -64,7 +64,6 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
     }
 
-    @Override
     public Customer create(Customer entity) {
         try (
 			Connection connection = dataSource.getConnection();
@@ -81,7 +80,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer update(Customer entity) {
+    public Customer updateOrInsert(Customer entity) {
         return create(delete(entity));
     }
 

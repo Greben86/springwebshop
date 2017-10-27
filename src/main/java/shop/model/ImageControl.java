@@ -1,12 +1,13 @@
 package shop.model;
 
+import shop.entity.Good;
 import java.io.InputStream;
 
 public interface ImageControl {
 
-    String save(String name, InputStream stream);
+    String saveFile(Good good, InputStream stream);
 
-    byte[] read(String name);
+    byte[] readFile(Good good);
 
-    Boolean remove(String name);
+    Boolean removeFile(Good good);
 }

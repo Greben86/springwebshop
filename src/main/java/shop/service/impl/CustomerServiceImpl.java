@@ -18,7 +18,7 @@ public class CustomerServiceImpl implements CustomerService {
 		List<Customer> list = customerDao.getList("");
 		for (int i=0; i<list.size(); i++) {
 			list.get(i).setDeletionmark(true);
-			customerDao.update(list.get(i));
+			customerDao.updateOrInsert(list.get(i));
 		}
 		return true;
 	}
@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Boolean updateOrInsert(Customer customer) {
-		customerDao.update(customer);
+		customerDao.updateOrInsert(customer);
 		return true;
 	}
 

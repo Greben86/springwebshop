@@ -1,6 +1,7 @@
 package shop.model.impl;
 
 import shop.model.ImageControl;
+import shop.entity.Good;
 
 import java.io.IOException;
 import java.io.FileOutputStream;
@@ -23,37 +24,41 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public String save (String name, InputStream stream) {
-        try (FileOutputStream fos = new FileOutputStream(path + name);) {
+    public String saveFile (Good good, InputStream stream) {
+        try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
             byte[] bytes = new byte[1024];
             int read = 0;
             while ((read = stream.read(bytes)) != -1) {
                 fos.write(bytes, 0, read);
             }
-            return "You successfully uploaded file=" + path + name;
+            return "You successfully uploaded file=" + path + good.getFilename();
         } catch (IOException e) {
             LOG.error("something going wrong " + e);
-            return "You failed uploaded file=" + path + name;            
+            return "You failed uploaded file=" + path + good.getFilename();            
         }
     }
 
-    private File getFile(String name) {
-        File f = new File(path + name);
-        if (!f.exists()||!f.isFile()) {
-            Resource resource = new ClassPathResource("/images/noimage.png");
-            try {
-				f = resource.getFile();
-			} catch (IOException e) {
-                LOG.error("something going wrong " + e);
-			}
+    private File getFile(Good good) {
+        if (good==null) {
+            return null;
+        } else {
+            File f = new File(path + good.getFilename());
+            if (!f.exists()||!f.isFile()) {
+                Resource resource = new ClassPathResource(good.getFolder() ? "/images/noimagefolder.png" : "/images/noimagegood.png");
+                try {
+                    f = resource.getFile();
+                } catch (IOException e) {
+                    LOG.error("something going wrong " + e);
+                }
+            }
+            return f;
         }
-        return f;
     }
 
     @Override
-    public byte[] read(String name) {
+    public byte[] readFile(Good good) {
         byte[] buff = null;
-        File f = getFile(name);        
+        File f = getFile(good);        
         if (f!=null) {
             try (FileInputStream fis = new FileInputStream(f);
                 BufferedInputStream in = new BufferedInputStream(fis);) {
@@ -67,10 +72,13 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public Boolean remove (String name) {
-        File file = new File(path + name);
+    public Boolean removeFile(Good good) {
+        File file = new File(path + good.getFilename());
 
-        return file.delete();
+        if (file.exists()&&file.isFile()) {
+            return file.delete();
+        } else {
+            return false;
+        }        
     }
-
 }
