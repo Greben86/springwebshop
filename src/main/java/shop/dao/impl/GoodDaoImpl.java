@@ -45,23 +45,28 @@ public class GoodDaoImpl implements GoodDao {
 			return null;
 		}
     }
+
+    @Override
+    public Good findById(Long id) {
+        try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `id`=%d;", id));
+            
+            if (rs.next()) {    
+                return new Good(rs);
+            } else {
+                return null;
+            }            
+		} catch (SQLException e) {
+			return null;
+		}
+    }
     
     @Override
     public Good findByRef(String ref) {
-        // try (
-		// 	Connection connection = dataSource.getConnection();
-		// 	Statement stmt = connection.createStatement()) {
-
-        //     ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `ref`='%s'", ref));
-            
-        //     if (rs.next()) {    
-        //         return new Good(rs);
-        //     } else {
-        //         return null;
-        //     }            
-		// } catch (SQLException e) {
-			return null;
-		// }
+        return null;
     }
     
     @Override
@@ -153,24 +158,6 @@ public class GoodDaoImpl implements GoodDao {
 			return entity;
 		} catch (SQLException e) {
 			return entity;
-		}
-    }
-
-    @Override
-    public Good getById(long id) {
-        try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
-
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `id`=%d;", id));
-            
-            if (rs.next()) {    
-                return new Good(rs);
-            } else {
-                return null;
-            }            
-		} catch (SQLException e) {
-			return null;
 		}
     }
 

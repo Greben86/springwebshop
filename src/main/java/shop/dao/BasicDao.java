@@ -6,6 +6,8 @@ public interface BasicDao<T> {
 
     List<T> getList(String filter);
 
+    T findById(Long id);
+
     T findByRef(String ref);
 
     T updateOrInsert(T entity);

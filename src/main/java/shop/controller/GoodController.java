@@ -55,6 +55,18 @@ public class GoodController {
         }
     }
 
+    @RequestMapping(value = "/clearimg/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String clearImg(@PathVariable(value="id") String id,
+                           @RequestParam(value="key", required=false) String key) {
+        if (verificationRequest.verify(key)){
+            Good good = goodService.getById(Long.parseLong(id));
+            return imageControl.removeFile(good) ? "Ok" : "Fail";
+        } else {
+            return "Acces denied";
+        }
+    }
+
 	@RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String deletionMarkForAll(@RequestParam(value="key", required=false) String key){
@@ -107,15 +119,15 @@ public class GoodController {
         }
     }
 
-    @RequestMapping(value = "/deletebyref", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public String deleteByRef(@RequestParam(value="key", required=false) String key, 
-                              @RequestParam(value="ref", required=true) String ref){ 
+    public String deleteByRef(@PathVariable(value="id") String id,
+                              @RequestParam(value="key", required=false) String key){ 
         if (verificationRequest.verify(key)) {
-            return goodService.deleteByRef(ref) ? "Ok" : "Fail";
+            return goodService.deleteById(Long.parseLong(id)) ? "Ok" : "Fail";
         } else {
             return "Acces denied";
-        }      
+        }
     }
 
     @RequestMapping(value = "/folders/{owner}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

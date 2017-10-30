@@ -25,17 +25,21 @@ public class ImageControlImpl implements ImageControl {
 
     @Override
     public String saveFile (Good good, InputStream stream) {
-        try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
-            byte[] bytes = new byte[1024];
-            int read = 0;
-            while ((read = stream.read(bytes)) != -1) {
-                fos.write(bytes, 0, read);
+        if (good==null) {
+            return "Good not found"; 
+        } else {
+            try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
+                byte[] bytes = new byte[1024];
+                int read = 0;
+                while ((read = stream.read(bytes)) != -1) {
+                    fos.write(bytes, 0, read);
+                }
+                return "You successfully uploaded file=" + path + good.getFilename();
+            } catch (IOException e) {
+                LOG.error("something going wrong " + e);
+                return "You failed uploaded file=" + path + good.getFilename();            
             }
-            return "You successfully uploaded file=" + path + good.getFilename();
-        } catch (IOException e) {
-            LOG.error("something going wrong " + e);
-            return "You failed uploaded file=" + path + good.getFilename();            
-        }
+        }        
     }
 
     private File getFile(Good good) {
@@ -58,7 +62,7 @@ public class ImageControlImpl implements ImageControl {
     @Override
     public byte[] readFile(Good good) {
         byte[] buff = null;
-        File f = getFile(good);        
+        File f = getFile(good);
         if (f!=null) {
             try (FileInputStream fis = new FileInputStream(f);
                 BufferedInputStream in = new BufferedInputStream(fis);) {
@@ -73,12 +77,16 @@ public class ImageControlImpl implements ImageControl {
 
     @Override
     public Boolean removeFile(Good good) {
-        File file = new File(path + good.getFilename());
-
-        if (file.exists()&&file.isFile()) {
-            return file.delete();
-        } else {
+        if (good==null) {
             return false;
+        } else {
+            File file = new File(path + good.getFilename());
+            
+            if (file.exists()&&file.isFile()) {
+                return file.delete();
+            } else {
+                return false;
+            }
         }        
     }
 }

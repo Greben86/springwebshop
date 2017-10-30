@@ -14,7 +14,7 @@ public interface GoodService {
 
     Boolean updateList(List<Good> list);
     
-    Boolean deleteByRef(String ref);
+    Boolean deleteById(Long id);
 
     List<Good> getFolders(Long owner);
 

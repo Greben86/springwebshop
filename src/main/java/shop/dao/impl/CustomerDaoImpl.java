@@ -41,6 +41,30 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
+    public Customer findById(Long id) {
+        try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `customers` WHERE `id`=%d;", id));
+            
+            if (rs.next()) {
+                Customer e = new Customer();
+                e.setRef(rs.getString("ref"));
+                e.setNumber(rs.getString("number"));
+                e.setName(rs.getString("name"));
+                e.setPass(rs.getString("pass"));
+    
+                return e;
+            } else {
+                return null;
+            }            
+		} catch (SQLException e) {
+			return null;
+		}
+    }
+
+    @Override
     public Customer findByRef(String ref) {
         try (
 			Connection connection = dataSource.getConnection();
