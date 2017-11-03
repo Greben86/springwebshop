@@ -22,10 +22,10 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean deleteMarked() {
-		List<Good> list = goodDao.getList("`deletionmark`='T'");
-		for (Good entity : list) {
-			goodDao.delete(entity);
-		}
+		// List<Good> list = goodDao.getList("`deletionmark`='T'");
+		// for (Good entity : list) {
+		// 	goodDao.delete(entity);
+		// }
 		return true;
 	}
 
@@ -47,7 +47,7 @@ public class GoodServiceImpl implements GoodService {
 	public Boolean deleteById(Long id) {
 		Good entity = goodDao.findById(id);
 		if (entity!=null) {
-			goodDao.delete(entity);
+			// goodDao.delete(entity);
 			return true;
 		} else {
 			return false;
