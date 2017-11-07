@@ -37,9 +37,7 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean updateList(List<Good> list) {
-		goodDao.deletionMarkList("");
 		goodDao.updateList(list);
-		deleteMarked();
 		return true;
 	}
 
@@ -47,7 +45,7 @@ public class GoodServiceImpl implements GoodService {
 	public Boolean deleteById(Long id) {
 		Good entity = goodDao.findById(id);
 		if (entity!=null) {
-			// goodDao.delete(entity);
+			goodDao.delete(entity);
 			return true;
 		} else {
 			return false;
@@ -56,12 +54,20 @@ public class GoodServiceImpl implements GoodService {
 	
 	@Override
 	public List<Good> getFolders(Long owner) {
-		return goodDao.getList(String.format("(`FOLDER`='T') AND (`OWNER`=%d)", owner));
+		if (owner>=0) {
+			return goodDao.getList(String.format("(`FOLDER`='T') AND (`OWNER`=%d)", owner));
+		} else {
+			return goodDao.getList("(`FOLDER`='T')");
+		}
 	}
 
 	@Override
 	public List<Good> getList(Long owner) {
-		return goodDao.getList(String.format("`OWNER`=%d", owner));
+		if (owner>=0) {
+			return goodDao.getList(String.format("`OWNER`=%d", owner));
+		} else {
+			return goodDao.getList("");
+		}
 	}
 
 	@Override

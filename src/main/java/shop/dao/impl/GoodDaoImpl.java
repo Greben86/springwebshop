@@ -149,16 +149,16 @@ public class GoodDaoImpl implements GoodDao {
     
     @Override
     public Good delete(Good entity) {
-        // try (
-		// 	Connection connection = dataSource.getConnection();
-		// 	Statement stmt = connection.createStatement()) {
+        try (
+			Connection connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement()) {
 
-		// 	stmt.execute(String.format("DELETE FROM `goods` WHERE `id`='%d';", entity.getId()));
+			stmt.execute(String.format("DELETE FROM `goods` WHERE `id`='%d';", entity.getId()));
 
 			return entity;
-		// } catch (SQLException e) {
-		// 	return entity;
-		// }
+		} catch (SQLException e) {
+			return entity;
+		}
     }
 
     private Boolean findChild(ResultSet rs, long owner) throws SQLException {
