@@ -1,4 +1,4 @@
-package shop.controller;
+package shop.rest;
 
 import java.io.IOException;
 import java.io.InputStream;

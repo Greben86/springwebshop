@@ -31,14 +31,14 @@ public class GoodDaoImpl implements GoodDao {
             Good good;
             while (rs.next()) {
                 good = new Good(rs);
-                if (rs.getString("folder").equals("F"))
-                {
+                // if (rs.getString("folder").equals("F"))
+                // {
                     result.add(good);
-                } else
-                if (hasChild(good.getId()))
-                {
-                    result.add(good);
-                }                    
+                // } else
+                // if (hasChild(good.getId()))
+                // {
+                //     result.add(good);
+                // }                    
             }
 			return result;
 		} catch (SQLException e) {
