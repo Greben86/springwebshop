@@ -6,6 +6,7 @@ import shop.dao.*;
 import shop.dao.impl.*;
 import shop.service.*;
 import shop.service.impl.*;
+import shop.entity.factory.impl.*;
 
 import java.util.Properties;
 
@@ -93,6 +94,6 @@ public class AppConfig {
 	@Bean
 	@Scope("singleton")
 	public GoodDao goodDao() { 
-		return new GoodDaoImpl();
+		return new GoodDaoImpl(new GoodFactoryImpl());
 	}
 }

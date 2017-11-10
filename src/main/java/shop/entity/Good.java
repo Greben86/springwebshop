@@ -1,7 +1,5 @@
 package shop.entity;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -24,17 +22,6 @@ public class Good {
         article = new String("");
         price = new Float(0.0);
         instock = new Float(0.0);
-    }
-
-    public Good(ResultSet set) throws SQLException {
-        setId(set.getLong("id"));
-        setOwner(set.getLong("owner"));
-        setFolder(set.getString("folder").equals("T") ? true : false);
-        setName(set.getString("name"));
-        setDescription(set.getString("description"));
-        setArticle(set.getString("article"));
-        setPrice(set.getFloat("price"));
-        setInstock(set.getFloat("instock"));
     }
 
     public void setId(long id) {

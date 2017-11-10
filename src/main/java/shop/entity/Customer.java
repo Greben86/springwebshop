@@ -53,6 +53,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "[" + ref + "] " + name;
+        return name;
     }
 }

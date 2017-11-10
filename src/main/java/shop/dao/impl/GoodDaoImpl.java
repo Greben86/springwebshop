@@ -2,6 +2,7 @@ package shop.dao.impl;
 
 import shop.dao.GoodDao;
 import shop.entity.Good;
+import shop.entity.factory.BasicFactory;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -16,8 +17,15 @@ import org.apache.log4j.Logger;
 
 public class GoodDaoImpl implements GoodDao {
     private static final Logger LOG = Logger.getLogger(GoodDaoImpl.class);
+    private BasicFactory<Good> basicFactory;
     @Autowired
     private DriverManagerDataSource dataSource;
+
+    private GoodDaoImpl() {}
+    
+    public GoodDaoImpl(BasicFactory<Good> basicFactory) {
+        this.basicFactory = basicFactory;
+    }
 
     @Override
     public List<Good> getList(String filter) {
@@ -25,12 +33,18 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM `goods`" + (filter.equals("") ? "" : " WHERE "+filter) + " ORDER BY name ASC;");
+            StringBuilder sb = new StringBuilder("SELECT * FROM `goods` ");
+            if (!filter.equals("")) {
+                sb.append("WHERE ").append(filter).append(" ");
+            }
+            sb.append("ORDER BY name ASC;");
+
+            ResultSet rs = stmt.executeQuery(sb.toString());
             
             List<Good> result = new ArrayList<Good>();
             Good good;
             while (rs.next()) {
-                good = new Good(rs);
+                good = basicFactory.factory(rs);
                 if (rs.getString("folder").equals("F"))
                 {
                     result.add(good);
@@ -49,13 +63,14 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public Good findById(Long id) {
         try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `goods` WHERE `id`=?;");) {
 
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM `goods` WHERE `id`=%d;", id));
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
             
-            if (rs.next()) {    
-                return new Good(rs);
+            if (rs.next()) {
+                return basicFactory.factory(rs);
             } else {
                 return null;
             }            
@@ -97,7 +112,7 @@ public class GoodDaoImpl implements GoodDao {
             ps.setFloat(14, entity.getInstock());
             ps.executeUpdate();
 
-            LOG.info("update good " + entity.getName());
+            LOG.info("update good " + entity);
             return entity;
         } catch (SQLException e) {
             LOG.error("something going wrong " + e);
@@ -136,7 +151,7 @@ public class GoodDaoImpl implements GoodDao {
 
                 ps.executeUpdate();
                 
-                LOG.info("update good " + entity.toString());
+                LOG.info("update good " + entity);
             }
             connection.commit();
 
@@ -150,10 +165,12 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public Good delete(Good entity) {
         try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM `goods` WHERE `id`=?;");) {
 
-			stmt.execute(String.format("DELETE FROM `goods` WHERE `id`='%d';", entity.getId()));
+            ps.setLong(1, new Long(entity.getId()));
+            ps.execute();
+            LOG.info("delete good " + entity);
 
 			return entity;
 		} catch (SQLException e) {
@@ -198,7 +215,13 @@ public class GoodDaoImpl implements GoodDao {
 			Connection connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement()) {
 
-            stmt.execute("UPDATE `goods` SET `deletionmark`='T'" + (filter.equals("") ? "" : " WHERE "+filter) + ";");
+            StringBuilder sb = new StringBuilder("UPDATE `goods` SET `deletionmark`='T' ");
+            if (!filter.equals("")) {
+                sb.append("WHERE ").append(filter);
+            }
+            sb.append(";");
+
+            stmt.execute(sb.toString());
 		} catch (SQLException e) {
 			LOG.error(e);
 		}

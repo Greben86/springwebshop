@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.apache.log4j.Logger;
 import shop.service.GoodService;
 import shop.entity.Good;
+import shop.entity.factory.BasicFactory;
 import shop.dao.GoodDao; 
 
 @Service("goodService")
