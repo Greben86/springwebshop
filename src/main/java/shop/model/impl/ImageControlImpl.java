@@ -25,20 +25,21 @@ public class ImageControlImpl implements ImageControl {
 
     @Override
     public String saveFile (Good good, InputStream stream) {
-        if (good==null) 
-            return "Save image is fail, good not exist"; 
-
-        try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
-            byte[] bytes = new byte[1024];
-            int read = 0;
-            while ((read = stream.read(bytes)) != -1) {
-                fos.write(bytes, 0, read);
+        if (good==null) {
+            return "Save image is fail, good not exist";
+        } else {
+            try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
+                byte[] bytes = new byte[1024];
+                int read = 0;
+                while ((read = stream.read(bytes)) != -1) {
+                    fos.write(bytes, 0, read);
+                }
+                return "You successfully uploaded file=" + path + good.getFilename();
+            } catch (IOException e) {
+                LOG.error("something going wrong " + e);
+                return "You failed uploaded file=" + path + good.getFilename();            
             }
-            return "You successfully uploaded file=" + path + good.getFilename();
-        } catch (IOException e) {
-            LOG.error("something going wrong " + e);
-            return "You failed uploaded file=" + path + good.getFilename();            
-        }       
+        }    
     }
 
     private File getFile(Good good) {

@@ -35,7 +35,7 @@ public class GoodServiceImpl implements GoodService {
 
 	@Override
 	public Boolean updateList(List<Good> list) {
-		goodDao.updateList(list);
+		goodDao.updateList(list);		
 		return true;
 	}
 

@@ -6,9 +6,9 @@ public interface BasicDao<T> {
 
     List<T> getList(String filter);
 
-    T findById(Long id);
+    String updateList(List<T> list);
 
-    T findByRef(String ref);
+    T findById(Long id);
 
     T updateOrInsert(T entity);
 

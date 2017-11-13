@@ -17,7 +17,6 @@ public class CustomerServiceImpl implements CustomerService {
 	public Boolean delitionMarkForAll() {
 		List<Customer> list = customerDao.getList("");
 		for (int i=0; i<list.size(); i++) {
-			list.get(i).setDeletionmark(true);
 			customerDao.updateOrInsert(list.get(i));
 		}
 		return true;
@@ -39,10 +38,15 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Boolean deleteByRef(String ref) {
-		Customer entity = customerDao.findByRef(ref);
-		if (entity!=null) {
-			customerDao.delete(entity);
+	public Boolean updateList(List<Customer> list) {
+		customerDao.updateList(list);		
+		return true;
+	}
+
+	@Override
+	public Boolean delete(Customer customer) {
+		if (customer!=null) {
+			customerDao.delete(customer);
 			return true;
 		} else {
 			return false;
@@ -58,9 +62,9 @@ public class CustomerServiceImpl implements CustomerService {
 			return false;
 		}
 	}
-	
+
 	@Override
-	public Customer getCustomerByRef(String ref) {
-		return customerDao.findByRef(ref);
+	public Customer getById(Long id) {
+		return customerDao.findById(id);
 	}
 }

@@ -44,21 +44,15 @@ public class GoodDaoImpl implements GoodDao {
             List<Good> result = new ArrayList<Good>();
             Good good;
             while (rs.next()) {
-<<<<<<< HEAD
                 good = basicFactory.factory(rs);
                 if (rs.getString("folder").equals("F"))
                 {
-=======
-                good = new Good(rs);
-                // if (rs.getString("folder").equals("F"))
-                // {
->>>>>>> 1a7fd5badc35a8f65bfa26b7ff380fee4d55138a
                     result.add(good);
-                // } else
-                // if (hasChild(good.getId()))
-                // {
-                //     result.add(good);
-                // }                    
+                } else
+                if (hasChild(good.getId()))
+                {
+                    result.add(good);
+                }                    
             }
 			return result;
 		} catch (SQLException e) {
@@ -83,11 +77,6 @@ public class GoodDaoImpl implements GoodDao {
 		} catch (SQLException e) {
 			return null;
 		}
-    }
-    
-    @Override
-    public Good findByRef(String ref) {
-        return null;
     }
     
     @Override

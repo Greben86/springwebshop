@@ -1,5 +1,6 @@
 package shop.service;
 
+import java.util.List;
 import shop.entity.Customer;
 
 public interface CustomerService {
@@ -9,10 +10,12 @@ public interface CustomerService {
     Boolean deleteMarked();
     
     Boolean updateOrInsert(Customer customer);
+
+    Boolean updateList(List<Customer> list);
     
-    Boolean deleteByRef(String ref);
+    Boolean delete(Customer customer);
     
     Boolean checkPass(String number, String pass);
 
-    Customer getCustomerByRef(String ref);
+    Customer getById(Long id);
 }

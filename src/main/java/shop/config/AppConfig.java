@@ -82,7 +82,7 @@ public class AppConfig {
 	@Bean
 	@Scope("singleton")
 	public CustomerDao customerDao() {
-		return new CustomerDaoImpl();
+		return new CustomerDaoImpl(new CustomerFactoryImpl());
 	}
 
 	@Bean

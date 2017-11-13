@@ -1,14 +1,30 @@
 package shop.entity;
 
 public class Customer {
+    private Long id;
     private String ref;
     private String number;
     private String name;
+    private String fullname;
+    private String email;
     private String pass;
-    private Boolean deletionmark;
 
     public Customer() {
-        deletionmark = false;
+        id = new Long(0);
+        ref = new String("");
+        number = new String("");
+        name = new String("");
+        fullname = new String("");
+        email = new String("");
+        pass = new String("");
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRef() {
@@ -35,20 +51,28 @@ public class Customer {
         this.name = name;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPass() {
         return pass;
     }
 
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public Boolean getDeletionmark() {
-        return deletionmark;
-    }
-
-    public void setDeletionmark(Boolean deletionmark) {
-        this.deletionmark = deletionmark;
     }
 
     @Override

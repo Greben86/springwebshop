@@ -37,7 +37,7 @@ public class GoodController {
     }
     
     @RequestMapping(value = "/uploadimg/{id}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String uploadImg(@PathVariable(value="id") String id,
+    public String uploadImg(@PathVariable("id") String id,
                             @RequestParam(value="key", required=false) String key, 
                             @RequestParam(value="file", required=false) MultipartFile file) {
         if (verificationRequest.verify(key)){
@@ -53,7 +53,7 @@ public class GoodController {
     }
 
     @RequestMapping(value = "/clearimg/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String clearImg(@PathVariable(value="id") String id,
+    public String clearImg(@PathVariable("id") String id,
                            @RequestParam(value="key", required=false) String key) {
         if (verificationRequest.verify(key)){
             Good good = goodService.getById(Long.parseLong(id));
@@ -87,7 +87,7 @@ public class GoodController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){        
+    public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){
         if (verificationRequest.verify(key)) {
             return "Update good "+good+(goodService.updateOrInsert(good)?" is Ok":" is Fail");
         } else {
@@ -103,44 +103,44 @@ public class GoodController {
     @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public String updateList(@RequestParam(value="key", required=false) String key, @RequestBody List<Good> list){
         if (verificationRequest.verify(key)) {
-            return "Uploaded "+list.size()+" goods"+(goodService.updateList(list) ? " succesful" : " unsuccesful");
+            return "Uploaded "+list.size()+" goods"+(goodService.updateList(list)?" succesful":" unsuccesful");
         } else {
             return "Acces denied";
         }
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String deleteByRef(@PathVariable(value="id") String id,
+    public String deleteById(@PathVariable("id") String id,
                               @RequestParam(value="key", required=false) String key){ 
         if (verificationRequest.verify(key)) {
             Good good = goodService.getById(Long.parseLong(id));
-            if (goodService.delete(good)) {                ;
+            if (goodService.delete(good)) {                
                 return "Delete good "+good+" is Ok; "+imageControl.removeFile(good);
             } else {
-                return "Delete good "+good+" is Fail";
-            }            
+                return "Delete good is Fail";
+            }
         } else {
             return "Acces denied";
         }
     }
 
     @RequestMapping(value = "/folders/{owner}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Good> getFolder(@PathVariable(value="owner") String owner) {
+    public List<Good> getFolders(@PathVariable("owner") String owner) {
         return goodService.getFolders(Long.parseLong(owner));
     }
 
     @RequestMapping(value = "/list/{owner}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Good> getCatalog(@PathVariable(value="owner") String owner) {
+    public List<Good> getList(@PathVariable("owner") String owner) {
         return goodService.getList(Long.parseLong(owner));
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Good getGood(@PathVariable(value="id") String id) {
+    public Good getGood(@PathVariable("id") String id) {
         return goodService.getById(Long.parseLong(id));
     }
 
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
-    public byte[] getImage(@PathVariable(value="id") String id) {
+    public byte[] getImage(@PathVariable("id") String id) {
         Good good = goodService.getById(Long.parseLong(id));
         return imageControl.readFile(good);
     }

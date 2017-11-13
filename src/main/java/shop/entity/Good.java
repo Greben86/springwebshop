@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Good {
-    private long id;
-    private long owner;
+    private Long id;
+    private Long owner;
     private Boolean folder;
     private String name;
     private String description;
@@ -14,8 +14,8 @@ public class Good {
     private Float instock;
 
     public Good() {
-        id = 0;
-        owner = 0;
+        id = new Long(0);
+        owner = new Long(0);
         folder = false;
         name = new String("");
         description = new String("");
@@ -24,7 +24,7 @@ public class Good {
         instock = new Float(0.0);
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -32,7 +32,7 @@ public class Good {
         return id;
     }
 
-    public void setOwner(long owner) {
+    public void setOwner(Long owner) {
         this.owner = owner;
     }
 
