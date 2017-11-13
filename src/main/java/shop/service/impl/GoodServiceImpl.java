@@ -3,15 +3,12 @@ package shop.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.log4j.Logger;
 import shop.service.GoodService;
 import shop.entity.Good;
-import shop.entity.factory.BasicFactory;
 import shop.dao.GoodDao; 
 
 @Service("goodService")
 public class GoodServiceImpl implements GoodService {
-	private static final Logger LOG = Logger.getLogger(GoodServiceImpl.class);
 	@Autowired
 	private GoodDao goodDao;
 
@@ -31,8 +28,8 @@ public class GoodServiceImpl implements GoodService {
 	}
 
 	@Override
-	public Boolean updateOrInsert(Good customer) {
-		goodDao.updateOrInsert(customer);
+	public Boolean updateOrInsert(Good good) {
+		goodDao.updateOrInsert(good);
 		return true;
 	}
 
@@ -43,10 +40,9 @@ public class GoodServiceImpl implements GoodService {
 	}
 
 	@Override
-	public Boolean deleteById(Long id) {
-		Good entity = goodDao.findById(id);
-		if (entity!=null) {
-			goodDao.delete(entity);
+	public Boolean delete(Good good) {
+		if (good!=null) {
+			goodDao.delete(good);
 			return true;
 		} else {
 			return false;

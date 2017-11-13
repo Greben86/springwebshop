@@ -10,11 +10,11 @@ public interface GoodService {
     
     Boolean deleteMarked();
     
-    Boolean updateOrInsert(Good customer);
+    Boolean updateOrInsert(Good good);
 
     Boolean updateList(List<Good> list);
     
-    Boolean deleteById(Long id);
+    Boolean delete(Good good);
 
     List<Good> getFolders(Long owner);
 

@@ -9,5 +9,5 @@ public interface ImageControl {
 
     byte[] readFile(Good good);
 
-    Boolean removeFile(Good good);
+    String removeFile(Good good);
 }

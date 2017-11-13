@@ -25,21 +25,20 @@ public class ImageControlImpl implements ImageControl {
 
     @Override
     public String saveFile (Good good, InputStream stream) {
-        if (good==null) {
-            return "Good not found"; 
-        } else {
-            try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
-                byte[] bytes = new byte[1024];
-                int read = 0;
-                while ((read = stream.read(bytes)) != -1) {
-                    fos.write(bytes, 0, read);
-                }
-                return "You successfully uploaded file=" + path + good.getFilename();
-            } catch (IOException e) {
-                LOG.error("something going wrong " + e);
-                return "You failed uploaded file=" + path + good.getFilename();            
+        if (good==null) 
+            return "Save image is fail, good not exist"; 
+
+        try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
+            byte[] bytes = new byte[1024];
+            int read = 0;
+            while ((read = stream.read(bytes)) != -1) {
+                fos.write(bytes, 0, read);
             }
-        }        
+            return "You successfully uploaded file=" + path + good.getFilename();
+        } catch (IOException e) {
+            LOG.error("something going wrong " + e);
+            return "You failed uploaded file=" + path + good.getFilename();            
+        }       
     }
 
     private File getFile(Good good) {
@@ -48,7 +47,7 @@ public class ImageControlImpl implements ImageControl {
         } else {
             File f = new File(path + good.getFilename());
             if (!f.exists()||!f.isFile()) {
-                Resource resource = new ClassPathResource(good.getFolder() ? "/images/noimagefolder.png" : "/images/noimagegood.png");
+                Resource resource = new ClassPathResource("/images/"+(good.getFolder()?"noimagefolder.png":"noimagegood.png"));
                 try {
                     f = resource.getFile();
                 } catch (IOException e) {
@@ -76,17 +75,15 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public Boolean removeFile(Good good) {
-        if (good==null) {
-            return false;
+    public String removeFile(Good good) {
+        if (good==null) 
+            return "Clear image is fail, good not exist";
+
+        File file = new File(path + good.getFilename());        
+        if (file.exists()&&file.isFile()) {
+            return "Clear image for good "+good+(file.delete()?" is Ok":" is Fail");
         } else {
-            File file = new File(path + good.getFilename());
-            
-            if (file.exists()&&file.isFile()) {
-                return file.delete();
-            } else {
-                return false;
-            }
-        }        
+            return "Clear image is fail, file not exist";
+        }      
     }
 }
