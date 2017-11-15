@@ -57,7 +57,7 @@ public class GoodController {
                            @RequestParam(value="key", required=false) String key) {
         if (verificationRequest.verify(key)){
             Good good = goodService.getById(Long.parseLong(id));
-            return imageControl.removeFile(good);           
+            return imageControl.removeFile(good);
         } else {
             return "Acces denied";
         }
@@ -65,7 +65,7 @@ public class GoodController {
 
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
     public String updateInfo(){
-        return "GET not supported for update good";       
+        return "GET not supported for update good";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")

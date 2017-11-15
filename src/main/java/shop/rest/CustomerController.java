@@ -34,24 +34,6 @@ public class CustomerController {
         } 
     }
 
-    @RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
-    public String deletionMarkForAll(@RequestParam(value="key", required=false) String key) {
-        if (verificationRequest.verify(key)){
-            return customerService.delitionMarkForAll() ? "Ok" : "Fail";
-        } else {
-            return "Acces denied";
-        } 
-    }
-
-    @RequestMapping(value = "/deletemarked", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
-    public String deleteMarked(@RequestParam(value="key", required=false) String key) {
-        if (verificationRequest.verify(key)){
-            return customerService.deleteMarked() ? "Ok" : "Fail";
-        } else {
-            return "Acces denied";
-        }
-    }
-
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String updateInfo(){
         return "GET not supported for update customer";       

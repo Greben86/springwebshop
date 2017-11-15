@@ -19,24 +19,6 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Boolean delitionMarkForAll() {
-		List<Customer> list = customerDao.getList("");
-		for (int i=0; i<list.size(); i++) {
-			customerDao.updateOrInsert(list.get(i));
-		}
-		return true;
-	}
-
-	@Override
-	public Boolean deleteMarked() {
-		List<Customer> list = customerDao.getList("`deletionmark`='T'");
-		for (int i=0; i<list.size(); i++) {
-			customerDao.delete(list.get(i));
-		}
-		return true;
-	}
-
-	@Override
 	public Boolean updateOrInsert(Customer customer) {
 		customerDao.updateOrInsert(customer);
 		return true;
