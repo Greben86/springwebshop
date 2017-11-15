@@ -13,21 +13,6 @@ public class GoodServiceImpl implements GoodService {
 	private GoodDao goodDao;
 
 	@Override
-	public Boolean delitionMarkForAll() {
-		goodDao.deletionMarkList("");
-		return true;
-	}
-
-	@Override
-	public Boolean deleteMarked() {
-		// List<Good> list = goodDao.getList("`deletionmark`='T'");
-		// for (Good entity : list) {
-		// 	goodDao.delete(entity);
-		// }
-		return true;
-	}
-
-	@Override
 	public Boolean updateOrInsert(Good good) {
 		goodDao.updateOrInsert(good);
 		return true;

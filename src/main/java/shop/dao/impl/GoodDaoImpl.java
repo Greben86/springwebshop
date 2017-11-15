@@ -203,22 +203,4 @@ public class GoodDaoImpl implements GoodDao {
 			return false;
 		}
     }
-
-    @Override
-    public void deletionMarkList(String filter) {
-        try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
-
-            StringBuilder sb = new StringBuilder("UPDATE `goods` SET `deletionmark`='T' ");
-            if (!filter.equals("")) {
-                sb.append("WHERE ").append(filter);
-            }
-            sb.append(";");
-
-            stmt.execute(sb.toString());
-		} catch (SQLException e) {
-			LOG.error(e);
-		}
-    }
 }

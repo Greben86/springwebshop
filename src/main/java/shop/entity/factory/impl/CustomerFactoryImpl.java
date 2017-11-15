@@ -8,8 +8,7 @@ import java.sql.SQLException;
 
 public class CustomerFactoryImpl implements BasicFactory<Customer> {
     public Customer factory(ResultSet set) throws SQLException {
-        Customer customer = new Customer();
-        customer.setId(set.getLong("id"));
+        Customer customer = new Customer(set.getLong("id"));
         customer.setRef(set.getString("ref"));
         customer.setNumber(set.getString("number"));
         customer.setName(set.getString("name"));

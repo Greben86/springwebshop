@@ -9,14 +9,21 @@ public class Customer {
     private String email;
     private String pass;
 
-    public Customer() {
-        id = new Long(0);
+    {
         ref = new String("");
         number = new String("");
         name = new String("");
         fullname = new String("");
         email = new String("");
         pass = new String("");
+    }
+
+    public Customer() {
+        id = new Long(0);
+    }
+
+    public Customer(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

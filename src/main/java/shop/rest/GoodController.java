@@ -33,10 +33,10 @@ public class GoodController {
 
     @RequestMapping(value="/uploadimg", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String provideUploadInfo() {
-        return "Not supported GET method";
+        return "GET not supported for upload image";
     }
     
-    @RequestMapping(value = "/uploadimg/{id}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/uploadimg/{id}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String uploadImg(@PathVariable("id") String id,
                             @RequestParam(value="key", required=false) String key, 
                             @RequestParam(value="file", required=false) MultipartFile file) {
@@ -52,7 +52,7 @@ public class GoodController {
         }
     }
 
-    @RequestMapping(value = "/clearimg/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/clearimg/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String clearImg(@PathVariable("id") String id,
                            @RequestParam(value="key", required=false) String key) {
         if (verificationRequest.verify(key)){
@@ -63,30 +63,12 @@ public class GoodController {
         }
     }
 
-	@RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String deletionMarkForAll(@RequestParam(value="key", required=false) String key){
-        if (verificationRequest.verify(key)){
-            return goodService.delitionMarkForAll() ? "Ok" : "Fail";
-        } else {
-            return "Acces denied";
-        }
-    }
-
-    @RequestMapping(value = "/deletemarked", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String deleteMarked(@RequestParam(value="key", required=false) String key){
-        if (verificationRequest.verify(key)){
-            return goodService.deleteMarked() ? "Ok" : "Fail";
-        } else {
-            return "Acces denied";
-        }
-    }
-
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
     public String updateInfo(){
         return "GET not supported for update good";       
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){
         if (verificationRequest.verify(key)) {
             return "Update good "+good+(goodService.updateOrInsert(good)?" is Ok":" is Fail");
@@ -103,13 +85,13 @@ public class GoodController {
     @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public String updateList(@RequestParam(value="key", required=false) String key, @RequestBody List<Good> list){
         if (verificationRequest.verify(key)) {
-            return "Uploaded "+list.size()+" goods"+(goodService.updateList(list)?" succesful":" unsuccesful");
+            return "Uploaded "+list.size()+" goods "+(goodService.updateList(list)?"succesful":"unsuccesful");
         } else {
             return "Acces denied";
         }
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String deleteById(@PathVariable("id") String id,
                               @RequestParam(value="key", required=false) String key){ 
         if (verificationRequest.verify(key)) {

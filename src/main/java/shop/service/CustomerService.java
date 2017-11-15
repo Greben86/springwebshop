@@ -5,6 +5,8 @@ import shop.entity.Customer;
 
 public interface CustomerService {
 
+    List<Customer> getList();
+
     Boolean delitionMarkForAll();
     
     Boolean deleteMarked();

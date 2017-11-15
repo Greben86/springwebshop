@@ -13,8 +13,7 @@ public class Good {
     private Float price;
     private Float instock;
 
-    public Good() {
-        id = new Long(0);
+    {
         owner = new Long(0);
         folder = false;
         name = new String("");
@@ -24,11 +23,19 @@ public class Good {
         instock = new Float(0.0);
     }
 
+    public Good() {
+        id = new Long(0);        
+    }
+
+    public Good(Long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -36,7 +43,7 @@ public class Good {
         this.owner = owner;
     }
 
-    public long getOwner() {
+    public Long getOwner() {
         return owner;
     }
 
@@ -59,7 +66,7 @@ public class Good {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getDescription() {
         return description;
     }
@@ -89,8 +96,7 @@ public class Good {
     }
 
     public String getFilename() {
-        StringBuilder sb = new StringBuilder(new Long(id).toString()).append(".good");
-
+        StringBuilder sb = new StringBuilder(id.toString()).append(".good");
         return sb.toString();
     }
 

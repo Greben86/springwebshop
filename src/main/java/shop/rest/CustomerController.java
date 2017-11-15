@@ -25,6 +25,15 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Customer> getList(@RequestParam(value="key", required=false) String key) {
+        if (verificationRequest.verify(key)){
+            return customerService.getList();
+        } else {
+            return null;
+        } 
+    }
+
     @RequestMapping(value = "/deletionmarkforall", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String deletionMarkForAll(@RequestParam(value="key", required=false) String key) {
         if (verificationRequest.verify(key)){
@@ -49,13 +58,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String update(@RequestParam(value="key", required=false) String key, 
+    public String update(@RequestParam(value="key", required=false) String key,
                          @RequestBody Customer customer) {
         if (verificationRequest.verify(key)) {
             return "Update customer "+customer+(customerService.updateOrInsert(customer)?" is Ok":" is Fail");
         } else {
             return "Acces denied";
-        }        
+        }
     }
 
     @RequestMapping(value = "/updatelist", method = RequestMethod.GET)
@@ -65,11 +74,11 @@ public class CustomerController {
 
     @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public String updateList(@RequestParam(value="key", required=false) String key, @RequestBody List<Customer> list){
-        // if (verificationRequest.verify(key)) {
-        //     return "Uploaded "+list.size()+" goods"+(goodService.updateList(list)?" succesful":" unsuccesful");
-        // } else {
+        if (verificationRequest.verify(key)) {
+            return "Uploaded "+list.size()+" customers "+(customerService.updateList(list)?"succesful":"unsuccesful");
+        } else {
             return "Acces denied";
-        // }
+        }
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
@@ -87,7 +96,7 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String checkPass(@RequestParam("in") String number, @RequestParam("pass") String pass) {
         return customerService.checkPass(number, pass) ? "Ok" : "Fail";
     }

@@ -83,10 +83,46 @@ public class CustomerDaoImpl implements CustomerDao {
             .append("VALUES (?, ?, ?, ?, ?, ?, ?, 'F') ")
             .append("ON DUPLICATE KEY UPDATE ")
             .append("`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'");
-            try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sb.toString());) {
-                
+        try (
+            Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sb.toString());) {
+            
+            ps.setLong(1, entity.getId());
+            ps.setString(2, entity.getRef());
+            ps.setString(3, entity.getNumber());
+            ps.setString(4, entity.getName());
+            ps.setString(5, entity.getFullname());
+            ps.setString(6, entity.getEmail());
+            ps.setString(7, entity.getPass());
+            
+            ps.setString(8, entity.getNumber());
+            ps.setString(9, entity.getName());
+            ps.setString(10, entity.getFullname());
+            ps.setString(11, entity.getEmail());
+            ps.setString(12, entity.getPass());
+            ps.executeUpdate();
+
+            LOG.info("update customer " + entity);
+            return entity;
+        } catch (SQLException e) {
+            LOG.error("something going wrong " + e);
+            return entity;
+        }
+    }
+
+    @Override
+    public String updateList(List<Customer> list) {
+        StringBuilder sb = new StringBuilder()
+            .append("INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `deletionmark`) ")
+            .append("VALUES (?, ?, ?, ?, ?, ?, ?, 'F') ")
+            .append("ON DUPLICATE KEY UPDATE ")
+            .append("`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'");
+        try (
+			Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sb.toString());) {
+            
+            connection.setAutoCommit(false);
+            for (Customer entity : list) {
                 ps.setLong(1, entity.getId());
                 ps.setString(2, entity.getRef());
                 ps.setString(3, entity.getNumber());
@@ -100,14 +136,18 @@ public class CustomerDaoImpl implements CustomerDao {
                 ps.setString(10, entity.getFullname());
                 ps.setString(11, entity.getEmail());
                 ps.setString(12, entity.getPass());
+
                 ps.executeUpdate();
-    
+                
                 LOG.info("update customer " + entity);
-                return entity;
-            } catch (SQLException e) {
-                LOG.error("something going wrong " + e);
-                return entity;
             }
+            connection.commit();
+
+			return "Uploaded " + list.size() + " customers succesful";
+		} catch (SQLException e) {
+            LOG.error("something going wrong " + e);
+			return e.getMessage();
+		}
     }
 
     @Override

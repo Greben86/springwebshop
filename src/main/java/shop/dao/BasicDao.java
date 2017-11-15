@@ -16,12 +16,6 @@ public interface BasicDao<T> {
     T findById(Long id);
 
     /**
-     * Update list entities
-     * @param list - list entities
-     */
-    String updateList(List<T> list);
-
-    /**
      * Update or insert entity
      * @param enetity - entity
      */

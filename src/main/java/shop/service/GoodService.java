@@ -5,10 +5,6 @@ import java.util.List;
 import shop.entity.Good;
 
 public interface GoodService {
-
-    Boolean delitionMarkForAll();
-    
-    Boolean deleteMarked();
     
     Boolean updateOrInsert(Good good);
 

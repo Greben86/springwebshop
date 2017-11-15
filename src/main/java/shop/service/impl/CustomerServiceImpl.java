@@ -14,6 +14,11 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerDao customerDao;
 
 	@Override
+	public List<Customer> getList() {
+		return customerDao.getList("");
+	}
+
+	@Override
 	public Boolean delitionMarkForAll() {
 		List<Customer> list = customerDao.getList("");
 		for (int i=0; i<list.size(); i++) {

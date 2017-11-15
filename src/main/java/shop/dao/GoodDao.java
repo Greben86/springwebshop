@@ -1,8 +1,12 @@
 package shop.dao;
 
 import shop.entity.Good;
+import java.util.List;
 
 public interface GoodDao extends BasicDao<Good> {
-
-    void deletionMarkList(String filter);
+    /**
+     * Update list good
+     * @param list - list good
+     */
+    String updateList(List<Good> list);
 }
