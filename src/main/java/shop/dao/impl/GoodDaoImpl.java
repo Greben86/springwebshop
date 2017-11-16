@@ -118,10 +118,10 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public String updateList(List<Good> list) {
         StringBuilder sb = new StringBuilder()
-            .append("INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) ")
-            .append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') ")
+            .append("INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`) ")
+            .append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ")
             .append("ON DUPLICATE KEY UPDATE ")
-            .append("`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F'");
+            .append("`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?");
         try (
 			Connection connection = dataSource.getConnection();
             PreparedStatement ps = connection.prepareStatement(sb.toString());) {
@@ -149,6 +149,7 @@ public class GoodDaoImpl implements GoodDao {
                 LOG.info("update good " + entity);
             }
             connection.commit();
+            LOG.info("commit for goods");     
 
 			return "Uploaded " + list.size() + " goods succesfull";
 		} catch (SQLException e) {
