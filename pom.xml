@@ -14,6 +14,7 @@
         <spring.version>4.3.4.RELEASE</spring.version>
         <jackson.version>2.7.8</jackson.version>
         <log4j.version>1.2.17</log4j.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -95,6 +96,18 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+        <!-- Tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
         </dependency>
     </dependencies>
     

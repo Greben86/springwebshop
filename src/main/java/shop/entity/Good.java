@@ -80,7 +80,7 @@ public class Good {
     }
 
     public void setPrice(Float price) {
-        this.price = (float) new BigDecimal(price).setScale(2, RoundingMode.UP).doubleValue();
+        this.price = (float) new BigDecimal(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public Float getPrice() {
@@ -88,7 +88,7 @@ public class Good {
     }
 
     public void setInstock(Float instock) {
-        this.instock = (float) new BigDecimal(instock).setScale(3, RoundingMode.UP).doubleValue();
+        this.instock = (float) new BigDecimal(instock).setScale(3, RoundingMode.HALF_UP).doubleValue();
     }
 
     public Float getInstock() {
