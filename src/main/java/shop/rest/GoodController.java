@@ -42,11 +42,15 @@ public class GoodController {
                             @RequestParam(value="file", required=false) MultipartFile file) {
         if (verificationRequest.verify(key)){
             Good good = goodService.getById(Long.parseLong(id));
-            try(InputStream is = file.getInputStream();) {
-                return imageControl.saveFile(good, is);
-            } catch (IOException e) {
-                return e.getMessage();
-            }
+            if (good!=null) {
+                try(InputStream is = file.getInputStream();) {
+                    return imageControl.saveFile(good.getFilename(), is);
+                } catch (IOException e) {
+                    return e.getMessage();
+                }
+            } else {
+                return "Save image is fail, good ("+id+") not exist";
+            }            
         } else {
             return "Acces denied";
         }
@@ -57,7 +61,11 @@ public class GoodController {
                            @RequestParam(value="key", required=false) String key) {
         if (verificationRequest.verify(key)){
             Good good = goodService.getById(Long.parseLong(id));
-            return imageControl.removeFile(good);
+            if (good!=null) {
+                return imageControl.removeFile(good.getFilename());
+            } else {
+                return "Clear image is fail, good ("+id+") not exist";
+            }            
         } else {
             return "Acces denied";
         }
@@ -97,7 +105,7 @@ public class GoodController {
         if (verificationRequest.verify(key)) {
             Good good = goodService.getById(Long.parseLong(id));
             if (goodService.delete(good)) {                
-                return "Delete good "+good+" is Ok; "+imageControl.removeFile(good);
+                return "Delete good "+good+" is Ok; "+imageControl.removeFile(good.getFilename());
             } else {
                 return "Delete good is Fail";
             }
@@ -124,6 +132,10 @@ public class GoodController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     public byte[] getImage(@PathVariable("id") String id) {
         Good good = goodService.getById(Long.parseLong(id));
-        return imageControl.readFile(good);
+        if (good!=null) {
+            return imageControl.readFile(good.getFilename(), good.getFolder() ? "noimagefolder.png" : "noimagegood.png");
+        } else {
+            return null;
+        }        
     }
 }

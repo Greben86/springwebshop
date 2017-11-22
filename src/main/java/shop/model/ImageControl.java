@@ -7,20 +7,21 @@ public interface ImageControl {
 
     /**
      * Save image into hard-disk
-     * @param good - entity good
+     * @param filename - name file
      * @param stream - file input stream
      */
-    String saveFile(Good good, InputStream stream);
+    String saveFile(String filename, InputStream stream);
 
     /**
      * Read image for hard-disk
-     * @param good - entity good
+     * @param filename - name file
+     * @param filedefault - name file of default
      */
-    byte[] readFile(Good good);
+    byte[] readFile(String filename, String filedefault);
 
     /**
      * Remove image for har-disk
-     * @param good - entity good
+     * @param filename - name file
      */
-    String removeFile(Good good);
+    String removeFile(String filename);
 }

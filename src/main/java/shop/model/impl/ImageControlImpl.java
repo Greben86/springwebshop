@@ -24,65 +24,54 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public String saveFile (Good good, InputStream stream) {
-        if (good==null) {
-            return "Save image is fail, good not exist";
-        } else {
-            try (FileOutputStream fos = new FileOutputStream(path + good.getFilename());) {
-                byte[] bytes = new byte[1024];
-                int read = 0;
-                while ((read = stream.read(bytes)) != -1) {
-                    fos.write(bytes, 0, read);
-                }
-                return "You successfully uploaded file=" + path + good.getFilename();
-            } catch (IOException e) {
-                LOG.error("something going wrong " + e);
-                return "You failed uploaded file=" + path + good.getFilename();            
+    public String saveFile (String filename, InputStream stream) {
+        try (FileOutputStream fos = new FileOutputStream(path + filename);) {
+            byte[] bytes = new byte[1024];
+            int read = 0;
+            while ((read = stream.read(bytes)) != -1) {
+                fos.write(bytes, 0, read);
             }
-        }    
+            return "You successfully uploaded file=" + path + filename;
+        } catch (IOException e) {
+            LOG.error("something going wrong " + e);
+            return "You failed uploaded file=" + path + filename;            
+        }
     }
 
-    private File getFile(Good good) {
-        if (good==null) {
-            return null;
-        } else {
-            File f = new File(path + good.getFilename());
-            if (!f.exists()||!f.isFile()) {
-                Resource resource = new ClassPathResource("/images/"+(good.getFolder()?"noimagefolder.png":"noimagegood.png"));
-                try {
-                    f = resource.getFile();
-                } catch (IOException e) {
-                    LOG.error("something going wrong " + e);
-                }
+    private File getFile(String filename, String filedefault) {
+        File f = new File(path + filename);
+        if (!f.exists()||!f.isFile()) {
+            Resource resource = new ClassPathResource("/images/"+filedefault);
+            try {
+                return resource.getFile();
+            } catch (IOException e) {
+                LOG.error("something going wrong " + e);
+                return null;
             }
+        } else {
             return f;
         }
     }
 
     @Override
-    public byte[] readFile(Good good) {
-        byte[] buff = null;
-        File f = getFile(good);
-        if (f!=null) {
-            try (FileInputStream fis = new FileInputStream(f);
-                BufferedInputStream in = new BufferedInputStream(fis);) {
-                buff = new byte[(int) f.length()];
-                in.read(buff, 0, buff.length);
-            } catch (IOException e) {
-                LOG.error("something going wrong " + e);
-            }
-        }
-        return buff;
+    public byte[] readFile(String filename, String filedefault) {
+        File f = getFile(filename, filedefault);
+        try (FileInputStream fis = new FileInputStream(f);
+            BufferedInputStream in = new BufferedInputStream(fis);) {
+            byte[] buff = new byte[(int) f.length()];
+            in.read(buff, 0, buff.length);
+            return buff;
+        } catch (IOException e) {
+            LOG.error("something going wrong " + e);
+            return null;
+        }        
     }
 
     @Override
-    public String removeFile(Good good) {
-        if (good==null) 
-            return "Clear image is fail, good not exist";
-
-        File file = new File(path + good.getFilename());        
+    public String removeFile(String filename) {
+        File file = new File(path + filename);
         if (file.exists()&&file.isFile()) {
-            return "Clear image for good "+good+(file.delete()?" is Ok":" is Fail");
+            return "Clear image "+filename+(file.delete()?" is Ok":" is Fail");
         } else {
             return "Clear image is fail, file not exist";
         }      
