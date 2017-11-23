@@ -3,9 +3,8 @@ package shop.dao.impl;
 import shop.dao.GoodDao;
 import shop.entity.Good;
 import shop.entity.factory.BasicFactory;
-
 import java.util.List;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -37,22 +36,13 @@ public class GoodDaoImpl extends Object implements GoodDao {
             if (!filter.equals("")) {
                 sb.append("WHERE ").append(filter).append(" ");
             }
-            sb.append("ORDER BY name ASC;");
+            sb.append("ORDER BY `name` ASC;");
 
             ResultSet rs = stmt.executeQuery(sb.toString());
             
-            List<Good> result = new ArrayList<Good>();
-            Good good;
+            List<Good> result = new LinkedList<Good>();
             while (rs.next()) {
-                good = basicFactory.factory(rs);
-                if (rs.getString("folder").equals("F"))
-                {
-                    result.add(good);
-                } else
-                if (hasChild(good.getId()))
-                {
-                    result.add(good);
-                }                    
+                result.add(basicFactory.factory(rs));                   
             }
 			return result;
 		} catch (SQLException e) {
@@ -151,7 +141,7 @@ public class GoodDaoImpl extends Object implements GoodDao {
             connection.commit();
             LOG.info("commit for goods");     
 
-			return "Uploaded " + list.size() + " goods succesfull";
+			return "Uploaded " + list.size() + " goods succesful";
 		} catch (SQLException e) {
             LOG.error("something going wrong " + e);
 			return e.getMessage();
@@ -171,37 +161,6 @@ public class GoodDaoImpl extends Object implements GoodDao {
 			return entity;
 		} catch (SQLException e) {
 			return entity;
-		}
-    }
-
-    private Boolean findChild(ResultSet rs, long owner) throws SQLException {
-        List<Long> buffer = new ArrayList<Long>();
-        rs.first();
-        while (rs.next()) {
-            if (owner==rs.getLong("owner")) {
-                if (rs.getString("folder").equals("F")) {
-                    return true;
-                } else {
-                    buffer.add(new Long(rs.getLong("id")));
-                }                
-            }
-        }
-        for (Long id : buffer)
-            if (findChild(rs, id))
-                return true;
-        return false;
-    }
-
-    public Boolean hasChild(long id) {
-        try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
-
-            ResultSet rs = stmt.executeQuery("SELECT `id`, `owner`, `folder` FROM `goods` ORDER BY `id` ASC");
-
-			return findChild(rs, id);
-		} catch (SQLException e) {
-			return false;
 		}
     }
 }
