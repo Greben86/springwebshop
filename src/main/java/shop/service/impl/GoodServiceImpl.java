@@ -2,6 +2,7 @@ package shop.service.impl;
 
 import java.util.List;
 import java.util.Iterator;
+import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.service.GoodService;
@@ -73,9 +74,10 @@ public class GoodServiceImpl implements GoodService {
 
 	private Integer hasChild(Good owner, List<Good> list) {
 		Integer count = 0;
-		for (Good good : list) {
+		List<Good> buff = new LinkedList<>(list);
+		for (Good good : buff) {
 			if (good.getFolder()) {
-				count += hasChild(good, list);
+				count =+ hasChild(good, list);
 			} else
 			if (good.getOwner().equals(owner.getId())) {
 				count++;
