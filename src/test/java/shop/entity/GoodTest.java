@@ -1,8 +1,7 @@
 package shop.entity;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 
@@ -29,12 +28,14 @@ public class GoodTest {
         return good;
     }  
     
-    @BeforeClass public static void before(){
-		System.out.println("Test started..");
+    @BeforeClass
+    public static void before() {
+		System.out.println("Test Good started..");
 	} 
 	
-	@AfterClass public static void after(){
-		System.out.println("..test finished.");
+    @AfterClass 
+    public static void after() {
+		System.out.println("..test Good finished.");
 	}
 
     @Test
