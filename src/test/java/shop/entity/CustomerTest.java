@@ -40,7 +40,7 @@ public class CustomerTest {
     public void getId() throws Exception {
         final Customer customer = createCustomer();
         Long id2 = customer.getId();
-        assertEquals("getId is fail", id, id2);
+        assertEquals("Customer.getId is fail", id, id2);
     }
 
     @Test
@@ -49,14 +49,14 @@ public class CustomerTest {
         Long id1 = 555L;
         customer.setId(id1);
         Long id2 = customer.getId();
-        assertEquals("setId is fail", id1, id2);
+        assertEquals("Customer.setId is fail", id1, id2);
     }
 
     @Test
     public void getRef() throws Exception {
         final Customer customer = createCustomer();
         String ref2 = customer.getRef();
-        assertEquals("getRef is fail", ref, ref2);
+        assertEquals("Customer.getRef is fail", ref, ref2);
     }
 
     @Test
@@ -65,14 +65,14 @@ public class CustomerTest {
         String ref1 = "26FB88BA-4E09-4670-A25E-684464F5C40A";
         customer.setRef(ref1);
         String ref2 = customer.getRef();
-        assertEquals("setRef is fail", ref1, ref2);
+        assertEquals("Customer.setRef is fail", ref1, ref2);
     }
 
     @Test
     public void getNumber() throws Exception {
         final Customer customer = createCustomer();
         String number2 = customer.getNumber();
-        assertEquals("getNumber is fail", number, number2);
+        assertEquals("Customer.getNumber is fail", number, number2);
     }
 
     @Test
@@ -81,14 +81,14 @@ public class CustomerTest {
         String number1 = "testNumber";
         customer.setNumber(number1);
         String number2 = customer.getNumber();
-        assertEquals("setNumber is fail", number1, number2);
+        assertEquals("Customer.setNumber is fail", number1, number2);
     }
 
     @Test
     public void getName() throws Exception {
         final Customer customer = createCustomer();
         String name2 = customer.getName();
-        assertEquals("getName is fail", name, name2);
+        assertEquals("Customer.getName is fail", name, name2);
     }
 
     @Test
@@ -97,14 +97,14 @@ public class CustomerTest {
         String name1 = "testName";
         customer.setName(name1);
         String name2 = customer.getName();
-        assertEquals("setName is fail", name1, name2);
+        assertEquals("Customer.setName is fail", name1, name2);
     }
 
     @Test
     public void getFullname() throws Exception {
         final Customer customer = createCustomer();
         String fullname2 = customer.getFullname();
-        assertEquals("getFullname is fail", fullname, fullname2);
+        assertEquals("Customer.getFullname is fail", fullname, fullname2);
     }
 
     @Test
@@ -113,14 +113,14 @@ public class CustomerTest {
         String fullname1 = "testFullname";
         customer.setFullname(fullname1);
         String fullname2 = customer.getFullname();
-        assertEquals("setFullname is fail", fullname1, fullname2);
+        assertEquals("Customer.setFullname is fail", fullname1, fullname2);
     }
 
     @Test
     public void getEmail() throws Exception {
         final Customer customer = createCustomer();
         String email2 = customer.getEmail();
-        assertEquals("getEmail is fail", email, email2);
+        assertEquals("Customer.getEmail is fail", email, email2);
     }
 
     @Test
@@ -129,14 +129,14 @@ public class CustomerTest {
         String email1 = "testEmail";
         customer.setEmail(email1);
         String email2 = customer.getEmail();
-        assertEquals("setEmail is fail", email1, email2);
+        assertEquals("Customer.setEmail is fail", email1, email2);
     }
 
     @Test
     public void getPass() throws Exception {
         final Customer customer = createCustomer();
         String pass2 = customer.getPass();
-        assertEquals("getPass is fail", pass, pass2);
+        assertEquals("Customer.getPass is fail", pass, pass2);
     }
 
     public void setPass(String pass) {
@@ -144,6 +144,6 @@ public class CustomerTest {
         String pass1 = "testPass";
         customer.setPass(pass1);
         String pass2 = customer.getPass();
-        assertEquals("setPass is fail", pass1, pass2);
+        assertEquals("Customer.setPass is fail", pass1, pass2);
     }
 }

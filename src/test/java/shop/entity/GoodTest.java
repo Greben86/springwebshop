@@ -42,7 +42,7 @@ public class GoodTest {
     public void getId() throws Exception {
         final Good good = createGood();
         Long id2 = good.getId();
-        assertEquals("getId is fail", id, id2);
+        assertEquals("Good.getId is fail", id, id2);
     }
 
     @Test
@@ -51,14 +51,14 @@ public class GoodTest {
         Long id1 = 555L;
         good.setId(id1);
         Long id2 = good.getId();
-        assertEquals("setId is fail", id1, id2);
+        assertEquals("Good.setId is fail", id1, id2);
     }
 
     @Test
     public void getOwner() throws Exception {
         final Good good = createGood();
         Long owner2 = good.getOwner();
-        assertEquals("getOwner is fail", owner, owner2);
+        assertEquals("Good.getOwner is fail", owner, owner2);
     }
 
     @Test
@@ -67,14 +67,14 @@ public class GoodTest {
         Long owner1 = 555L;
         good.setOwner(owner1);
         Long owner2 = good.getOwner();
-        assertEquals("setOwner is fail", owner1, owner2);
+        assertEquals("Good.setOwner is fail", owner1, owner2);
     }
 
     @Test
     public void getFolder() throws Exception {
         final Good good = createGood();
         Boolean folder2 = good.getFolder();
-        assertEquals("getFolder is fail", folder, folder2);
+        assertEquals("Good.getFolder is fail", folder, folder2);
     }
 
     @Test
@@ -83,14 +83,14 @@ public class GoodTest {
         Boolean folder1 = true;
         good.setFolder(folder1);
         Boolean folder2 = good.getFolder();
-        assertEquals("setFolder is fail", folder1, folder2);
+        assertEquals("Good.setFolder is fail", folder1, folder2);
     }
 
     @Test
     public void getName() throws Exception {
         final Good good = createGood();
         String name2 = good.getName();
-        assertEquals("getName is fail", name, name2);
+        assertEquals("Good.getName is fail", name, name2);
     }
 
     @Test
@@ -99,14 +99,14 @@ public class GoodTest {
         String name1 = "testName";
         good.setName(name1);
         String name2 = good.getName();
-        assertEquals("setName is fail", name1, name2);
+        assertEquals("Good.setName is fail", name1, name2);
     }
 
     @Test
     public void getDescription() throws Exception {
         final Good good = createGood();
         String description2 = good.getDescription();
-        assertEquals("getDescription is fail", description, description2);
+        assertEquals("Good.getDescription is fail", description, description2);
     }
 
     @Test
@@ -115,14 +115,14 @@ public class GoodTest {
         String description1 = "testDescription";
         good.setDescription(description1);
         String description2 = good.getDescription();
-        assertEquals("setDescription is fail", description1, description2);
+        assertEquals("Good.setDescription is fail", description1, description2);
     }
 
     @Test
     public void getArticle() throws Exception {
         final Good good = createGood();
         String article2 = good.getArticle();
-        assertEquals("getArticle is fail", article, article2);
+        assertEquals("Good.getArticle is fail", article, article2);
     }
 
     @Test
@@ -131,14 +131,14 @@ public class GoodTest {
         String article1 = "testArticle";
         good.setArticle(article1);
         String article2 = good.getArticle();
-        assertEquals("setArticle is fail", article1, article2);
+        assertEquals("Good.setArticle is fail", article1, article2);
     }
 
     @Test
     public void getPrice() throws Exception {
         final Good good = createGood();
         Float price2 = good.getPrice();
-        assertEquals("getPrice is fail", price, price2);
+        assertEquals("Good.getPrice is fail", price, price2);
     }
 
     @Test
@@ -147,14 +147,14 @@ public class GoodTest {
         Float price1 = 5.32F;
         good.setPrice(price1);
         Float price2 = good.getPrice();
-        assertEquals("setPrice is fail", price1, price2);
+        assertEquals("Good.setPrice is fail", price1, price2);
     }
 
     @Test
     public void getInstock() throws Exception {
         final Good good = createGood();
         Float instock2 = good.getInstock();
-        assertEquals("getInstock is fail", instock, instock2);
+        assertEquals("Good.getInstock is fail", instock, instock2);
     }
 
     @Test
@@ -163,7 +163,7 @@ public class GoodTest {
         Float instock1 = 4.1F;
         good.setInstock(instock1);
         Float instock2 = good.getInstock();
-        assertEquals("setInstock is fail", instock1, instock2);
+        assertEquals("Good.setInstock is fail", instock1, instock2);
     }
     
     @Test
@@ -172,6 +172,6 @@ public class GoodTest {
         Long id1 = 555L;
         good.setId(id1);
         String filename = good.getFilename();
-        assertEquals("getFilename is fail", "555.good", filename);
+        assertEquals("Good.getFilename is fail", "555.good", filename);
     }
 }

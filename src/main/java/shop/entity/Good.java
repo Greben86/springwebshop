@@ -3,6 +3,11 @@ package shop.entity;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonAutoDetect
+@JsonIgnoreProperties(value = {"childcount"}, allowGetters = true)
 public class Good {
     private Long id;
     private Long owner;
@@ -12,6 +17,7 @@ public class Good {
     private String article;
     private Float price;
     private Float instock;
+    private Integer childcount;
 
     {
         owner = new Long(0);
@@ -21,6 +27,7 @@ public class Good {
         article = new String("");
         price = new Float(0.0);
         instock = new Float(0.0);
+        childcount = new Integer(0);
     }
 
     public Good() {
@@ -98,6 +105,14 @@ public class Good {
     public String getFilename() {
         StringBuilder sb = new StringBuilder(id.toString()).append(".good");
         return sb.toString();
+    }
+    
+    public void setChildcount(Integer childcount) {
+        this.childcount = childcount;
+    }
+
+    public Integer getChildcount() {
+        return childcount;
     }
 
     @Override

@@ -2,15 +2,16 @@ package shop.service.impl;
 
 import java.util.List;
 import java.util.Iterator;
-import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.service.GoodService;
 import shop.entity.Good;
 import shop.dao.GoodDao; 
+import org.apache.log4j.Logger;
 
 @Service("goodService")
 public class GoodServiceImpl implements GoodService {
+	private static final Logger LOG = Logger.getLogger(GoodServiceImpl.class);
 	@Autowired
 	private GoodDao goodDao;
 
@@ -38,49 +39,43 @@ public class GoodServiceImpl implements GoodService {
 	
 	@Override
 	public List<Good> getFolders(Long owner) {
-		List<Good> source = goodDao.getList("");
-		List<Good> result = goodDao.getList("(`FOLDER`='T')" + ((owner>=0) ? " AND (`OWNER`="+owner+")" : ""));
-		Iterator<Good> iterator = result.iterator();
-		Good good;
-		Integer count;
-		while (iterator.hasNext()) {
-			good = iterator.next();
-			count = hasChild(good, source);
-			if (count==0) {
-				iterator.remove();
-			}
-		}
-		return result;
+		List<Good> list = goodDao.getList("(`FOLDER`='T')" + ((owner>=0) ? " AND (`OWNER`="+owner+")" : ""));
+		checkFolders(list);
+		return list;
 	}
 
 	@Override
 	public List<Good> getList(Long owner) {
+		List<Good> list = goodDao.getList((owner>=0) ? "(`OWNER`="+owner+")" : "");
+		checkFolders(list);
+		return list;
+	}
+
+	private void checkFolders(List<Good> list) {
 		List<Good> source = goodDao.getList("");
-		List<Good> result = goodDao.getList((owner>=0) ? "(`OWNER`="+owner+")" : "");
-		Iterator<Good> iterator = result.iterator();
-		Good good;
-		Integer count;
+		Iterator<Good> iterator = list.iterator();
 		while (iterator.hasNext()) {
-			good = iterator.next();
+			Good good = iterator.next();
 			if (good.getFolder()) {
-				count = hasChild(good, source);
+				Integer count = calcChild(good, source);
 				if (count==0) {
 					iterator.remove();
+				} else {
+					good.setChildcount(count);
 				}
 			}
 		}
-		return result;
 	}
 
-	private Integer hasChild(Good owner, List<Good> list) {
+	private Integer calcChild(Good owner, List<Good> list) {
 		Integer count = 0;
-		List<Good> buff = new LinkedList<>(list);
-		for (Good good : buff) {
-			if (good.getFolder()) {
-				count =+ hasChild(good, list);
-			} else
+		for (Good good : list) {
 			if (good.getOwner().equals(owner.getId())) {
-				count++;
+				if (good.getFolder()) {
+					count += calcChild(good, list);
+				} else {
+					count++;
+				}				
 			}
 		}
         return count;
