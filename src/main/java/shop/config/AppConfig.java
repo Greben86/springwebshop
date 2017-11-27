@@ -32,7 +32,7 @@ public class AppConfig {
 	@Bean 
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipart = new CommonsMultipartResolver();
-		multipart.setMaxUploadSize(3 * 1024 * 1024);
+		multipart.setMaxUploadSize(5 * 1024 * 1024);
 		return multipart;
 	}
 	

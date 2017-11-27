@@ -14,6 +14,7 @@ public class GoodTest {
     private final String article = "Article";
     private final Float price = 10.12F;
     private final Float instock = 15.543F;
+    private final Integer childcount = 2;
 
     private Good createGood() {
         final Good good = new Good();
@@ -25,6 +26,7 @@ public class GoodTest {
         good.setArticle(article);
         good.setPrice(price);
         good.setInstock(instock);
+        good.setChildcount(childcount);
         return good;
     }  
     
@@ -172,6 +174,23 @@ public class GoodTest {
         Long id1 = 555L;
         good.setId(id1);
         String filename = good.getFilename();
-        assertEquals("Good.getFilename is fail", "555.good", filename);
+        String filename1 = id1.toString() + ".good";
+        assertEquals("Good.getFilename is fail", filename, filename1);
+    }
+
+    @Test
+    public void getChildcount() throws Exception {
+        final Good good = createGood();
+        Integer childcount2 = good.getChildcount();
+        assertEquals("Good.getChildcount is fail", childcount, childcount2);
+    }
+
+    @Test
+    public void setChildcount() throws Exception {
+        final Good good = createGood();
+        Integer childcount1 = 154;
+        good.setChildcount(childcount1);
+        Integer childcount2 = good.getChildcount();
+        assertEquals("Good.setChildcount is fail", childcount1, childcount2);
     }
 }
