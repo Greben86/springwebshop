@@ -1,6 +1,5 @@
 package shop.model;
 
-import shop.entity.Good;
 import java.io.InputStream;
 
 public interface ImageControl {
@@ -10,7 +9,7 @@ public interface ImageControl {
      * @param filename - name file
      * @param stream - file input stream
      */
-    String saveFile(String filename, InputStream stream);
+    Boolean saveFile(String filename, InputStream stream);
 
     /**
      * Read image for hard-disk
@@ -23,5 +22,5 @@ public interface ImageControl {
      * Remove image for har-disk
      * @param filename - name file
      */
-    String removeFile(String filename);
+    Boolean removeFile(String filename);
 }

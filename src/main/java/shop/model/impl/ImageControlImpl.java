@@ -1,7 +1,6 @@
 package shop.model.impl;
 
 import shop.model.ImageControl;
-import shop.entity.Good;
 
 import java.io.IOException;
 import java.io.FileOutputStream;
@@ -24,17 +23,17 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public String saveFile (String filename, InputStream stream) {
+    public Boolean saveFile (String filename, InputStream stream) {
         try (FileOutputStream fos = new FileOutputStream(path + filename);) {
             byte[] bytes = new byte[1024];
             int read = 0;
             while ((read = stream.read(bytes)) != -1) {
                 fos.write(bytes, 0, read);
             }
-            return "You successfully uploaded file=" + path + filename;
+            return true; 
         } catch (IOException e) {
             LOG.error("something going wrong " + e);
-            return "You failed uploaded file=" + path + filename;            
+            return false;            
         }
     }
 
@@ -68,12 +67,12 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public String removeFile(String filename) {
+    public Boolean removeFile(String filename) {
         File file = new File(path + filename);
         if (file.exists()&&file.isFile()) {
-            return "Clear image "+filename+(file.delete()?" is Ok":" is Fail");
+            return file.delete(); 
         } else {
-            return "Clear image is fail, file not exist";
+            return false; 
         }      
     }
 }

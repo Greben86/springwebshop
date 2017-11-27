@@ -106,7 +106,7 @@ public class CustomerDaoImpl implements CustomerDao {
             return entity;
         } catch (SQLException e) {
             LOG.error("something going wrong " + e);
-            return entity;
+            return null;
         }
     }
 

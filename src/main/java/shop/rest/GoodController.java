@@ -44,7 +44,7 @@ public class GoodController {
             Good good = goodService.getById(Long.parseLong(id));
             if (good!=null) {
                 try(InputStream is = file.getInputStream();) {
-                    return imageControl.saveFile(good.getFilename(), is);
+                    return imageControl.saveFile(good.getFilename(), is) ? "You successfully uploaded file=" : "You failed uploaded file=" + good.getFilename();
                 } catch (IOException e) {
                     return e.getMessage();
                 }
@@ -62,7 +62,7 @@ public class GoodController {
         if (verificationRequest.verify(key)){
             Good good = goodService.getById(Long.parseLong(id));
             if (good!=null) {
-                return imageControl.removeFile(good.getFilename());
+                return "Clear image "+good.getFilename()+(imageControl.removeFile(good.getFilename())?" is Ok":" is Fail");
             } else {
                 return "Clear image is fail, good ("+id+") not exist";
             }            

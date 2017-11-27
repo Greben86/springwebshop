@@ -20,7 +20,7 @@ public class VerificationRequestTest {
 		System.out.println("Test VerificationRequest started..");
 	} 
 	
-    @AfterClass 
+    @AfterClass
     public static void after() {
 		System.out.println("..test VerificationRequest finished.");
     }
