@@ -2,7 +2,6 @@ package shop.model;
 
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 import shop.model.impl.ImageControlImpl;
@@ -23,5 +22,18 @@ public class ImageControlTest {
 		System.out.println("..test ImageControl finished.");
     }
 
-    
+    @Test
+    public void saveFile () throws Exception {
+        assertTrue("saveFile is fail", true);
+    }
+
+    @Test
+    public void readFile() throws Exception {
+        assertTrue("readFile is fail", true);   
+    }
+
+    @Test
+    public void removeFile() throws Exception {
+        assertTrue("removeFile is fail", true);     
+    }
 }

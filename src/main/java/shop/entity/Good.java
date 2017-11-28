@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(value = {"childcount"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"haschild", "childcount"}, allowGetters = true)
 public class Good {
     private Long id;
     private Long owner;
@@ -17,16 +17,18 @@ public class Good {
     private String article;
     private Float price;
     private Float instock;
+    private Boolean haschild;
     private Integer childcount;
 
     {
         owner = new Long(0);
-        folder = false;
+        folder = new Boolean(false);
         name = new String("");
         description = new String("");
         article = new String("");
         price = new Float(0.0);
         instock = new Float(0.0);
+        haschild = new Boolean(false);
         childcount = new Integer(0);
     }
 
@@ -105,6 +107,14 @@ public class Good {
     public String getFilename() {
         StringBuilder sb = new StringBuilder(id.toString()).append(".good");
         return sb.toString();
+    }
+
+    public void setHaschild(Boolean haschild) {
+        this.haschild = haschild;
+    }
+
+    public Boolean getHaschild() {
+        return haschild;
     }
     
     public void setChildcount(Integer childcount) {

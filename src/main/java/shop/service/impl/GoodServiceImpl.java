@@ -72,6 +72,7 @@ public class GoodServiceImpl implements GoodService {
 		for (Good good : list) {
 			if (good.getOwner().equals(owner.getId())) {
 				if (good.getFolder()) {
+					owner.setHaschild(true);
 					count += calcChild(good, list);
 				} else {
 					count++;
@@ -79,7 +80,7 @@ public class GoodServiceImpl implements GoodService {
 			}
 		}
         return count;
-    }
+	}
 
 	@Override
 	public Good getById(Long id) {

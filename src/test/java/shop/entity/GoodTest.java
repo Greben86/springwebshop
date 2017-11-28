@@ -14,6 +14,7 @@ public class GoodTest {
     private final String article = "Article";
     private final Float price = 10.12F;
     private final Float instock = 15.543F;
+    private final Boolean haschild = false;
     private final Integer childcount = 2;
 
     private Good createGood() {
@@ -26,6 +27,7 @@ public class GoodTest {
         good.setArticle(article);
         good.setPrice(price);
         good.setInstock(instock);
+        good.setHaschild(haschild);
         good.setChildcount(childcount);
         return good;
     }  
@@ -176,6 +178,22 @@ public class GoodTest {
         String filename = good.getFilename();
         String filename1 = id1.toString() + ".good";
         assertEquals("Good.getFilename is fail", filename, filename1);
+    }
+
+    @Test
+    public void getHaschild() throws Exception {
+        final Good good = createGood();
+        Boolean haschild2 = good.getHaschild();
+        assertEquals("Good.getHaschild is fail", haschild, haschild2);
+    }
+
+    @Test
+    public void setHaschild() throws Exception {
+        final Good good = createGood();
+        Boolean haschild1 = true;
+        good.setHaschild(haschild1);
+        Boolean haschild2 = good.getHaschild();
+        assertEquals("Good.setHaschild is fail", haschild1, haschild2);
     }
 
     @Test
