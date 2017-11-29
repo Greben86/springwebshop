@@ -44,7 +44,7 @@ public class GoodController {
             Good good = goodService.getById(Long.parseLong(id));
             if (good!=null) {
                 try(InputStream is = file.getInputStream();) {
-                    return imageControl.saveFile(good.getFilename(), is) ? "You successfully uploaded file=" : "You failed uploaded file=" + good.getFilename();
+                    return "You " + (imageControl.saveFile(good.getFilename(), is) ? "successfully" : "failed") + " uploaded file=" + good.getFilename();
                 } catch (IOException e) {
                     return e.getMessage();
                 }
