@@ -57,29 +57,25 @@ public class GoodServiceImpl implements GoodService {
 		while (iterator.hasNext()) {
 			Good good = iterator.next();
 			if (good.getFolder()) {
-				Integer count = calcChild(good, source);
-				if (count==0) {
+				if (calcChild(good, source)==0) {
 					iterator.remove();
-				} else {
-					good.setChildcount(count);
 				}
 			}
 		}
 	}
 
 	private Integer calcChild(Good owner, List<Good> list) {
-		Integer count = 0;
 		for (Good good : list) {
 			if (good.getOwner().equals(owner.getId())) {
 				if (good.getFolder()) {
 					owner.setHaschild(true);
-					count += calcChild(good, list);
+					owner.setChildcount(owner.getChildcount() + calcChild(good, list));
 				} else {
-					count++;
+					owner.setChildcount(owner.getChildcount() + 1);
 				}				
 			}
 		}
-        return count;
+        return owner.getChildcount();
 	}
 
 	@Override
