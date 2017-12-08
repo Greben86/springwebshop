@@ -71,14 +71,13 @@ public class GoodDaoImpl extends Object implements GoodDao {
     
     @Override
     public Good updateOrInsert(Good entity) { 
-        StringBuilder sb = new StringBuilder()
-            .append("INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) ")
-            .append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') ")
-            .append("ON DUPLICATE KEY UPDATE ")
-            .append("`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F'");
+        String sql = "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "+
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "+
+            "ON DUPLICATE KEY UPDATE "+
+            "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';";
         try (
             Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sb.toString());) {
+            PreparedStatement ps = connection.prepareStatement(sql);) {
             
             ps.setLong(1, entity.getId());
             ps.setLong(2, entity.getOwner());
@@ -107,14 +106,13 @@ public class GoodDaoImpl extends Object implements GoodDao {
 
     @Override
     public String updateList(List<Good> list) {
-        StringBuilder sb = new StringBuilder()
-            .append("INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`) ")
-            .append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ")
-            .append("ON DUPLICATE KEY UPDATE ")
-            .append("`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?");
+        String sql = "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "+
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "+
+            "ON DUPLICATE KEY UPDATE "+
+            "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';";
         try (
 			Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sb.toString());) {
+            PreparedStatement ps = connection.prepareStatement(sql);) {
             
             connection.setAutoCommit(false);
             for (Good entity : list) {
