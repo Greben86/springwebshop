@@ -101,7 +101,7 @@ public class GoodController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     public String deleteById(@PathVariable("id") String id,
-                              @RequestParam(value="key", required=false) String key){ 
+                             @RequestParam(value="key", required=false) String key){ 
         if (verificationRequest.verify(key)) {
             Good good = goodService.getById(Long.parseLong(id));
             if (goodService.delete(good)) {                

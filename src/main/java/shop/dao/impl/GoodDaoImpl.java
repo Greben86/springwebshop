@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.apache.log4j.Logger; 
 
-public class GoodDaoImpl extends Object implements GoodDao {
+public class GoodDaoImpl implements GoodDao {
     private static final Logger LOG = Logger.getLogger(GoodDaoImpl.class);
     private BasicFactory<Good> basicFactory;
     @Autowired
