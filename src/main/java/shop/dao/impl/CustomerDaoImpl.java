@@ -78,14 +78,13 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer updateOrInsert(Customer entity) {
-        StringBuilder sb = new StringBuilder()
-            .append("INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `deletionmark`) ")
-            .append("VALUES (?, ?, ?, ?, ?, ?, ?, 'F') ")
-            .append("ON DUPLICATE KEY UPDATE ")
-            .append("`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'");
+        String sql = "INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `deletionmark`) "+
+            "VALUES (?, ?, ?, ?, ?, ?, ?, 'F') "+
+            "ON DUPLICATE KEY UPDATE "+
+            "`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'";
         try (
             Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sb.toString());) {
+            PreparedStatement ps = connection.prepareStatement(sql);) {
             
             ps.setLong(1, entity.getId());
             ps.setString(2, entity.getRef());
@@ -112,14 +111,13 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public String updateList(List<Customer> list) {
-        StringBuilder sb = new StringBuilder()
-            .append("INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `deletionmark`) ")
-            .append("VALUES (?, ?, ?, ?, ?, ?, ?, 'F') ")
-            .append("ON DUPLICATE KEY UPDATE ")
-            .append("`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'");
+        String sql = "INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `deletionmark`) "+
+            "VALUES (?, ?, ?, ?, ?, ?, ?, 'F') "+
+            "ON DUPLICATE KEY UPDATE "+
+            "`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'";
         try (
 			Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sb.toString());) {
+            PreparedStatement ps = connection.prepareStatement(sql);) {
             
             connection.setAutoCommit(false);
             for (Customer entity : list) {
