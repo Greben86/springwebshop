@@ -96,4 +96,10 @@ public class AppConfig {
 	public GoodDao goodDao() { 
 		return new GoodDaoImpl(new GoodFactoryImpl());
 	}
+        
+        @Bean
+        @Scope("singleton")
+        public Search search() {
+            return new SearchGoodImpl();
+        }
 }
