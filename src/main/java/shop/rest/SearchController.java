@@ -1,6 +1,5 @@
 package shop.rest;
 
-import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,9 +23,7 @@ public class SearchController {
     @RequestMapping(value = "/createindex", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String createIndex() {
-        return search.createIndex(goodService.getList(new Long(0)));
-//        return search.createIndex(null);
-        //return "123";
+        return search.createIndex(goodService.getList(new Long(-1)));
     }
     
     @RequestMapping(value = "/goods", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

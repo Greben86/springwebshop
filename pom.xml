@@ -13,7 +13,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.3.4.RELEASE</spring.version>
         <jackson.version>2.7.8</jackson.version>
-        <lucene.version>5.4.1</lucene.version>
+<!--        <lucene.version>5.4.1</lucene.version>-->
+        <lucene.version>7.2.1</lucene.version>
         <log4j.version>1.2.17</log4j.version>
         <junit.version>4.12</junit.version>
     </properties>
@@ -93,21 +94,25 @@
            <version>2.4</version>
        </dependency>
        <!--Lucene libs start-->
+       <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>${lucene.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
             <version>${lucene.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-queryparser -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
             <version>${lucene.version}</version>
         </dependency>
+
        <!-- logs -->
         <dependency>
             <groupId>log4j</groupId>
