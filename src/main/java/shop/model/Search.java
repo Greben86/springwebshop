@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Search<T> {
     public String createIndex(List<T> list);
-    public List<String> search(String query);
+    public List<T> search(String query);
 }

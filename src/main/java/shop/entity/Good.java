@@ -127,6 +127,6 @@ public class Good {
 
     @Override
     public String toString() {
-        return id + " " + name + " " + description + " " + article;
+        return name + " " + article;
     }
 }

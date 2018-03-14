@@ -1,5 +1,7 @@
 package shop.config;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import shop.model.*;
 import shop.model.impl.*;
 import shop.dao.*;
@@ -9,8 +11,8 @@ import shop.service.impl.*;
 import shop.entity.factory.impl.*;
 
 import java.util.Properties;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 @PropertySource(value = {"classpath:database.properties"})
 @PropertySource(value = {"classpath:verification.properties"})
 @PropertySource(value = {"classpath:files.properties"})
+@PropertySource(value = {"classpath:search.properties"})
 public class AppConfig {
 	@Autowired
 	private Environment enviroment;
@@ -101,13 +104,13 @@ public class AppConfig {
         @Bean
         @Scope("singleton")
         public Search search() {
-            return new SearchGoodImpl();
+            return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
         }
         
         @Bean
         @Scope("singleton")
-        public RussianAnalyzer standardAnalyzer() {
-            RussianAnalyzer analyzer = new RussianAnalyzer();
+        public Analyzer standardAnalyzer() {
+            Analyzer analyzer = new RussianAnalyzer();
             return analyzer;
         }
 }

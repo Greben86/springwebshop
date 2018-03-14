@@ -29,8 +29,7 @@ public class SearchController {
     @RequestMapping(value = "/goods", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<Good> searchGood(
-            @RequestParam(value="query", required=true) String query,
-            @RequestParam(value="key", required=false) String key) {
+            @RequestParam(value="query", required=true) String query) {
         return search.search(query);
     } 
 }
