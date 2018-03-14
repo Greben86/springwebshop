@@ -47,7 +47,8 @@ public class GoodServiceImpl implements GoodService {
 	@Override
 	public List<Good> getList(Long owner) {
 		List<Good> list = goodDao.getList((owner>=0) ? "(`OWNER`="+owner+")" : "");
-		checkFolders(list);
+                if (list!=null)
+                    checkFolders(list);
 		return list;
 	}
 

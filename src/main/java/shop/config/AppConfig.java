@@ -9,6 +9,7 @@ import shop.service.impl.*;
 import shop.entity.factory.impl.*;
 
 import java.util.Properties;
+import org.apache.lucene.analysis.ru.RussianAnalyzer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -101,5 +102,12 @@ public class AppConfig {
         @Scope("singleton")
         public Search search() {
             return new SearchGoodImpl();
+        }
+        
+        @Bean
+        @Scope("singleton")
+        public RussianAnalyzer standardAnalyzer() {
+            RussianAnalyzer analyzer = new RussianAnalyzer();
+            return analyzer;
         }
 }
