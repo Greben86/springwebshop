@@ -105,8 +105,8 @@ public class Good {
     }
 
     public String getFilename() {
-        StringBuilder sb = new StringBuilder(id.toString()).append(".good");
-        return sb.toString();
+        String sb = id.toString() + ".good";
+        return sb;
     }
 
     public void setHaschild(Boolean haschild) {
