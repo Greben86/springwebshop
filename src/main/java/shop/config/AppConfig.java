@@ -101,16 +101,16 @@ public class AppConfig {
 		return new GoodDaoImpl(new GoodFactoryImpl());
 	}
         
-        @Bean
-        @Scope("singleton")
-        public Search search() {
-            return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
-        }
+//        @Bean
+//        @Scope("singleton")
+//        public Search search() {
+//            return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
+//        }
         
-        @Bean
-        @Scope("singleton")
-        public Analyzer standardAnalyzer() {
-            Analyzer analyzer = new RussianAnalyzer();
-            return analyzer;
-        }
+//        @Bean
+//        @Scope("request")
+//        public Analyzer standardAnalyzer() {
+//            Analyzer analyzer = new RussianAnalyzer();
+//            return analyzer;
+//        }
 }

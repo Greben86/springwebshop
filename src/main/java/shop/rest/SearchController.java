@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import shop.entity.Good;
 import shop.model.Search;
+import shop.model.impl.SearchGoodImpl;
 import shop.service.GoodService;
 
 @RestController
@@ -17,12 +18,11 @@ import shop.service.GoodService;
 public class SearchController {
     @Autowired
     private GoodService goodService;
-    @Autowired
-    private Search search;
     
     @RequestMapping(value = "/createindex", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String createIndex() {
+        Search search = new SearchGoodImpl("/opt/index");
         return search.createIndex(goodService.getList(new Long(-1)));
     }
     
@@ -30,6 +30,7 @@ public class SearchController {
     @ResponseBody
     public List<Good> searchGood(
             @RequestParam(value="query", required=true) String query) {
+        Search search = new SearchGoodImpl("/opt/index");
         return search.search(query);
     } 
 }
