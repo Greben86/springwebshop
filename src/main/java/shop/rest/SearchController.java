@@ -16,13 +16,15 @@ import shop.service.GoodService;
 @RestController
 @RequestMapping("/search")
 public class SearchController {
+    private final String MAGIC_PATH = new String("D:\\luceneindex");
+//    private final String MAGIC_PATH = new String("/opt/index");
     @Autowired
     private GoodService goodService;
     
     @RequestMapping(value = "/createindex", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody
     public String createIndex() {
-        Search search = new SearchGoodImpl("/opt/index");
+        Search search = new SearchGoodImpl(MAGIC_PATH);
         return search.createIndex(goodService.getList(new Long(-1)));
     }
     
@@ -30,7 +32,7 @@ public class SearchController {
     @ResponseBody
     public List<Good> searchGood(
             @RequestParam(value="query", required=true) String query) {
-        Search search = new SearchGoodImpl("/opt/index");
+        Search search = new SearchGoodImpl(MAGIC_PATH);
         return search.search(query);
     } 
 }

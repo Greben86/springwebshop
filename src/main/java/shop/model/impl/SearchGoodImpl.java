@@ -21,10 +21,14 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MultiTermQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.spans.SpanMultiTermQueryWrapper;
+import org.apache.lucene.search.spans.SpanNearQuery;
+import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 //import org.apache.lucene.store.RAMDirectory;
@@ -93,6 +97,25 @@ public class SearchGoodImpl implements Search<Good> {
             buildList(list, searcher);
         } 
     }
+    
+//    public void fuzzySearch(final String toSearch) throws IOException, ParseException {
+//        final int maxEdits = 2; // fuzziness of the query
+//        try (IndexReader reader = DirectoryReader.open(index)) { 
+//            final IndexSearcher searcher = new IndexSearcher(reader);
+//            
+//            String[] splitQuery = toSearch.split("\\s+");
+//            
+//            SpanQuery[] clauses = new SpanQuery[splitQuery.length];
+//            for (int i=0; i<splitQuery.length; i++) {
+//                Term term = new Term("name", splitQuery[i]);
+//                clauses[i] = new SpanMultiTermQueryWrapper(new FuzzyQuery(term, maxEdits));
+//            }
+//            SpanNearQuery query = new SpanNearQuery(clauses, 0, true);            
+//            final TopDocs search = searcher.search(query, 100);            
+//            List<ScoreDoc> list = Arrays.asList(search.scoreDocs);            
+//            buildList(list, searcher);
+//        }
+//    }
     
     public void fuzzySearch(final String toSearch) throws IOException, ParseException {
         try (IndexReader reader = DirectoryReader.open(index)) { 
