@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -21,14 +20,10 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MultiTermQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopScoreDocCollector;
-import org.apache.lucene.search.spans.SpanMultiTermQueryWrapper;
-import org.apache.lucene.search.spans.SpanNearQuery;
-import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 //import org.apache.lucene.store.RAMDirectory;
@@ -40,6 +35,7 @@ import shop.model.Search;
 public class SearchGoodImpl implements Search<Good> {
     private List<Good> result;
     private Directory index;
+    private final int MAX_EDITS = 2; // fuzziness of the query
 //    @Autowired
 //    private Analyzer standardAnalyzer;
     
@@ -64,7 +60,8 @@ public class SearchGoodImpl implements Search<Good> {
                     .filter(good -> !good.getFolder())
                     .forEach(good -> addGoodInDoc(writer, good));
         } catch (IOException ex) {
-            Logger.getLogger(SearchGoodImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(
+                    SearchGoodImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return "Create index is sucesful for " + list.size();
@@ -120,13 +117,9 @@ public class SearchGoodImpl implements Search<Good> {
     public void fuzzySearch(final String toSearch) throws IOException, ParseException {
         try (IndexReader reader = DirectoryReader.open(index)) { 
             final IndexSearcher searcher = new IndexSearcher(reader);
-
-            final Term term = new Term("name", toSearch);
-
-            final int maxEdits = 2; // fuzziness of the query
-            final Query query = new FuzzyQuery(term, maxEdits);
-            final TopDocs search = searcher.search(query, 200);
-            
+            final Term term = new Term("name", toSearch);            
+            final Query query = new FuzzyQuery(term, MAX_EDITS);
+            final TopDocs search = searcher.search(query, 200);            
             List<ScoreDoc> list = Arrays.asList(search.scoreDocs);            
             buildList(list, searcher);
         }
