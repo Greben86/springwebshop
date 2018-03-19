@@ -14,6 +14,9 @@ import java.util.Properties;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -25,6 +28,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
 
 @Configuration
+@EnableCaching
 @PropertySource(value = {"classpath:database.properties"})
 @PropertySource(value = {"classpath:verification.properties"})
 @PropertySource(value = {"classpath:files.properties"})
@@ -64,6 +68,11 @@ public class AppConfig {
 
         return dataSource;
 	}
+    
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("folders");
+    } 
 
 	@Bean
 	@Scope("singleton")
@@ -101,11 +110,11 @@ public class AppConfig {
 		return new GoodDaoImpl(new GoodFactoryImpl());
 	}
         
-//        @Bean
-//        @Scope("singleton")
-//        public Search search() {
-//            return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
-//        }
+        @Bean
+        @Scope("request")
+        public Search search() {
+            return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
+        }
         
 //        @Bean
 //        @Scope("request")

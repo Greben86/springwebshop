@@ -8,6 +8,8 @@ import shop.service.GoodService;
 import shop.entity.Good;
 import shop.dao.GoodDao; 
 import org.apache.log4j.Logger;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 @Service("goodService")
 public class GoodServiceImpl implements GoodService {
@@ -15,18 +17,21 @@ public class GoodServiceImpl implements GoodService {
 	@Autowired
 	private GoodDao goodDao;
 
+        @CacheEvict(value="folders", key="#good.id")
 	@Override
 	public Boolean updateOrInsert(Good good) {
 		goodDao.updateOrInsert(good);
 		return true;
 	}
 
+        @CacheEvict(value="folders", allEntries=true)
 	@Override
 	public Boolean updateList(List<Good> list) {
 		goodDao.updateList(list);		
 		return true;
 	}
 
+        @CacheEvict(value="folders", key="#good.id")
 	@Override
 	public Boolean delete(Good good) {
 		if (good!=null) {
@@ -37,6 +42,7 @@ public class GoodServiceImpl implements GoodService {
 		}
 	}
 	
+        @Cacheable("folders")
 	@Override
 	public List<Good> getFolders(Long owner) {
 		List<Good> list = goodDao.getList("(`FOLDER`='T')" + ((owner>=0) ? " AND (`OWNER`="+owner+")" : ""));

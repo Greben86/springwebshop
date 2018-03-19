@@ -16,10 +16,12 @@ import shop.service.GoodService;
 @RestController
 @RequestMapping("/search")
 public class SearchController {
-    private final String MAGIC_PATH = new String("D:\\luceneindex");
-//    private final String MAGIC_PATH = new String("/opt/index");
+//    private final String MAGIC_PATH = new String("D:\\luceneindex");
+    private final String MAGIC_PATH = new String("/opt/index");
     @Autowired
     private GoodService goodService;
+//    @Autowired
+//    private Search search;
     
     @RequestMapping(value = "/createindex", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
     @ResponseBody

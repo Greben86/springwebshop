@@ -41,7 +41,6 @@ public class SearchGoodImpl implements Search<Good> {
     
     public SearchGoodImpl(String url) {
         result = new LinkedList<>();
-//        index = new RAMDirectory();
         try {
             index = FSDirectory.open(Paths.get(url));
         } catch (IOException ex) {
@@ -70,9 +69,14 @@ public class SearchGoodImpl implements Search<Good> {
     @Override
     public List<Good> search(String query) {
         try {
-            keySearch(query);
-            if (result.isEmpty())
-                fuzzySearch(query);
+            String[] list = query.split(" ");
+            if (list.length==1) {
+                keySearch(query);
+                if (result.isEmpty())
+                    fuzzySearch(query);
+            } else {
+                multiSearch(list);
+            }
         } catch (IOException | ParseException ex) {
             Logger.getLogger(
                     SearchGoodImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,26 +98,7 @@ public class SearchGoodImpl implements Search<Good> {
             buildList(list, searcher);
         } 
     }
-    
-//    public void fuzzySearch(final String toSearch) throws IOException, ParseException {
-//        final int maxEdits = 2; // fuzziness of the query
-//        try (IndexReader reader = DirectoryReader.open(index)) { 
-//            final IndexSearcher searcher = new IndexSearcher(reader);
-//            
-//            String[] splitQuery = toSearch.split("\\s+");
-//            
-//            SpanQuery[] clauses = new SpanQuery[splitQuery.length];
-//            for (int i=0; i<splitQuery.length; i++) {
-//                Term term = new Term("name", splitQuery[i]);
-//                clauses[i] = new SpanMultiTermQueryWrapper(new FuzzyQuery(term, maxEdits));
-//            }
-//            SpanNearQuery query = new SpanNearQuery(clauses, 0, true);            
-//            final TopDocs search = searcher.search(query, 100);            
-//            List<ScoreDoc> list = Arrays.asList(search.scoreDocs);            
-//            buildList(list, searcher);
-//        }
-//    }
-    
+        
     public void fuzzySearch(final String toSearch) throws IOException, ParseException {
         try (IndexReader reader = DirectoryReader.open(index)) { 
             final IndexSearcher searcher = new IndexSearcher(reader);
@@ -125,6 +110,26 @@ public class SearchGoodImpl implements Search<Good> {
         }
     }
     
+    public void multiSearch(final String... queries) throws IOException, ParseException {
+        StringBuffer query = new StringBuffer();
+        for (String item : queries) {
+            query.append("+name:");
+            query.append(item);
+            query.append(" ");
+        }
+        try (IndexReader reader = DirectoryReader.open(index)) {
+            Query q = new QueryParser("name", new RussianAnalyzer()).parse(query.toString());
+            
+            int hitsPerPage = 10;
+            IndexSearcher searcher = new IndexSearcher(reader);
+            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, null);
+            searcher.search(q, collector);
+            
+            List<ScoreDoc> list = Arrays.asList(collector.topDocs().scoreDocs);            
+            buildList(list, searcher);
+        } 
+    }
+    
     private void buildList(List<ScoreDoc> list, IndexSearcher search) {
         list.stream().forEach(scoreDoc -> {
             try {
@@ -132,7 +137,6 @@ public class SearchGoodImpl implements Search<Good> {
                 Good good = new Good();
                 good.setId(Long.parseLong(d.get("id")));
                 good.setName(d.get("name"));
-                good.setArticle(d.get("article"));
                 good.setPrice(Float.parseFloat(d.get("price")));
                 good.setInstock(Float.parseFloat(d.get("instock")));
                 result.add(good);
@@ -148,7 +152,6 @@ public class SearchGoodImpl implements Search<Good> {
             Document doc = new Document();
             doc.add(new TextField("id", good.getId().toString(), Field.Store.YES));
             doc.add(new TextField("name", good.getName(), Field.Store.YES));
-            doc.add(new TextField("article", good.getArticle()==null?"":good.getArticle(), Field.Store.YES));
             doc.add(new TextField("price", good.getPrice().toString(), Field.Store.YES));
             doc.add(new TextField("instock", good.getInstock().toString(), Field.Store.YES));
             doc.add(new TextField("info", good.toString(), Field.Store.YES));
