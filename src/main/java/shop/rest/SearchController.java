@@ -17,7 +17,7 @@ import shop.service.GoodService;
 @RequestMapping("/search")
 public class SearchController {
 //    private final String MAGIC_PATH = new String("D:\\luceneindex");
-    private final String MAGIC_PATH = new String("/opt/index");
+    private final String MAGIC_PATH = "/opt/index";
     @Autowired
     private GoodService goodService;
 //    @Autowired
