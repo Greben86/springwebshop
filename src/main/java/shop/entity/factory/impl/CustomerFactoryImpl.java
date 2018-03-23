@@ -2,11 +2,11 @@ package shop.entity.factory.impl;
 
 import shop.entity.factory.BasicFactory;
 import shop.entity.Customer;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerFactoryImpl implements BasicFactory<Customer> {
+
     public Customer factory(ResultSet set) throws SQLException {
         Customer customer = new Customer(set.getLong("id"));
         customer.setRef(set.getString("ref"));

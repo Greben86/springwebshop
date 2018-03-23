@@ -22,16 +22,23 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.getList("");
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     @Override
     public Boolean updateOrInsert(Customer customer) {
-        customerDao.updateOrInsert(customer);
+        Customer buff = customerDao.findByRef(customer.getRef());
+        if (buff != null) {
+            customer.setId(buff.getId());
+            customerDao.update(customer);
+        } else {
+            customerDao.create(customer);
+        }
         return true;
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean updateList(List<Customer> list) {
+        list.stream().forEach(customer -> updateOrInsert(customer));
         customerDao.updateList(list);
         return true;
     }
@@ -48,17 +55,22 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Boolean checkPass(String number, String pass) {
-        Customer entity = customerDao.findCustomerByNumber(number);
+    public Boolean checkPass(String login, String pass) {
+        Customer entity = customerDao.findByNumber(login);
         if (entity != null) {
             return pass.equalsIgnoreCase(entity.getPass());
         } else {
-            return false;
+            entity = customerDao.findByEmail(login);
+            if (entity != null) {
+                return pass.equalsIgnoreCase(entity.getPass());
+            } else {
+                return false;
+            }
         }
     }
 
     @Override
-    public Customer getById(Long id) {
-        return customerDao.findById(id);
+    public Customer getByRef(String ref) {
+        return customerDao.findByRef(ref);
     }
 }

@@ -1,5 +1,10 @@
 package shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonAutoDetect
+@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class Customer {
     private Long id;
     private String ref;
@@ -10,12 +15,12 @@ public class Customer {
     private String pass;
 
     {
-        ref = new String("");
-        number = new String("");
-        name = new String("");
-        fullname = new String("");
-        email = new String("");
-        pass = new String("");
+        ref = "";
+        number = "";
+        name = "";
+        fullname = "";
+        email = "";
+        pass = "";
     }
 
     public Customer() {

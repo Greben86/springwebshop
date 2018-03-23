@@ -64,6 +64,35 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
+    public void create(Customer customer) {
+        jdbcTemplate.update(
+                "INSERT INTO `customers` (`ref`, `number`, `name`, `fullname`, `email`, `pass`) "
+                + "VALUES (?, ?, ?, ?, ?, ?);",
+                customer.getRef(),
+                customer.getNumber(),
+                customer.getName(),
+                customer.getFullname(),
+                customer.getEmail(),
+                customer.getPass());
+        LOG.info("create customer " + customer);
+    }
+
+    @Override
+    public void update(Customer customer) {
+        jdbcTemplate.update(
+                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=? "
+                + "WHERE `id`=?;",
+                customer.getRef(),
+                customer.getNumber(),
+                customer.getName(),
+                customer.getFullname(),
+                customer.getEmail(),
+                customer.getPass(),
+                customer.getId());
+        LOG.info("update customer " + customer);
+    }
+
+    @Override
     public String updateList(List<Customer> list) {
         list.forEach(entity -> updateOrInsert(entity));
         return "Uploaded " + list.size() + " customers succesful";
@@ -71,16 +100,33 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer delete(Customer entity) {
-        jdbcTemplate.update("DELETE FROM `customers` WHERE `id`=?;",
+        jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;",
                 entity.getId());
         return entity;
     }
 
     @Override
-    public Customer findCustomerByNumber(String number) {
+    public Customer findByNumber(String number) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM `customers` WHERE `number`=?;",
                 (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
                 number);
     }
+
+    @Override
+    public Customer findByEmail(String email) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM `customers` WHERE `email`=?;",
+                (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                email);
+    }
+
+    @Override
+    public Customer findByRef(String ref) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM `customers` WHERE `ref`=?;",
+                (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                ref);
+    }
+
 }

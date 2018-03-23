@@ -24,10 +24,10 @@ public interface CustomerService {
     
     /**
      * Checking pass for customer
-     * @param number - number of customer
+     * @param login - number or email of customer
      * @param pass - checking password
      */
-    Boolean checkPass(String number, String pass);
+    Boolean checkPass(String login, String pass);
 
     /**
      * Method returning list of customers
@@ -37,7 +37,7 @@ public interface CustomerService {
 
     /**
      * Method returning customer
-     * @param id - ID of customer
+     * @param ref - Ref of customer
      */
-    Customer getById(Long id);
+    Customer getByRef(String ref);
 }
