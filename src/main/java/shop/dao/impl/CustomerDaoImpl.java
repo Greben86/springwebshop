@@ -7,6 +7,7 @@ import java.util.List;
 import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class CustomerDaoImpl implements CustomerDao {
@@ -80,14 +81,13 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void update(Customer customer) {
         jdbcTemplate.update(
-                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=? "
+                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=? "
                 + "WHERE `id`=?;",
                 customer.getRef(),
                 customer.getNumber(),
                 customer.getName(),
                 customer.getFullname(),
                 customer.getEmail(),
-                customer.getPass(),
                 customer.getId());
         LOG.info("update customer " + customer);
     }
@@ -107,26 +107,38 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer findByNumber(String number) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM `customers` WHERE `number`=?;",
-                (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
-                number);
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM `customers` WHERE `number`=?;",
+                    (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                    number);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Customer findByEmail(String email) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM `customers` WHERE `email`=?;",
-                (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
-                email);
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM `customers` WHERE `email`=?;",
+                    (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                    email);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Customer findByRef(String ref) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM `customers` WHERE `ref`=?;",
-                (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
-                ref);
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM `customers` WHERE `ref`=?;",
+                    (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                    ref);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
 }

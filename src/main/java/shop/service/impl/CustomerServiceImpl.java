@@ -25,7 +25,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     @Override
     public Boolean updateOrInsert(Customer customer) {
+        if (!"".equals(customer.getRef())) {
+            return false;
+        }
+        
         Customer buff = customerDao.findByRef(customer.getRef());
+        if (buff==null && !"".equals(customer.getEmail())) {
+            buff = customerDao.findByEmail(customer.getEmail());
+        }
+        
         if (buff != null) {
             customer.setId(buff.getId());
             customerDao.update(customer);
@@ -39,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Boolean updateList(List<Customer> list) {
         list.stream().forEach(customer -> updateOrInsert(customer));
-        customerDao.updateList(list);
+//        customerDao.updateList(list);
         return true;
     }
 
