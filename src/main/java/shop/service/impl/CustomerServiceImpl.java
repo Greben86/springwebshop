@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.getList("");
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     @Override
     public Boolean updateOrInsert(Customer customer) {
         if ("".equals(customer.getRef())) {
