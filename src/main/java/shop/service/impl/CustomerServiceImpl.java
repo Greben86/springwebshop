@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     @Override
     public Boolean updateOrInsert(Customer customer) {
-        if (!"".equals(customer.getRef())) {
+        if ("".equals(customer.getRef())) {
             return false;
         }
         

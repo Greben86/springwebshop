@@ -40,7 +40,7 @@ public class CustomerController {
         return "GET not supported for update customer";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String update(@RequestParam(value = "key", required = false) String key,
             @RequestBody Customer customer) {
         if (verificationRequest.verify(key)) {
@@ -55,7 +55,7 @@ public class CustomerController {
         return "GET not supported for update customer";
     }
 
-    @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String updateList(@RequestParam(value = "key", required = false) String key, @RequestBody List<Customer> list) {
         if (verificationRequest.verify(key)) {
             return "Uploaded " + list.size() + " customers " + (customerService.updateList(list) ? "succesful" : "unsuccesful");
