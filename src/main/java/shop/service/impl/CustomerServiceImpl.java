@@ -47,7 +47,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Boolean updateList(List<Customer> list) {
         list.stream().forEach(customer -> updateOrInsert(customer));
-//        customerDao.updateList(list);
         return true;
     }
 
@@ -64,16 +63,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Boolean checkPass(String login, String pass) {
-        Customer entity = customerDao.findByNumber(login);
+        Customer entity = customerDao.findByEmail(login);
         if (entity != null) {
             return pass.equalsIgnoreCase(entity.getPass());
         } else {
-            entity = customerDao.findByEmail(login);
-            if (entity != null) {
-                return pass.equalsIgnoreCase(entity.getPass());
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
