@@ -28,12 +28,12 @@ public class CustomerServiceImpl implements CustomerService {
         if ("".equals(customer.getRef())) {
             return false;
         }
-        
+
         Customer buff = customerDao.findByRef(customer.getRef());
-        if (buff==null && !"".equals(customer.getEmail())) {
+        if (buff == null && !"".equals(customer.getEmail())) {
             buff = customerDao.findByEmail(customer.getEmail());
         }
-        
+
         if (buff != null) {
             customer.setId(buff.getId());
             customerDao.update(customer);
@@ -63,7 +63,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Boolean checkPass(String login, String pass) {
-        Customer entity = customerDao.findByEmail(login);
+        Customer entity = null;
+        if ((entity = customerDao.findByNumber(login)) == null) {
+            entity = customerDao.findByEmail(login);
+        }
+        
         if (entity != null) {
             return pass.equalsIgnoreCase(entity.getPass());
         } else {
