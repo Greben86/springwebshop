@@ -62,13 +62,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Boolean checkPass(String login, String pass) {
+    public Customer search(String login, String pass) {
         Customer entity = null;
         if ((entity = customerDao.findByNumber(login)) == null) {
             entity = customerDao.findByEmail(login);
         }
         
         if (entity != null) {
+            return pass.equalsIgnoreCase(entity.getPass())?entity:null;
+        } else {
+            return null;
+        }
+    }
+    
+    @Override
+    public Boolean checkPass(String login, String pass) {
+        Customer entity = null;        
+        if ((entity = search(login, pass)) != null) {
             return pass.equalsIgnoreCase(entity.getPass());
         } else {
             return false;

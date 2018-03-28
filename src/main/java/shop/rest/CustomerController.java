@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import shop.entity.Customer;
 import shop.model.VerificationRequest;
 import shop.service.CustomerService;
@@ -81,9 +79,14 @@ public class CustomerController {
         }
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public Customer search(@RequestParam("login") String login, @RequestParam("pass") String pass) {
+        return customerService.search(login, pass);
+    }
+    
     @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String checkPass(@RequestParam("login") String login, @RequestParam("pass") String pass) {
-        return customerService.checkPass(login, pass) ? "Ok" : "Fail";
+        return customerService.checkPass(login, pass)?"Ok":"Fail";
     }
 
     @RequestMapping(value = "/get/{ref}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

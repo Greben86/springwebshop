@@ -27,6 +27,8 @@ public interface CustomerService {
      * @param login - number or email of customer
      * @param pass - checking password
      */
+    Customer search(String login, String pass);
+    
     Boolean checkPass(String login, String pass);
 
     /**
