@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.AfterClass;
 
 public class CustomerTest {
-    private final Long id = 123L;
+    private final Long id = 1_2_3L;
     private final String ref = "E07ABA8D-5FB6-445D-A649-F9FAC24121AC";
     private final String number = "Number";
     private final String name = "Name";

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class CustomerFactoryImpl implements BasicFactory<Customer> {
 
+    @Override
     public Customer factory(ResultSet set) throws SQLException {
         Customer customer = new Customer(set.getLong("id"));
         customer.setRef(set.getString("ref"));
