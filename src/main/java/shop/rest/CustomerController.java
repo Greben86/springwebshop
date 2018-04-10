@@ -5,10 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import shop.entity.Customer;
 import shop.model.VerificationRequest;
 import shop.service.CustomerService;
@@ -26,7 +27,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Customer> getList(@RequestParam(value = "key", required = false) String key) {
         if (verificationRequest.verify(key)) {
             return customerService.getList();
@@ -35,12 +36,12 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @GetMapping("/update")
     public String updateInfo() {
         return "GET not supported for update customer";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String update(@RequestParam(value = "key", required = false) String key,
             @RequestBody Customer customer) {
         if (verificationRequest.verify(key)) {
@@ -50,12 +51,12 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "/updatelist", method = RequestMethod.GET)
+    @GetMapping("/updatelist")
     public String updateListInfo() {
         return "GET not supported for update customer";
     }
 
-    @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    @PostMapping(value = "/updatelist", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String updateList(@RequestParam(value = "key", required = false) String key, @RequestBody List<Customer> list) {
         if (verificationRequest.verify(key)) {
             return "Uploaded " + list.size() + " customers " + (customerService.updateList(list) ? "succesful" : "unsuccesful");
@@ -64,7 +65,7 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "/delete/{ref}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    @GetMapping(value = "/delete/{ref}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String deleteById(@PathVariable(value = "ref") String ref,
             @RequestParam(value = "key", required = false) String key) {
         if (verificationRequest.verify(key)) {
@@ -79,17 +80,17 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.TEXT_PLAIN_VALUE)
     public Customer search(@RequestParam("login") String login, @RequestParam("pass") String pass) {
         return customerService.search(login, pass);
     }
     
-    @RequestMapping(value = "/checkpass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/checkpass", produces = MediaType.TEXT_PLAIN_VALUE)
     public String checkPass(@RequestParam("login") String login, @RequestParam("pass") String pass) {
         return customerService.checkPass(login, pass)?"Ok":"Fail";
     }
 
-    @RequestMapping(value = "/get/{ref}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/get/{ref}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Customer getCustomerById(@PathVariable("ref") String ref) {
         return customerService.getByRef(ref);
     }

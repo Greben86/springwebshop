@@ -5,10 +5,13 @@ import shop.entity.Customer;
 import shop.entity.factory.BasicFactory;
 import java.util.List;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class CustomerDaoImpl implements CustomerDao {
 
@@ -26,19 +29,62 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public List<Customer> getList(String filter) {
-        return jdbcTemplate.query(
+        List<Customer> result = jdbcTemplate.query(
                 "SELECT * FROM `customers` "
                 + (filter.equals("") ? "" : "WHERE " + filter)
                 + "ORDER BY name ASC;",
                 (ResultSet rs, int rowNum) -> basicFactory.factory(rs));
+        result.stream().forEach(item -> readPayDetail(item));
+        return result;
     }
 
     @Override
     public Customer findById(Long id) {
-        return jdbcTemplate.queryForObject(
+        Customer result = jdbcTemplate.queryForObject(
                 "SELECT * FROM `customers` WHERE `id`=?;",
                 (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
                 id);
+        readPayDetail(result);
+        return result;
+    }
+
+    private void readPayDetail(Customer customer) {
+        customer.setPayList1(
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=1 and `customer_id`=?",
+                        new RowMapper<Date>() {
+                    @Override
+                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return rs.getDate("date_pay");
+                    }
+                }, customer.getId()
+                ));
+        customer.setPayList2(
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=2 and `customer_id`=?",
+                        new RowMapper<Date>() {
+                    @Override
+                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return rs.getDate("date_pay");
+                    }
+                }, customer.getId()
+                ));
+        customer.setPayList3(
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=3 and `customer_id`=?",
+                        new RowMapper<Date>() {
+                    @Override
+                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return rs.getDate("date_pay");
+                    }
+                }, customer.getId()
+                ));
+        customer.setPayList4(
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=4 and `customer_id`=?",
+                        new RowMapper<Date>() {
+                    @Override
+                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return rs.getDate("date_pay");
+                    }
+                }, customer.getId()
+                ));
     }
 
     @Override
@@ -75,6 +121,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 customer.getFullname(),
                 customer.getEmail(),
                 customer.getPass());
+        saveDetail(customer);
         LOG.info("create customer " + customer);
     }
 
@@ -89,7 +136,50 @@ public class CustomerDaoImpl implements CustomerDao {
                 customer.getFullname(),
                 customer.getEmail(),
                 customer.getId());
+        saveDetail(customer);
         LOG.info("update customer " + customer);
+    }
+
+    private void saveDetail(Customer customer) {
+        jdbcTemplate.update(
+                "DELETE FROM `pay_detail` WHERE `customer_id`=?",
+                customer.getId());
+        if (customer.getPayList1() != null) {
+            customer.getPayList1().stream().forEach(date -> {
+                jdbcTemplate.update(
+                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 1, ?)",
+                        customer.getId(),
+                        date
+                );
+            });
+        }
+        if (customer.getPayList2() != null) {
+            customer.getPayList2().stream().forEach(date -> {
+                jdbcTemplate.update(
+                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 2, ?)",
+                        customer.getId(),
+                        date
+                );
+            });
+        }
+        if (customer.getPayList3() != null) {
+            customer.getPayList3().stream().forEach(date -> {
+                jdbcTemplate.update(
+                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 3, ?)",
+                        customer.getId(),
+                        date
+                );
+            });
+        }
+        if (customer.getPayList4() != null) {
+            customer.getPayList4().stream().forEach(date -> {
+                jdbcTemplate.update(
+                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 4, ?)",
+                        customer.getId(),
+                        date
+                );
+            });
+        }
     }
 
     @Override
