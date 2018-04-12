@@ -15,6 +15,8 @@ public interface CustomerDao extends BasicDao<Customer> {
     
     public void update(Customer customer);
     
+    public void updatePass(Customer customer, String pass);
+    
     /**
      * Update list customers
      * @param list - list customers

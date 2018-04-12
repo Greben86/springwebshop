@@ -231,4 +231,13 @@ public class CustomerDaoImpl implements CustomerDao {
         }
     }
 
+    @Override
+    public void updatePass(Customer customer, String pass) {
+        jdbcTemplate.update(
+                "UPDATE `customers` SET `pass`=? WHERE `id`=?;",
+                pass,
+                customer.getId());
+        LOG.info("update pass from customer " + customer);
+    }
+
 }

@@ -37,6 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
         if (buff != null) {
             customer.setId(buff.getId());
             customerDao.update(customer);
+            if ("".equals(buff.getPass()))
+                customerDao.updatePass(customer, customer.getPass());
         } else {
             customerDao.create(customer);
         }
