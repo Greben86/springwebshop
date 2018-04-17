@@ -16,6 +16,7 @@ public class CustomerFactoryImpl implements BasicFactory<Customer> {
         customer.setFullname(set.getString("fullname"));
         customer.setEmail(set.getString("email"));
         customer.setPass(set.getString("pass"));
+        customer.setBallance(set.getFloat("ballance"));
         return customer;
     }
 }

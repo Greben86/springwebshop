@@ -58,15 +58,6 @@ public class CustomerDaoImpl implements CustomerDao {
                     }
                 }, customer.getId()
                 ));
-        customer.setPayList2(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=2 and `customer_id`=?",
-                        new RowMapper<Date>() {
-                    @Override
-                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return rs.getDate("date_pay");
-                    }
-                }, customer.getId()
-                ));
         customer.setPayList3(
                 jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=3 and `customer_id`=?",
                         new RowMapper<Date>() {
@@ -90,10 +81,10 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Customer updateOrInsert(Customer entity) {
         jdbcTemplate.update(
-                "INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `deletionmark`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, 'F') "
+                "INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `ballance`, `deletionmark`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "
                 + "ON DUPLICATE KEY UPDATE "
-                + "`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `deletionmark`='F'",
+                + "`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `ballance`=?, `deletionmark`='F'",
                 entity.getId(),
                 entity.getRef(),
                 entity.getNumber(),
@@ -101,11 +92,13 @@ public class CustomerDaoImpl implements CustomerDao {
                 entity.getFullname(),
                 entity.getEmail(),
                 entity.getPass(),
+                entity.getBallance(),
                 entity.getNumber(),
                 entity.getName(),
                 entity.getFullname(),
                 entity.getEmail(),
-                entity.getPass());
+                entity.getPass(),
+                entity.getBallance());
         LOG.info("update customer " + entity);
         return entity;
     }
@@ -113,14 +106,15 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void create(Customer customer) {
         jdbcTemplate.update(
-                "INSERT INTO `customers` (`ref`, `number`, `name`, `fullname`, `email`, `pass`) "
-                + "VALUES (?, ?, ?, ?, ?, ?);",
+                "INSERT INTO `customers` (`ref`, `number`, `name`, `fullname`, `email`, `pass`, `ballance`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);",
                 customer.getRef(),
                 customer.getNumber(),
                 customer.getName(),
                 customer.getFullname(),
                 customer.getEmail(),
-                customer.getPass());
+                customer.getPass(), 
+                customer.getBallance());
         saveDetail(customer);
         LOG.info("create customer " + customer);
     }
@@ -128,13 +122,14 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void update(Customer customer) {
         jdbcTemplate.update(
-                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=? "
+                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=?, `ballance`=? "
                 + "WHERE `id`=?;",
                 customer.getRef(),
                 customer.getNumber(),
                 customer.getName(),
                 customer.getFullname(),
                 customer.getEmail(),
+                customer.getBallance(),
                 customer.getId());
         saveDetail(customer);
         LOG.info("update customer " + customer);
@@ -148,15 +143,6 @@ public class CustomerDaoImpl implements CustomerDao {
             customer.getPayList1().stream().forEach(date -> {
                 jdbcTemplate.update(
                         "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 1, ?)",
-                        customer.getId(),
-                        date
-                );
-            });
-        }
-        if (customer.getPayList2() != null) {
-            customer.getPayList2().stream().forEach(date -> {
-                jdbcTemplate.update(
-                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 2, ?)",
                         customer.getId(),
                         date
                 );

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,12 +21,10 @@ public class Customer {
     private String fullname;
     private String email;
     private String pass;
+    private Float ballance;
     @JsonDeserialize(as = LinkedList.class, contentAs = Date.class, contentUsing = JsonDateDeserializer.class)
     @JsonSerialize(as = LinkedList.class, contentAs = Date.class, contentUsing = JsonDateSerializer.class)
     private List<Date> payList1;
-    @JsonDeserialize(as = LinkedList.class, contentAs = Date.class, contentUsing = JsonDateDeserializer.class)
-    @JsonSerialize(as = LinkedList.class, contentAs = Date.class, contentUsing = JsonDateSerializer.class)
-    private List<Date> payList2;
     @JsonDeserialize(as = LinkedList.class, contentAs = Date.class, contentUsing = JsonDateDeserializer.class)
     @JsonSerialize(as = LinkedList.class, contentAs = Date.class, contentUsing = JsonDateSerializer.class)
     private List<Date> payList3;
@@ -48,7 +48,6 @@ public class Customer {
     public Customer(Long id) {
         this.id = id;
         payList1 = new LinkedList<>();
-        payList2 = new LinkedList<>();
         payList3 = new LinkedList<>();
         payList4 = new LinkedList<>();
     }
@@ -109,20 +108,20 @@ public class Customer {
         this.pass = pass;
     }
 
+    public Float getBallance() {
+        return ballance;
+    }
+
+    public void setBallance(Float ballance) {
+        this.ballance = (float) new BigDecimal(ballance).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
     public List<Date> getPayList1() {
         return payList1;
     }
 
     public void setPayList1(List<Date> payList1) {
         this.payList1 = payList1;
-    }
-
-    public List<Date> getPayList2() {
-        return payList2;
-    }
-
-    public void setPayList2(List<Date> payList2) {
-        this.payList2 = payList2;
     }
 
     public List<Date> getPayList3() {
