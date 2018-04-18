@@ -9,7 +9,7 @@ public class CustomerFactoryImpl implements BasicFactory<Customer> {
 
     @Override
     public Customer factory(ResultSet set) throws SQLException {
-        Customer customer = new Customer(set.getLong("id"));
+        Customer customer = new Customer(set.getLong("id_local"));
         customer.setRef(set.getString("ref"));
         customer.setNumber(set.getString("number"));
         customer.setName(set.getString("name"));

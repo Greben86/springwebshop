@@ -10,6 +10,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -113,9 +114,13 @@ public class CustomerDaoImpl implements CustomerDao {
                 customer.getName(),
                 customer.getFullname(),
                 customer.getEmail(),
-                customer.getPass(), 
+                customer.getPass(),
                 customer.getBallance());
-        saveDetail(customer);
+        try {
+            saveDetail(findByEmail(customer.getEmail()));
+        } catch (EmptyResultDataAccessException e) {
+
+        }
         LOG.info("create customer " + customer);
     }
 
@@ -123,7 +128,7 @@ public class CustomerDaoImpl implements CustomerDao {
     public void update(Customer customer) {
         jdbcTemplate.update(
                 "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=?, `ballance`=? "
-                + "WHERE `id`=?;",
+                + "WHERE `id_local`=?;",
                 customer.getRef(),
                 customer.getNumber(),
                 customer.getName(),
@@ -136,35 +141,37 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     private void saveDetail(Customer customer) {
-        jdbcTemplate.update(
-                "DELETE FROM `pay_detail` WHERE `customer_id`=?",
-                customer.getId());
-        if (customer.getPayList1() != null) {
-            customer.getPayList1().stream().forEach(date -> {
-                jdbcTemplate.update(
-                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 1, ?)",
-                        customer.getId(),
-                        date
-                );
-            });
-        }
-        if (customer.getPayList3() != null) {
-            customer.getPayList3().stream().forEach(date -> {
-                jdbcTemplate.update(
-                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 3, ?)",
-                        customer.getId(),
-                        date
-                );
-            });
-        }
-        if (customer.getPayList4() != null) {
-            customer.getPayList4().stream().forEach(date -> {
-                jdbcTemplate.update(
-                        "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 4, ?)",
-                        customer.getId(),
-                        date
-                );
-            });
+        if (customer != null) {
+            jdbcTemplate.update(
+                    "DELETE FROM `pay_detail` WHERE `customer_id`=?",
+                    customer.getId());
+            if (customer.getPayList1() != null) {
+                customer.getPayList1().stream().forEach(date -> {
+                    jdbcTemplate.update(
+                            "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 1, ?)",
+                            customer.getId(),
+                            date
+                    );
+                });
+            }
+            if (customer.getPayList3() != null) {
+                customer.getPayList3().stream().forEach(date -> {
+                    jdbcTemplate.update(
+                            "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 3, ?)",
+                            customer.getId(),
+                            date
+                    );
+                });
+            }
+            if (customer.getPayList4() != null) {
+                customer.getPayList4().stream().forEach(date -> {
+                    jdbcTemplate.update(
+                            "INSERT INTO `pay_detail` (`customer_id`, `program_id`, `date_pay`) VALUES (?, 4, ?)",
+                            customer.getId(),
+                            date
+                    );
+                });
+            }
         }
     }
 
