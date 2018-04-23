@@ -140,5 +140,5 @@ public class AppConfig {
 //        public Analyzer standardAnalyzer() {
 //            Analyzer analyzer = new RussianAnalyzer();
 //            return analyzer;
-//        }
+//        }    
 }

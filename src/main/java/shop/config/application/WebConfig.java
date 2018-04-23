@@ -13,15 +13,15 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan({"shop.config", "shop.controller", "shop.rest", "shop.model", "shop.service"})
 public class WebConfig extends WebMvcConfigurerAdapter {
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
-        viewResolver.setContentType("text/html; charset=utf-8");
-        return viewResolver; 
-    }
+//    @Bean
+//    public InternalResourceViewResolver viewResolver() {
+//        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//        viewResolver.setViewClass(JstlView.class);
+//        viewResolver.setPrefix("/WEB-INF/views/");
+//        viewResolver.setSuffix(".jsp");
+//        viewResolver.setContentType("text/html; charset=utf-8");
+//        return viewResolver; 
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
