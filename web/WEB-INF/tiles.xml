@@ -6,25 +6,29 @@
 <tiles-definitions>  
  
     <!-- Base Define -->
-    <definition name="base.definition" 
-        template="/WEB-INF/layouts/classic.jsp">
-        <put-attribute name="title" value="test" />  
-        <put-attribute name="header" value="/WEB-INF/basefragments/_header.jsp" />  
-        <put-attribute name="menu" value="/WEB-INF/basefragments/_menu.jsp" />  
-        <put-attribute name="body" value="" />
-        <put-attribute name="footer" value="/WEB-INF/basefragments/_footer.jsp" />  
+    <definition name="admin.definition" template="/WEB-INF/layouts/admin.jsp">
+        <put-attribute name="title" value="Админка" />
+        <put-attribute name="body" value="" /> 
     </definition>
  
-    <!-- Home Page  -->
-    <definition name="homePage" extends="base.definition">
-        <put-attribute name="title" value="Home Page" />
-        <put-attribute name="body" value="/WEB-INF/views/_home.jsp" />
+    <!-- Заявки  -->
+    <definition name="admin.requests" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/_requests.jsp" />
     </definition>
        
-    <!-- ContactUs Page -->
-    <definition name="contactusPage" extends="base.definition">
-        <put-attribute name="title" value="Contact Us" />
-        <put-attribute name="body" value="/WEB-INF/views/_contactus.jsp" />
+    <!-- Программы -->
+    <definition name="admin.programs" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/_programs.jsp" />
+    </definition>
+    
+    <!-- Партнеры -->
+    <definition name="admin.partners" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/_partners.jsp" />
+    </definition>
+    
+    <!-- Промо-акции -->
+    <definition name="admin.promos" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/_promos.jsp" />
     </definition>
    
 </tiles-definitions> 
