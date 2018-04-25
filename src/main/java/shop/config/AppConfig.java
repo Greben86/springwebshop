@@ -128,6 +128,12 @@ public class AppConfig {
     public GoodDao goodDao() {
         return new GoodDaoImpl(new GoodFactoryImpl());
     }
+    
+    @Bean
+    @Scope("singleton")
+    public RequestDao requestDao() {
+        return new RequestDaoImpl();
+    }
 
     @Bean
     @Scope("request")
