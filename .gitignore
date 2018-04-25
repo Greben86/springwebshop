@@ -4,3 +4,5 @@
 /.vscode/*
 /target/* 
 /target/
+/nb-configuration.xml
+/nbactions.xml

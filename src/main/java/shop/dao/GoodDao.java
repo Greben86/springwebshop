@@ -4,6 +4,13 @@ import shop.entity.Good;
 import java.util.List;
 
 public interface GoodDao extends BasicDao<Good> {
+    
+    /**
+     * Update or insert entity
+     * @param enetity - entity
+     */
+    Good updateOrInsert(Good good);
+    
     /**
      * Update list good
      * @param list - list good

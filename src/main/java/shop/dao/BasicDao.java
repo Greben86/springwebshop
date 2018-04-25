@@ -16,14 +16,20 @@ public interface BasicDao<T> {
     T findById(Long id);
 
     /**
-     * Update or insert entity
+     * Insert entity
      * @param enetity - entity
      */
-    T updateOrInsert(T entity);
+    void create(T entity);
+    
+    /**
+     * Update entity
+     * @param enetity - entity
+     */
+    void update(T entity);
 
     /**
      * Delete entity
-     * @param entity - entity
+     * @param id - primary key entity
      */
-    T delete(T entity);
+    void delete(Long id);
 }

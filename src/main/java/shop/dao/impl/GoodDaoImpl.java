@@ -12,16 +12,18 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.apache.log4j.Logger; 
+import org.apache.log4j.Logger;
 
 public class GoodDaoImpl implements GoodDao {
+
     private static final Logger LOG = Logger.getLogger(GoodDaoImpl.class);
     private BasicFactory<Good> basicFactory;
     @Autowired
     private DriverManagerDataSource dataSource;
 
-    private GoodDaoImpl() {}
-    
+    private GoodDaoImpl() {
+    }
+
     public GoodDaoImpl(BasicFactory<Good> basicFactory) {
         this.basicFactory = basicFactory;
     }
@@ -29,8 +31,8 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public List<Good> getList(String filter) {
         try (
-			Connection connection = dataSource.getConnection();
-			Statement stmt = connection.createStatement()) {
+                Connection connection = dataSource.getConnection();
+                Statement stmt = connection.createStatement()) {
 
             StringBuilder sb = new StringBuilder("SELECT * FROM `goods` ");
             if (!filter.equals("")) {
@@ -39,46 +41,46 @@ public class GoodDaoImpl implements GoodDao {
             sb.append("ORDER BY `name` ASC;");
 
             ResultSet rs = stmt.executeQuery(sb.toString());
-            
+
             List<Good> result = new LinkedList<Good>();
             while (rs.next()) {
-                result.add(basicFactory.factory(rs));                   
+                result.add(basicFactory.factory(rs));
             }
-			return result;
-		} catch (SQLException e) {
-			return null;
-		}
+            return result;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     @Override
     public Good findById(Long id) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM `goods` WHERE `id`=?;");) {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM `goods` WHERE `id`=?;");) {
 
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 return basicFactory.factory(rs);
             } else {
                 return null;
-            }            
-		} catch (SQLException e) {
-			return null;
-		}
+            }
+        } catch (SQLException e) {
+            return null;
+        }
     }
-    
+
     @Override
-    public Good updateOrInsert(Good entity) { 
-        String sql = "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "+
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "+
-            "ON DUPLICATE KEY UPDATE "+
-            "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';";
+    public Good updateOrInsert(Good entity) {
+        String sql = "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "
+                + "ON DUPLICATE KEY UPDATE "
+                + "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';";
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);) {
-            
+                Connection connection = dataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);) {
+
             ps.setLong(1, entity.getId());
             ps.setLong(2, entity.getOwner());
             ps.setString(3, entity.getFolder() ? "T" : "F");
@@ -87,7 +89,7 @@ public class GoodDaoImpl implements GoodDao {
             ps.setString(6, entity.getArticle());
             ps.setFloat(7, entity.getPrice());
             ps.setFloat(8, entity.getInstock());
-            
+
             ps.setLong(9, entity.getOwner());
             ps.setString(10, entity.getName());
             ps.setString(11, entity.getDescription());
@@ -106,14 +108,14 @@ public class GoodDaoImpl implements GoodDao {
 
     @Override
     public String updateList(List<Good> list) {
-        String sql = "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "+
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "+
-            "ON DUPLICATE KEY UPDATE "+
-            "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';";
+        String sql = "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "
+                + "ON DUPLICATE KEY UPDATE "
+                + "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';";
         try (
-			Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);) {
-            
+                Connection connection = dataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);) {
+
             connection.setAutoCommit(false);
             for (Good entity : list) {
                 ps.setLong(1, entity.getId());
@@ -124,7 +126,7 @@ public class GoodDaoImpl implements GoodDao {
                 ps.setString(6, entity.getArticle());
                 ps.setFloat(7, entity.getPrice());
                 ps.setFloat(8, entity.getInstock());
-                
+
                 ps.setLong(9, entity.getOwner());
                 ps.setString(10, entity.getName());
                 ps.setString(11, entity.getDescription());
@@ -133,32 +135,40 @@ public class GoodDaoImpl implements GoodDao {
                 ps.setFloat(14, entity.getInstock());
 
                 ps.executeUpdate();
-                
+
                 LOG.info("update good " + entity);
             }
             connection.commit();
-            LOG.info("commit for goods");     
+            LOG.info("commit for goods");
 
-			return "Uploaded " + list.size() + " goods succesful";
-		} catch (SQLException e) {
+            return "Uploaded " + list.size() + " goods succesful";
+        } catch (SQLException e) {
             LOG.error("something going wrong " + e);
-			return e.getMessage();
-		}
+            return e.getMessage();
+        }
     }
-    
+
     @Override
-    public Good delete(Good entity) {
+    public void delete(Long id) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement("DELETE FROM `goods` WHERE `id`=?;");) {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement("DELETE FROM `goods` WHERE `id`=?;");) {
 
-            ps.setLong(1, new Long(entity.getId()));
+            ps.setLong(1, id);
             ps.execute();
-            LOG.info("delete good " + entity);
 
-			return entity;
-		} catch (SQLException e) {
-			return entity;
-		}
+        } catch (SQLException e) {
+            
+        }
+    }
+
+    @Override
+    public void create(Good entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void update(Good entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

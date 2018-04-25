@@ -64,9 +64,9 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="${pageContext.request.contextPath}/admin/requests">Заявки</a></li>
-                        <li><a href="${pageContext.request.contextPath}/admin/programs">Программы</a></li>
                         <li><a href="${pageContext.request.contextPath}/admin/partners">Партнеры</a></li>
                         <li><a href="${pageContext.request.contextPath}/admin/promos">Промо-акции</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/news">Новости</a></li>
                         <li><a href="${pageContext.request.contextPath}/logout">Выйти</a></li>
                     </ul>
                 </div>

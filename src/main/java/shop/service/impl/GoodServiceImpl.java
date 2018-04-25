@@ -34,7 +34,7 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public Boolean delete(Good good) {
         if (good != null) {
-            goodDao.delete(good);
+            goodDao.delete(good.getId());
             return true;
         } else {
             return false;

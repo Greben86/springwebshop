@@ -80,64 +80,39 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer updateOrInsert(Customer entity) {
+    public void create(Customer entity) {
         jdbcTemplate.update(
-                "INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `ballance`, `deletionmark`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "
-                + "ON DUPLICATE KEY UPDATE "
-                + "`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `ballance`=?, `deletionmark`='F'",
-                entity.getId(),
+                "INSERT INTO `customers` (`ref`, `number`, `name`, `fullname`, `email`, `pass`, `ballance`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);",
                 entity.getRef(),
                 entity.getNumber(),
                 entity.getName(),
                 entity.getFullname(),
                 entity.getEmail(),
                 entity.getPass(),
-                entity.getBallance(),
+                entity.getBallance());
+        try {
+            saveDetail(findByEmail(entity.getEmail()));
+        } catch (EmptyResultDataAccessException e) {
+
+        }
+        LOG.info("create customer " + entity);
+    }
+
+    @Override
+    public void update(Customer entity) {
+        jdbcTemplate.update(
+                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=?, `ballance`=? "
+                + "WHERE `id_local`=?;",
+                entity.getRef(),
                 entity.getNumber(),
                 entity.getName(),
                 entity.getFullname(),
                 entity.getEmail(),
-                entity.getPass(),
-                entity.getBallance());
+                entity.getBallance(),
+                entity.getId());
+        saveDetail(entity);
         LOG.info("update customer " + entity);
-        return entity;
-    }
-
-    @Override
-    public void create(Customer customer) {
-        jdbcTemplate.update(
-                "INSERT INTO `customers` (`ref`, `number`, `name`, `fullname`, `email`, `pass`, `ballance`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?);",
-                customer.getRef(),
-                customer.getNumber(),
-                customer.getName(),
-                customer.getFullname(),
-                customer.getEmail(),
-                customer.getPass(),
-                customer.getBallance());
-        try {
-            saveDetail(findByEmail(customer.getEmail()));
-        } catch (EmptyResultDataAccessException e) {
-
-        }
-        LOG.info("create customer " + customer);
-    }
-
-    @Override
-    public void update(Customer customer) {
-        jdbcTemplate.update(
-                "UPDATE `customers` SET `ref`=?, `number`=?, `name`=?, `fullname`=?, `email`=?, `ballance`=? "
-                + "WHERE `id_local`=?;",
-                customer.getRef(),
-                customer.getNumber(),
-                customer.getName(),
-                customer.getFullname(),
-                customer.getEmail(),
-                customer.getBallance(),
-                customer.getId());
-        saveDetail(customer);
-        LOG.info("update customer " + customer);
     }
 
     private void saveDetail(Customer customer) {
@@ -174,6 +149,30 @@ public class CustomerDaoImpl implements CustomerDao {
             }
         }
     }
+    
+    public Customer updateOrInsert(Customer entity) {
+        jdbcTemplate.update(
+                "INSERT INTO `customers` (`id`, `ref`, `number`, `name`, `fullname`, `email`, `pass`, `ballance`, `deletionmark`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "
+                + "ON DUPLICATE KEY UPDATE "
+                + "`number`=?, `name`=?, `fullname`=?, `email`=?, `pass`=?, `ballance`=?, `deletionmark`='F'",
+                entity.getId(),
+                entity.getRef(),
+                entity.getNumber(),
+                entity.getName(),
+                entity.getFullname(),
+                entity.getEmail(),
+                entity.getPass(),
+                entity.getBallance(),
+                entity.getNumber(),
+                entity.getName(),
+                entity.getFullname(),
+                entity.getEmail(),
+                entity.getPass(),
+                entity.getBallance());
+        LOG.info("update customer " + entity);
+        return entity;
+    }
 
     @Override
     public String updateList(List<Customer> list) {
@@ -182,10 +181,8 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer delete(Customer entity) {
-        jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;",
-                entity.getId());
-        return entity;
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;", id);
     }
 
     @Override

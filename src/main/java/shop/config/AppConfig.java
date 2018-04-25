@@ -106,36 +106,6 @@ public class AppConfig {
     }
 
     @Bean
-    @Scope("singleton")
-    public CustomerService customerService() {
-        return new CustomerServiceImpl();
-    }
-
-    @Bean
-    @Scope("singleton")
-    public CustomerDao customerDao() {
-        return new CustomerDaoImpl(new CustomerFactoryImpl());
-    }
-
-    @Bean
-    @Scope("singleton")
-    public GoodService goodService() {
-        return new GoodServiceImpl();
-    }
-
-    @Bean
-    @Scope("singleton")
-    public GoodDao goodDao() {
-        return new GoodDaoImpl(new GoodFactoryImpl());
-    }
-    
-    @Bean
-    @Scope("singleton")
-    public RequestDao requestDao() {
-        return new RequestDaoImpl();
-    }
-
-    @Bean
     @Scope("request")
     public Search search() {
         return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));

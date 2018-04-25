@@ -11,7 +11,8 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"shop.config", "shop.controller", "shop.rest", "shop.model", "shop.service"})
+//@ComponentScan({"shop.config", "shop.controller", "shop.rest", "shop.model", "shop.service"})
+@ComponentScan("shop.*")
 public class WebConfig extends WebMvcConfigurerAdapter {
 //    @Bean
 //    public InternalResourceViewResolver viewResolver() {

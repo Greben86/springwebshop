@@ -56,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Boolean delete(Customer customer) {
         if (customer != null) {
-            customerDao.delete(customer);
+            customerDao.delete(customer.getId());
             return true;
         } else {
             return false;

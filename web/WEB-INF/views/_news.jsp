@@ -1,10 +1,10 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<h1 class="page-header">Промо-акции</h1>
+<h1 class="page-header">Новости</h1>
 
-<a href="#" class="btn btn-default">
+<a href="${pageContext.request.contextPath}/admin/news/add" class="btn btn-default">
     <span class="glyphicon glyphicon-plus"></span>
-    Новая промо-акция
+    Добавить новость
 </a>
 
 <table class="table table-striped">
@@ -14,23 +14,23 @@
     <caption></caption>
     <thead>
         <tr>
-            <th>Название</th>
+            <th>Заголовок</th>
             <th>#</th>
             <th>#</th>
         </tr>
     </thead>
     <tbody>
-        <c:forEach items="${promos}" var="item">
-            <tr>        
-                <td>${item.name}</td>
+        <c:forEach items="${news}" var="item">
+            <tr>
+                <td>${item.title}</td>
                 <td>
-                    <a href="#" class="btn btn-primary">
+                    <a href="${pageContext.request.contextPath}/admin/news/edit/${item.id}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-pencil"></span>
                         Редактировать
                     </a>
                 </td>
                 <td>
-                    <a href="#" class="btn btn-danger">
+                    <a href="${pageContext.request.contextPath}/admin/news/delete/${item.id}" class="btn btn-danger">
                         <span class="glyphicon glyphicon-remove"></span>
                         Удалить
                     </a>

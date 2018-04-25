@@ -11,10 +11,6 @@ public interface CustomerDao extends BasicDao<Customer> {
     
     public Customer findByEmail(String email);
     
-    public void create(Customer customer);
-    
-    public void update(Customer customer);
-    
     public void updatePass(Customer customer, String pass);
     
     /**

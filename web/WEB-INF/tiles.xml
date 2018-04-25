@@ -15,11 +15,6 @@
     <definition name="admin.requests" extends="admin.definition">
         <put-attribute name="body" value="/WEB-INF/views/_requests.jsp" />
     </definition>
-       
-    <!-- Программы -->
-    <definition name="admin.programs" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/_programs.jsp" />
-    </definition>
     
     <!-- Партнеры -->
     <definition name="admin.partners" extends="admin.definition">
@@ -29,6 +24,16 @@
     <!-- Промо-акции -->
     <definition name="admin.promos" extends="admin.definition">
         <put-attribute name="body" value="/WEB-INF/views/_promos.jsp" />
+    </definition>
+    
+    <!-- Новости -->
+    <definition name="admin.news" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/_news.jsp" />
+    </definition>
+    
+    <!-- Редактор новостей -->
+    <definition name="admin.news.edit" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/_news_edit.jsp" />
     </definition>
    
 </tiles-definitions> 
