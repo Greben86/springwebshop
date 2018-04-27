@@ -7,6 +7,7 @@ public class News {
     private Long id;
     private String title;
     private String body;
+    private String filename;
     private Date date;
     private Boolean enabled;
 
@@ -32,6 +33,14 @@ public class News {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Date getDate() {

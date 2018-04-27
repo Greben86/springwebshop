@@ -16,7 +16,7 @@ public class PartnerDaoImpl implements PartnerDao {
     private BasicFactory<Partner> partnerFactory;
 
     @Override
-    public List<Partner> getList(String filter) {
+    public List<Partner> getList() {
         List<Partner> result = jdbcTemplate.query(
                 "SELECT * FROM `partners`",
                 (ResultSet rs, int rowNum) -> partnerFactory.factory(rs));

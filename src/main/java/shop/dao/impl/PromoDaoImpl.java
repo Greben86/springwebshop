@@ -16,7 +16,7 @@ public class PromoDaoImpl implements PromoDao {
     private BasicFactory<Promo> promoFactory;
 
     @Override
-    public List<Promo> getList(String filter) {
+    public List<Promo> getList() {
         List<Promo> result = jdbcTemplate.query(
                 "SELECT * FROM `promos`",
                 (ResultSet rs, int rowNum) -> promoFactory.factory(rs));

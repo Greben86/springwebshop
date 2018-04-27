@@ -16,7 +16,7 @@ public class NewsDaoImpl implements NewsDao {
     private BasicFactory<News> newsFactory;
 
     @Override
-    public List<News> getList(String filter) {
+    public List<News> getList() {
         return jdbcTemplate.query(
                 "SELECT * FROM `news` ORDER BY `date` DESC;",
                 (ResultSet rs, int rowNum) -> newsFactory.factory(rs));
@@ -25,33 +25,34 @@ public class NewsDaoImpl implements NewsDao {
     @Override
     public News findById(Long id) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM `news` WHERE `id`=?;", 
-                (ResultSet rs, int rowNum) -> newsFactory.factory(rs), 
+                "SELECT * FROM `news` WHERE `id`=?;",
+                (ResultSet rs, int rowNum) -> newsFactory.factory(rs),
                 id);
     }
 
     @Override
     public void create(News entity) {
         jdbcTemplate.update(
-                "INSERT INTO `news` (`title`, `body`, `date`, `enabled`) "
-                + "VALUES (?, ?, ?, ?);",
+                "INSERT INTO `news` (`title`, `body`, `filename`, `date`, `enabled`) "
+                + "VALUES (?, ?, ?, current_timestamp, ?);",
                 entity.getTitle(),
                 entity.getBody(),
-                entity.getDate(),
+                entity.getFilename(),
                 entity.getEnabled());
     }
 
     @Override
     public void update(News entity) {
         jdbcTemplate.update(
-                "INSERT INTO `news` (`title`, `body`, `date`, `enabled`) "
-                + "VALUES (?, ?, ?, ?);",
+                "UPDATE `news` SET `title`=?, `body`=?, `filename`=?, `enabled`=? "
+                + "WHERE `id`=?;",
                 entity.getTitle(),
                 entity.getBody(),
-                entity.getDate(),
-                entity.getEnabled());
+                entity.getFilename(),
+                entity.getEnabled(),
+                entity.getId());
     }
-    
+
     @Override
     public void delete(Long id) {
         jdbcTemplate.update("DELETE FROM `news` WHERE `id`=?;", id);

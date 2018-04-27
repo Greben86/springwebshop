@@ -8,12 +8,14 @@
 </a>
 
 <table class="table table-striped">
-    <col width="70%">
+    <col width="15%">
+    <col width="55%">
     <col width="15%">
     <col width="15%">
     <caption></caption>
     <thead>
         <tr>
+            <th>Дата</th>
             <th>Заголовок</th>
             <th>#</th>
             <th>#</th>
@@ -22,6 +24,7 @@
     <tbody>
         <c:forEach items="${news}" var="item">
             <tr>
+                <td>${item.date}</td>
                 <td>${item.title}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/admin/news/edit/${item.id}" class="btn btn-primary">

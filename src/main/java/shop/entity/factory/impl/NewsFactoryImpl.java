@@ -13,6 +13,7 @@ public class NewsFactoryImpl implements BasicFactory<News> {
         news.setId(set.getLong("id"));
         news.setTitle(set.getString("title"));
         news.setBody(set.getString("body"));
+        news.setFilename(set.getString("filename"));
         news.setDate(set.getDate("date"));
         news.setEnabled(set.getBoolean("enabled"));
         return news;

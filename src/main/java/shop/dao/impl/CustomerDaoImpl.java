@@ -29,11 +29,9 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public List<Customer> getList(String filter) {
+    public List<Customer> getList() {
         List<Customer> result = jdbcTemplate.query(
-                "SELECT * FROM `customers` "
-                + (filter.equals("") ? "" : "WHERE " + filter)
-                + "ORDER BY name ASC;",
+                "SELECT * FROM `customers` ORDER BY `name` ASC;",
                 (ResultSet rs, int rowNum) -> basicFactory.factory(rs));
         result.stream().forEach(item -> readPayDetail(item));
         return result;

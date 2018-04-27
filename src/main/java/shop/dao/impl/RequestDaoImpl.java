@@ -16,7 +16,7 @@ public class RequestDaoImpl implements RequestDao {
     private BasicFactory<RequestToAppend> requestFactory;
 
     @Override
-    public List<RequestToAppend> getList(String filter) {
+    public List<RequestToAppend> getList() {
         List<RequestToAppend> result = jdbcTemplate.query(
                 "SELECT * FROM `requests` ORDER BY date_doc DESC;",
                 (ResultSet rs, int rowNum) -> requestFactory.factory(rs));

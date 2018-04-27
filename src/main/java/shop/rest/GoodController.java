@@ -20,66 +20,67 @@ import shop.service.GoodService;
 @RestController
 @RequestMapping("/goods")
 public class GoodController {
-	final private GoodService goodService;
+
+    final private GoodService goodService;
     @Autowired
     private VerificationRequest verificationRequest;
     @Autowired
     private ImageControl imageControl;
-	
-	@Autowired
+
+    @Autowired
     public GoodController(GoodService goodService) {
         this.goodService = goodService;
     }
 
-    @RequestMapping(value="/uploadimg", method=RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/uploadimg", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String provideUploadInfo() {
         return "GET not supported for upload image";
     }
-    
-    @RequestMapping(value = "/uploadimg/{id}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+
+    @RequestMapping(value = "/uploadimg/{id}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String uploadImg(@PathVariable("id") String id,
-                            @RequestParam(value="key", required=false) String key, 
-                            @RequestParam(value="file", required=false) MultipartFile file) {
-        if (verificationRequest.verify(key)){
+            @RequestParam(value = "key", required = false) String key,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+        if (verificationRequest.verify(key)) {
             Good good = goodService.getById(Long.parseLong(id));
-            if (good!=null) {
-                try(InputStream is = file.getInputStream();) {
+            if (good != null) {
+                try (InputStream is = file.getInputStream();) {
                     return "You " + (imageControl.saveFile(good.getFilename(), is) ? "successfully" : "failed") + " uploaded file=" + good.getFilename();
                 } catch (IOException e) {
                     return e.getMessage();
                 }
             } else {
-                return "Save image is fail, good ("+id+") not exist";
-            }            
+                return "Save image is fail, good (" + id + ") not exist";
+            }
         } else {
             return "Acces denied";
         }
     }
 
-    @RequestMapping(value = "/clearimg/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value = "/clearimg/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String clearImg(@PathVariable("id") String id,
-                           @RequestParam(value="key", required=false) String key) {
-        if (verificationRequest.verify(key)){
+            @RequestParam(value = "key", required = false) String key) {
+        if (verificationRequest.verify(key)) {
             Good good = goodService.getById(Long.parseLong(id));
-            if (good!=null) {
-                return "Clear image "+good.getFilename()+(imageControl.removeFile(good.getFilename())?" is Ok":" is Fail");
+            if (good != null) {
+                return "Clear image " + good.getFilename() + (imageControl.removeFile(good.getFilename()) ? " is Ok" : " is Fail");
             } else {
-                return "Clear image is fail, good ("+id+") not exist";
-            }            
+                return "Clear image is fail, good (" + id + ") not exist";
+            }
         } else {
             return "Acces denied";
         }
     }
 
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String updateInfo(){
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    public String updateInfo() {
         return "GET not supported for update good";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
-    public String update(@RequestParam(value="key", required=false) String key, @RequestBody Good good){
+    @RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public String update(@RequestParam(value = "key", required = false) String key, @RequestBody Good good) {
         if (verificationRequest.verify(key)) {
-            return "Update good "+good+(goodService.updateOrInsert(good)?" is Ok":" is Fail");
+            return "Update good " + good + (goodService.updateOrInsert(good) ? " is Ok" : " is Fail");
         } else {
             return "Acces denied";
         }
@@ -91,21 +92,21 @@ public class GoodController {
     }
 
     @RequestMapping(value = "/updatelist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String updateList(@RequestParam(value="key", required=false) String key, @RequestBody List<Good> list){
+    public String updateList(@RequestParam(value = "key", required = false) String key, @RequestBody List<Good> list) {
         if (verificationRequest.verify(key)) {
-            return "Uploaded "+list.size()+" goods "+(goodService.updateList(list)?"succesful":"unsuccesful");
+            return "Uploaded " + list.size() + " goods " + (goodService.updateList(list) ? "succesful" : "unsuccesful");
         } else {
             return "Acces denied";
         }
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE+";charset=UTF-8")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String deleteById(@PathVariable("id") String id,
-                             @RequestParam(value="key", required=false) String key){ 
+            @RequestParam(value = "key", required = false) String key) {
         if (verificationRequest.verify(key)) {
             Good good = goodService.getById(Long.parseLong(id));
-            if (goodService.delete(good)) {                
-                return "Delete good "+good+" is Ok; "+imageControl.removeFile(good.getFilename());
+            if (goodService.delete(good)) {
+                return "Delete good " + good + " is Ok; " + imageControl.removeFile(good.getFilename());
             } else {
                 return "Delete good is Fail";
             }
@@ -132,10 +133,10 @@ public class GoodController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     public byte[] getImage(@PathVariable("id") String id) {
         Good good = goodService.getById(Long.parseLong(id));
-        if (good!=null) {
+        if (good != null) {
             return imageControl.readFile(good.getFilename(), good.getFolder() ? "noimagefolder.png" : "noimagegood.png");
         } else {
             return null;
-        }        
+        }
     }
 }

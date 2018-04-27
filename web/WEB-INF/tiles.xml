@@ -28,12 +28,12 @@
     
     <!-- Новости -->
     <definition name="admin.news" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/_news.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/news/_news.jsp" />
     </definition>
     
     <!-- Редактор новостей -->
     <definition name="admin.news.edit" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/_news_edit.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/news/_news_edit.jsp" />
     </definition>
    
 </tiles-definitions> 
