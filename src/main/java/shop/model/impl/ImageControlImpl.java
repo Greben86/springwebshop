@@ -23,8 +23,19 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
+    public File getDirectory() {
+        return new File(path);
+    }
+
+    @Override
     public Boolean saveFile (String filename, InputStream stream) {
-        try (FileOutputStream fos = new FileOutputStream(path + filename);) {
+        File file = new File(path + filename);
+        return saveFile(file, stream);
+    }
+    
+    @Override
+    public Boolean saveFile (File file, InputStream stream) {
+        try (FileOutputStream fos = new FileOutputStream(file);) {
             byte[] bytes = new byte[1024];
             int read = 0;
             while ((read = stream.read(bytes)) != -1) {

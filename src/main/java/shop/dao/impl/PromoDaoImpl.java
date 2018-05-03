@@ -9,38 +9,44 @@ import shop.entity.Promo;
 import shop.entity.factory.BasicFactory;
 
 public class PromoDaoImpl implements PromoDao {
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired 
+    @Autowired
     private BasicFactory<Promo> promoFactory;
 
     @Override
     public List<Promo> getList() {
-        List<Promo> result = jdbcTemplate.query(
-                "SELECT * FROM `promos`",
+        return jdbcTemplate.query(
+                "SELECT * FROM `promos` ORDER BY `name` ASC;",
                 (ResultSet rs, int rowNum) -> promoFactory.factory(rs));
-        return result;
     }
 
     @Override
     public Promo findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM `promos` WHERE `id`=?;",
+                (ResultSet rs, int rowNum) -> promoFactory.factory(rs),
+                id);
     }
 
     @Override
     public void create(Promo entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(
+                "INSERT INTO `promos` (`name`) VALUES (?);", 
+                entity.getName());
     }
 
     @Override
     public void update(Promo entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(
+                "UPDATE `promos` SET `name`=? WHERE `id`=?;", 
+                entity.getName());
     }
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update("DELETE FROM `promos` WHERE `id`=?;", id);
     }
-    
+
 }

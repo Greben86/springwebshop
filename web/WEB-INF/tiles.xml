@@ -18,7 +18,12 @@
     
     <!-- Партнеры -->
     <definition name="admin.partners" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/_partners.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/partners/_partners.jsp" />
+    </definition>
+    
+    <!-- Редактор партнеров -->
+    <definition name="admin.partner.edit" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/partners/_partner_edit.jsp" />
     </definition>
     
     <!-- Промо-акции -->

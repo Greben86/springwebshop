@@ -9,38 +9,53 @@ import shop.entity.Partner;
 import shop.entity.factory.BasicFactory;
 
 public class PartnerDaoImpl implements PartnerDao {
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired 
+    @Autowired
     private BasicFactory<Partner> partnerFactory;
 
     @Override
     public List<Partner> getList() {
-        List<Partner> result = jdbcTemplate.query(
-                "SELECT * FROM `partners`",
+        return jdbcTemplate.query(
+                "SELECT * FROM `partners` ORDER BY `ordr` ASC;",
                 (ResultSet rs, int rowNum) -> partnerFactory.factory(rs));
-        return result;
     }
 
     @Override
     public Partner findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM `partners` WHERE `id`=?;",
+                (ResultSet rs, int rowNum) -> partnerFactory.factory(rs),
+                id);
     }
 
     @Override
     public void create(Partner entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(
+                "INSERT INTO `partners` (`note`, `link`, `discount`, `file`) VALUES (?, ?, ?, ?);",
+                entity.getNote(),
+                entity.getLink(),
+                entity.getDiscount(), 
+                entity.getFilename());
     }
 
     @Override
     public void update(Partner entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(
+                "UPDATE `partners` SET `note`=?, `link`=?, `discount`=?, `file`=?, `ordr`=? "
+                + "WHERE `id`=?;",
+                entity.getNote(),
+                entity.getLink(),
+                entity.getDiscount(),
+                entity.getFilename(),
+                entity.getOrdr(),
+                entity.getId());
     }
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update("DELETE FROM `partners` WHERE `id`=?;", id);
     }
-    
+
 }

@@ -14,6 +14,7 @@ public class PartnerFactoryImpl implements BasicFactory<Partner> {
         partner.setNote(set.getString("note"));
         partner.setLink(set.getString("link"));
         partner.setDiscount(set.getString("discount"));
+        partner.setFilename(set.getString("file"));
         partner.setOrdr(set.getInt("ordr"));
         return partner;
     }

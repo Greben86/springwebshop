@@ -6,6 +6,7 @@ public class Partner {
     private String note;
     private String link;
     private String discount;
+    private String filename;
     private Integer ordr;
 
     public Long getId() {
@@ -38,6 +39,14 @@ public class Partner {
 
     public void setDiscount(String discount) {
         this.discount = discount;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Integer getOrdr() {

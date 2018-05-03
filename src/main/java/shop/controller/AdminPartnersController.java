@@ -16,66 +16,66 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import shop.dao.NewsDao;
-import shop.entity.News;
+import shop.dao.PartnerDao;
+import shop.entity.Partner;
 import shop.model.ImageControl;
 
 @Controller
-@RequestMapping("/admin/news")
-public class AdminNewsController {
+@RequestMapping("/admin/partners")
+public class AdminPartnersController {
 
     @Autowired
-    private NewsDao newsDao;
+    private PartnerDao partnersDao;
     @Autowired
     private ImageControl imageControl;
 
     @GetMapping({"", "/"})
     public String getListPage(Model model) {
-        model.addAttribute("news", newsDao.getList());
-        return "admin.news";
+        model.addAttribute("partners", partnersDao.getList());
+        return "admin.partners";
     }
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
-        model.addAttribute("news", new News());
+        model.addAttribute("partner", new Partner());
         model.addAttribute("callback", "add");
-        return "admin.news.edit";
+        return "admin.partner.edit";
     }
 
     @PostMapping("/add")
-    public String add(News news,
+    public String add(Partner partner,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         if (file != null) {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("news", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("partner", ext, imageControl.getDirectory());
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {
-                    news.setFilename(tempFile.getName());
+                    partner.setFilename(tempFile.getName());
                 }
             } catch (IOException ex) {
                 Logger.getLogger(AdminNewsController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        newsDao.create(news);
-        return "redirect:/admin/news";
+        partnersDao.create(partner);
+        return "redirect:/admin/partners";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
-        News news = newsDao.findById(Long.parseLong(id));
-        model.addAttribute("news", news);
+        Partner partner = partnersDao.findById(Long.parseLong(id));
+        model.addAttribute("partner", partner);
         model.addAttribute("callback", "edit");
-        return "admin.news.edit";
+        return "admin.partner.edit";
     }
 
     @PostMapping("/edit")
-    public String update(News news,
+    public String update(Partner partner,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         if (file != null) {
-            imageControl.removeFile(news.getFilename());
+            imageControl.removeFile(partner.getFilename());
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
@@ -83,35 +83,34 @@ public class AdminNewsController {
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {
-                    news.setFilename(tempFile.getName());
+                    partner.setFilename(tempFile.getName());
                 }
             } catch (IOException ex) {
                 Logger.getLogger(AdminNewsController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        newsDao.update(news);
-        return "redirect:/admin/news";
+        partnersDao.update(partner);
+        return "redirect:/admin/partners";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable String id) {
-        News news = newsDao.findById(Long.parseLong(id));
-        if (news != null) {
-            imageControl.removeFile(news.getFilename());
-            newsDao.delete(news.getId());
+        Partner partner = partnersDao.findById(Long.parseLong(id));
+        if (partner != null) {
+            imageControl.removeFile(partner.getFilename());
+            partnersDao.delete(partner.getId());
         }
-        return "redirect:/admin/news";
+        return "redirect:/admin/partners";
     }
 
     @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseBody
     public byte[] getImage(@PathVariable("id") String id) {
-        News news = newsDao.findById(Long.parseLong(id));
-        if (news != null) {
-            return imageControl.readFile(news.getFilename(), "noimagegood.png");
+        Partner partner = partnersDao.findById(Long.parseLong(id));
+        if (partner != null) {
+            return imageControl.readFile(partner.getFilename(), "noimagegood.png");
         } else {
             return null;
         }
     }
-
 }

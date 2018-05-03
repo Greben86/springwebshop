@@ -17,30 +17,41 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<RequestToAppend> getList() {
-        List<RequestToAppend> result = jdbcTemplate.query(
-                "SELECT * FROM `requests` ORDER BY date_doc DESC;",
+        return jdbcTemplate.query(
+                "SELECT * FROM `requests` ORDER BY `date_doc` DESC;",
                 (ResultSet rs, int rowNum) -> requestFactory.factory(rs));
-        return result;
     }
 
     @Override
     public RequestToAppend findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM `requests` WHERE `id`=?;", 
+                (ResultSet rs, int rowNum) -> requestFactory.factory(rs),
+                id);
     }
 
     @Override
     public void create(RequestToAppend entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update("INSERT INTO `requests` (`date_doc`, `family`, `name`, `name2`, `fullname`, `email`, `phone`, `note`)"+
+                " VALUES (?,?,?,?,?,?,?,?);", 
+                entity.getDate(), 
+                entity.getFamily(),
+                entity.getName(),
+                entity.getName2(),
+                entity.getFullname(),
+                entity.getEmail(),
+                entity.getPhone(),
+                entity.getNote());
     }
 
     @Override
     public void update(RequestToAppend entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update("DELETE FROM `requests` WHERE `id`=?;", id);
     }
 
 }

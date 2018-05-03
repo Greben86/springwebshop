@@ -5,6 +5,7 @@
          enctype="multipart/form-data">
     <fieldset>
         <sf:hidden path="id" id="id"/>
+        <sf:hidden path="filename" id="filename"/>
 
         <div class="form-group">
             <label for="title" class="required">Заголовок</label>

@@ -1,15 +1,25 @@
 package shop.model;
 
+import java.io.File;
 import java.io.InputStream;
 
 public interface ImageControl {
 
+    File getDirectory();
+    
     /**
      * Save image into hard-disk
      * @param filename - name file
      * @param stream - file input stream
      */
     Boolean saveFile(String filename, InputStream stream);
+    
+    /**
+     * Save image into hard-disk
+     * @param file - file object
+     * @param stream - file input stream
+     */
+    Boolean saveFile(File file, InputStream stream);
 
     /**
      * Read image for hard-disk
