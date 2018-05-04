@@ -78,7 +78,7 @@
                 <br>
                 <br>
                 <br>
-                <tiles:insertAttribute name="body" />             
+                <tiles:insertAttribute name="body"/>
             </div>
         </div>        
         
