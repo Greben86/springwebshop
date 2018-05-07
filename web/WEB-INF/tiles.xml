@@ -3,8 +3,8 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
         
-<tiles-definitions>  
- 
+<tiles-definitions>
+
     <!-- Base Define -->
     <definition name="admin.definition" template="/WEB-INF/layouts/admin.jsp">
         <put-attribute name="title" value="Админка" />
@@ -13,32 +13,47 @@
  
     <!-- Заявки  -->
     <definition name="admin.requests" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/_requests.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/requests/_list.jsp" />
     </definition>
     
     <!-- Партнеры -->
     <definition name="admin.partners" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/partners/_partners.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/partners/_list.jsp" />
     </definition>
     
     <!-- Редактор партнеров -->
     <definition name="admin.partner.edit" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/partners/_partner_edit.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/partners/_edit.jsp" />
     </definition>
     
     <!-- Промо-акции -->
     <definition name="admin.promos" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/_promos.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/promos/_list.jsp" />
+    </definition>
+    
+    <!-- Редактор промо-акций -->
+    <definition name="admin.promo.edit" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/promos/_edit.jsp" />
     </definition>
     
     <!-- Новости -->
     <definition name="admin.news" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/news/_news.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/news/_list.jsp" />
     </definition>
     
     <!-- Редактор новостей -->
     <definition name="admin.news.edit" extends="admin.definition">
-        <put-attribute name="body" value="/WEB-INF/views/news/_news_edit.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/news/_edit.jsp" />
+    </definition>
+    
+    <!-- Истории успеха -->
+    <definition name="admin.tales" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/tales/_list.jsp" />
+    </definition>
+    
+    <!-- Редактор историй -->
+    <definition name="admin.tales.edit" extends="admin.definition">
+        <put-attribute name="body" value="/WEB-INF/views/tales/_edit.jsp" />
     </definition>
    
 </tiles-definitions> 

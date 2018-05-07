@@ -9,12 +9,14 @@ import shop.dao.NewsDao;
 import shop.dao.PartnerDao;
 import shop.dao.PromoDao;
 import shop.dao.RequestDao;
+import shop.dao.TaleDao;
 import shop.dao.impl.CustomerDaoImpl;
 import shop.dao.impl.GoodDaoImpl;
 import shop.dao.impl.PartnerDaoImpl;
 import shop.dao.impl.PromoDaoImpl;
 import shop.dao.impl.RequestDaoImpl;
 import shop.dao.impl.NewsDaoImpl;
+import shop.dao.impl.TaleDaoImpl;
 import shop.entity.factory.impl.CustomerFactoryImpl;
 import shop.entity.factory.impl.GoodFactoryImpl;
 
@@ -55,6 +57,12 @@ public class DaoConfig {
     @Scope("singleton")
     public NewsDao newsDao() {
         return new NewsDaoImpl();
+    }
+    
+    @Bean("taleDao")
+    @Scope("singleton")
+    public TaleDao taleDao() {
+        return new TaleDaoImpl();
     }
     
 }

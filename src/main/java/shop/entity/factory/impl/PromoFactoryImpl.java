@@ -12,6 +12,7 @@ public class PromoFactoryImpl implements BasicFactory<Promo> {
         Promo promo = new Promo();
         promo.setId(set.getLong("id"));
         promo.setName(set.getString("name"));
+        promo.setFilename(set.getString("filename"));
         return promo;
     }
     

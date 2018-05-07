@@ -67,6 +67,7 @@
                         <li><a href="${pageContext.request.contextPath}/admin/partners">Партнеры</a></li>
                         <li><a href="${pageContext.request.contextPath}/admin/promos">Промо-акции</a></li>
                         <li><a href="${pageContext.request.contextPath}/admin/news">Новости</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/tales">Истории успеха</a></li>
                         <li><a href="${pageContext.request.contextPath}/logout">Выйти</a></li>
                     </ul>
                 </div>

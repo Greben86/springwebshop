@@ -2,7 +2,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <h1 class="page-header">Промо-акции</h1>
 
-<a href="#" class="btn btn-default">
+<a href="${pageContext.request.contextPath}/admin/promos/add" class="btn btn-default">
     <span class="glyphicon glyphicon-plus"></span>
     Новая промо-акция
 </a>
@@ -21,16 +21,16 @@
     </thead>
     <tbody>
         <c:forEach items="${promos}" var="item">
-            <tr>        
+            <tr>
                 <td>${item.name}</td>
                 <td>
-                    <a href="#" class="btn btn-primary">
+                    <a href="${pageContext.request.contextPath}/admin/promos/edit/${item.id}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-pencil"></span>
                         Редактировать
                     </a>
                 </td>
                 <td>
-                    <a href="#" class="btn btn-danger">
+                    <a href="${pageContext.request.contextPath}/admin/promos/delete/${item.id}" class="btn btn-danger">
                         <span class="glyphicon glyphicon-remove"></span>
                         Удалить
                     </a>

@@ -18,14 +18,14 @@ public class PartnerDaoImpl implements PartnerDao {
     @Override
     public List<Partner> getList() {
         return jdbcTemplate.query(
-                "SELECT * FROM `partners` ORDER BY `ordr` ASC;",
+                "SELECT * FROM `partner_list` ORDER BY `ordr` ASC;",
                 (ResultSet rs, int rowNum) -> partnerFactory.factory(rs));
     }
 
     @Override
     public Partner findById(Long id) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM `partners` WHERE `id`=?;",
+                "SELECT * FROM `partner_list` WHERE `id`=?;",
                 (ResultSet rs, int rowNum) -> partnerFactory.factory(rs),
                 id);
     }
@@ -33,7 +33,7 @@ public class PartnerDaoImpl implements PartnerDao {
     @Override
     public void create(Partner entity) {
         jdbcTemplate.update(
-                "INSERT INTO `partners` (`note`, `link`, `discount`, `file`) VALUES (?, ?, ?, ?);",
+                "INSERT INTO `partner_list` (`note`, `link`, `discount`, `file`) VALUES (?, ?, ?, ?);",
                 entity.getNote(),
                 entity.getLink(),
                 entity.getDiscount(), 
@@ -43,7 +43,7 @@ public class PartnerDaoImpl implements PartnerDao {
     @Override
     public void update(Partner entity) {
         jdbcTemplate.update(
-                "UPDATE `partners` SET `note`=?, `link`=?, `discount`=?, `file`=?, `ordr`=? "
+                "UPDATE `partner_list` SET `note`=?, `link`=?, `discount`=?, `file`=?, `ordr`=? "
                 + "WHERE `id`=?;",
                 entity.getNote(),
                 entity.getLink(),
@@ -55,7 +55,7 @@ public class PartnerDaoImpl implements PartnerDao {
 
     @Override
     public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `partners` WHERE `id`=?;", id);
+        jdbcTemplate.update("DELETE FROM `partner_list` WHERE `id`=?;", id);
     }
 
 }

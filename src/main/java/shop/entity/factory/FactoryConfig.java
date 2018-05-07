@@ -7,10 +7,12 @@ import shop.entity.News;
 import shop.entity.Partner;
 import shop.entity.Promo;
 import shop.entity.RequestToAppend;
+import shop.entity.Tale;
 import shop.entity.factory.impl.NewsFactoryImpl;
 import shop.entity.factory.impl.PartnerFactoryImpl;
 import shop.entity.factory.impl.PromoFactoryImpl;
 import shop.entity.factory.impl.RequestFactoryImpl;
+import shop.entity.factory.impl.TaleFactoryImpl;
 
 @Configuration
 public class FactoryConfig {
@@ -37,5 +39,11 @@ public class FactoryConfig {
     @Scope("singleton")
     public BasicFactory<News> newsFactory() {
         return new NewsFactoryImpl();
+    }
+    
+    @Bean("taleFactory")
+    @Scope("singleton")
+    public BasicFactory<Tale> taleFactory() {
+        return new TaleFactoryImpl();
     }
 }

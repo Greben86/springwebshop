@@ -18,14 +18,14 @@ public class PromoDaoImpl implements PromoDao {
     @Override
     public List<Promo> getList() {
         return jdbcTemplate.query(
-                "SELECT * FROM `promos` ORDER BY `name` ASC;",
+                "SELECT * FROM `promo_list` ORDER BY `name` ASC;",
                 (ResultSet rs, int rowNum) -> promoFactory.factory(rs));
     }
 
     @Override
     public Promo findById(Long id) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM `promos` WHERE `id`=?;",
+                "SELECT * FROM `promo_list` WHERE `id`=?;",
                 (ResultSet rs, int rowNum) -> promoFactory.factory(rs),
                 id);
     }
@@ -33,20 +33,22 @@ public class PromoDaoImpl implements PromoDao {
     @Override
     public void create(Promo entity) {
         jdbcTemplate.update(
-                "INSERT INTO `promos` (`name`) VALUES (?);", 
-                entity.getName());
+                "INSERT INTO `promo_list` (`name`, `filename`) VALUES (?, ?);", 
+                entity.getName(),
+                entity.getFilename());
     }
 
     @Override
     public void update(Promo entity) {
         jdbcTemplate.update(
-                "UPDATE `promos` SET `name`=? WHERE `id`=?;", 
-                entity.getName());
+                "UPDATE `promo_list` SET `name`=?, `filename`=? WHERE `id`=?;", 
+                entity.getName(),
+                entity.getFilename());
     }
 
     @Override
     public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `promos` WHERE `id`=?;", id);
+        jdbcTemplate.update("DELETE FROM `promo_list` WHERE `id`=?;", id);
     }
 
 }
