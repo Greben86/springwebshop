@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<h1 class="page-header">Партнеры</h1>
-
-<a href="${pageContext.request.contextPath}/admin/partners/add" class="btn btn-default">
-    <span class="glyphicon glyphicon-plus"></span>
-    Новый партнер
-</a>
+<h1 class="page-header">
+    Партнеры
+    <a href="${pageContext.request.contextPath}/admin/partners/add" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        Добавить партнера
+    </a>
+</h1>
 
 <table class="table table-striped">
     <col width="50%">

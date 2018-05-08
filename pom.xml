@@ -12,6 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.3.4.RELEASE</spring.version>
+        <spring.security.version>4.2.0.RELEASE</spring.security.version>
         <jackson.version>2.7.8</jackson.version>
         <lucene.version>7.2.1</lucene.version>
         <log4j.version>1.2.17</log4j.version>
@@ -45,6 +46,28 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
             <version>1.1.2.RELEASE</version>
+        </dependency>
+        <!-- Spring security minimal dependency-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <!-- Эта библиотека нужна чтобы можно было использовать тэги security в представлениях -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
         <!--JSP -->
         <dependency>

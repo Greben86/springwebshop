@@ -37,6 +37,7 @@ public class AdminNewsController {
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
+        model.addAttribute("title", "Новая новость");
         model.addAttribute("news", new News());
         model.addAttribute("callback", "add");
         return "admin.news.edit";
@@ -66,6 +67,7 @@ public class AdminNewsController {
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
         News news = newsDao.findById(Long.parseLong(id));
+        model.addAttribute("title", "Редактирование новости");
         model.addAttribute("news", news);
         model.addAttribute("callback", "edit");
         return "admin.news.edit";

@@ -1,11 +1,12 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<h1 class="page-header">Истории успеха</h1>
-
-<a href="${pageContext.request.contextPath}/admin/tales/add" class="btn btn-default">
-    <span class="glyphicon glyphicon-plus"></span>
-    Добавить историю
-</a>
+<h1 class="page-header">
+    Истории успеха
+    <a href="${pageContext.request.contextPath}/admin/tales/add" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        Добавить историю
+    </a>
+</h1>
 
 <table class="table table-striped">
     <col width="15%">

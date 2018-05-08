@@ -37,6 +37,7 @@ public class AdminPromosController {
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
+        model.addAttribute("title", "Новая промо-акция");
         model.addAttribute("promo", new Promo());
         model.addAttribute("callback", "add");
         return "admin.promo.edit";
@@ -66,6 +67,7 @@ public class AdminPromosController {
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
         Promo promo = promoDao.findById(Long.parseLong(id));
+        model.addAttribute("title", "Редактирование промо-акции");
         model.addAttribute("promo", promo);
         model.addAttribute("callback", "edit");
         return "admin.promo.edit";

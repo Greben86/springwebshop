@@ -57,7 +57,7 @@
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="${pageContext.request.contextPath}/">
+                    <a class="navbar-brand" href="${pageContext.request.contextPath}/admin">
                         Панель управления
                     </a>
                 </div>

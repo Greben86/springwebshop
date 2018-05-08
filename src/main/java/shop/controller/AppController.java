@@ -9,7 +9,7 @@ import shop.dao.RequestDao;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminRequestsController {
+public class AppController {
 
     @Autowired
     private RequestDao requestDao;

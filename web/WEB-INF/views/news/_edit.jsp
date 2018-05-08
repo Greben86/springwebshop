@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
-<sf:form method="POST" modelAttribute="news" 
+<h1>${title}</h1>
+
+<sf:form method="POST" modelAttribute="news"
          action="${pageContext.request.contextPath}/admin/news/${callback}" 
          enctype="multipart/form-data">
     <fieldset>
@@ -31,5 +33,8 @@
             <sf:errors path="enabled" cssStyle="color: red; font-size: 10pt;"/>
         </div>
     </fieldset>
+    <a href="${pageContext.request.contextPath}/admin/news" class="btn btn-default">
+        Отмена
+    </a>
     <input type="submit" name="submit" id="submit" value="Сохранить" class="btn btn-success"/>
 </sf:form>

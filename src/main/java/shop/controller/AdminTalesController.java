@@ -20,7 +20,6 @@ import shop.dao.TaleDao;
 import shop.entity.Tale;
 import shop.model.ImageControl;
 
-
 @Controller
 @RequestMapping("/admin/tales")
 public class AdminTalesController {
@@ -33,11 +32,12 @@ public class AdminTalesController {
     @GetMapping({"", "/"})
     public String getListPage(Model model) {
         model.addAttribute("tales", taleDao.getList());
-        return "admin.news";
+        return "admin.tales";
     }
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
+        model.addAttribute("title", "Новая история успеха");
         model.addAttribute("tale", new Tale());
         model.addAttribute("callback", "add");
         return "admin.tales.edit";
@@ -50,7 +50,7 @@ public class AdminTalesController {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("news", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory());
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {
@@ -67,6 +67,7 @@ public class AdminTalesController {
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
         Tale tale = taleDao.findById(Long.parseLong(id));
+        model.addAttribute("title", "Редактирование истории успеха");
         model.addAttribute("tale", tale);
         model.addAttribute("callback", "edit");
         return "admin.tales.edit";
@@ -80,7 +81,7 @@ public class AdminTalesController {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("news", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory());
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {

@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<h1>${title}</h1>
+
 <sf:form method="POST" modelAttribute="promo" 
          action="${pageContext.request.contextPath}/admin/promos/${callback}" 
          enctype="multipart/form-data">
@@ -18,5 +20,8 @@
             <input type="file" name="file" id="file" multiple="">
         </div>
     </fieldset>
+    <a href="${pageContext.request.contextPath}/admin/promos" class="btn btn-default">
+        Отмена
+    </a>
     <input type="submit" name="submit" id="submit" value="Сохранить" class="btn btn-success"/>
 </sf:form>

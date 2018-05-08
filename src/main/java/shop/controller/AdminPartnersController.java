@@ -37,6 +37,7 @@ public class AdminPartnersController {
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
+        model.addAttribute("title", "Новый партнер");
         model.addAttribute("partner", new Partner());
         model.addAttribute("callback", "add");
         return "admin.partner.edit";
@@ -66,6 +67,7 @@ public class AdminPartnersController {
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
         Partner partner = partnersDao.findById(Long.parseLong(id));
+        model.addAttribute("title", "Редактирование партнера");
         model.addAttribute("partner", partner);
         model.addAttribute("callback", "edit");
         return "admin.partner.edit";
