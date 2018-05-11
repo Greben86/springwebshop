@@ -50,7 +50,7 @@ public class AdminTalesController {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory(""));
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {
@@ -81,7 +81,7 @@ public class AdminTalesController {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory(""));
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import shop.dao.PromoDao;
 import shop.entity.Promo;
@@ -50,7 +48,7 @@ public class AdminPromosController {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("promo", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("promo", ext, imageControl.getDirectory("promo/"));
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {
@@ -81,7 +79,7 @@ public class AdminPromosController {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
-                File tempFile = File.createTempFile("promo", ext, imageControl.getDirectory());
+                File tempFile = File.createTempFile("promo", ext, imageControl.getDirectory("promo/"));
 
                 InputStream is = file.getInputStream();
                 if (imageControl.saveFile(tempFile, is)) {
@@ -103,17 +101,5 @@ public class AdminPromosController {
             promoDao.delete(promo.getId());
         }
         return "redirect:/admin/promos";
-    }
-
-    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
-    @ResponseBody
-    public byte[] getImage(@PathVariable("id") String id) {
-        Promo promo = promoDao.findById(Long.parseLong(id));
-        if (promo != null) {
-            return imageControl.readFile(promo.getFilename(), "noimagegood.png");
-        } else {
-            return null;
-        }
-    }
-    
+    }    
 }

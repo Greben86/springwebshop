@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 public interface ImageControl {
 
-    File getDirectory();
+    File getDirectory(String subfolder);
     
     /**
      * Save image into hard-disk

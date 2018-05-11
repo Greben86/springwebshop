@@ -23,8 +23,8 @@ public class ImageControlImpl implements ImageControl {
     }
 
     @Override
-    public File getDirectory() {
-        return new File(path);
+    public File getDirectory(String subfolder) {
+        return new File(path + subfolder);        
     }
 
     @Override
