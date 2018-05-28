@@ -1,5 +1,6 @@
 package shop.rest;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,11 @@ public class PartnersController {
     private PartnerDao partnersDao;
     @Autowired
     private ImageControl imageControl;
+    
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Partner> getList() {
+        return partnersDao.getList();
+    }
     
     @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     public byte[] getImage(@PathVariable("id") String id) {

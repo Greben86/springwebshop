@@ -104,15 +104,4 @@ public class AdminTalesController {
         }
         return "redirect:/admin/tales";
     }
-
-    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
-    @ResponseBody
-    public byte[] getImage(@PathVariable("id") String id) {
-        Tale tale = taleDao.findById(Long.parseLong(id));
-        if (tale != null) {
-            return imageControl.readFile(tale.getFilename(), "noimagegood.png");
-        } else {
-            return null;
-        }
-    }
 }
