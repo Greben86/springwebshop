@@ -14,6 +14,7 @@ import java.util.Properties;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,6 +30,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
 
@@ -59,7 +62,7 @@ public class AppConfig {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public DriverManagerDataSource dataSource() {
         Properties properties = new Properties();
         properties.setProperty("user", enviroment.getRequiredProperty("database.user"));
@@ -74,13 +77,13 @@ public class AppConfig {
 
         return dataSource;
     }
-    
+
     @Bean
-    @Scope("singleton")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-    
+
     @Bean
     public PlatformTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
@@ -94,27 +97,20 @@ public class AppConfig {
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public VerificationRequest verificationRequest() {
         return new VerificationRequestImpl(enviroment.getRequiredProperty("verification.key"));
     }
 
     @Bean
-    @Scope("singleton")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public ImageControl imageControl() {
         return new ImageControlImpl(enviroment.getRequiredProperty("save.directory"));
     }
 
     @Bean
-    @Scope("request")
+    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Search search() {
         return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
     }
-
-//        @Bean
-//        @Scope("request")
-//        public Analyzer standardAnalyzer() {
-//            Analyzer analyzer = new RussianAnalyzer();
-//            return analyzer;
-//        }    
 }

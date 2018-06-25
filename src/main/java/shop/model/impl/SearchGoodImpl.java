@@ -26,9 +26,6 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-//import org.apache.lucene.store.RAMDirectory;
-
-//import org.springframework.beans.factory.annotation.Autowired;
 import shop.entity.Good;
 import shop.model.Search;
 
@@ -36,8 +33,6 @@ public class SearchGoodImpl implements Search<Good> {
     private List<Good> result;
     private Directory index;
     private final int MAX_EDITS = 2; // fuzziness of the query
-//    @Autowired
-//    private Analyzer standardAnalyzer;
     
     public SearchGoodImpl(String url) {
         result = new LinkedList<>();
