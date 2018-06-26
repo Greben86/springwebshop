@@ -1,6 +1,5 @@
 package shop.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +15,7 @@ public class AdminController {
     private RequestDao requestDao;
 
     @GetMapping({"", "/", "/requests"})
-    public String getPageApplications(Model model, HttpServletRequest request) {
-        //HttpServletRequest httpReq = (HttpServletRequest) request;
-//        String url = request.getRequestURI();
-//        model.addAttribute("url", url);
+    public String getPageApplications(Model model) {
         model.addAttribute("requests", requestDao.getList());
         return "admin.requests";
     }
