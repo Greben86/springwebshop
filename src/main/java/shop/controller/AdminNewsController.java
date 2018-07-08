@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import shop.dao.NewsDao;
 import shop.entity.News;
 import shop.model.ImageControl;
+import shop.service.NewsService;
 
 @Controller
 @RequestMapping("/admin/news")
 public class AdminNewsController {
 
     @Autowired
-    private NewsDao newsDao;
+    private NewsService newsService;
     @Autowired
     private ImageControl imageControl;
 
     @GetMapping({"", "/"})
     public String getListPage(Model model) {
-        model.addAttribute("news", newsDao.getList());
+        model.addAttribute("news", newsService.getList());
         return "admin.news";
     }
 
@@ -58,13 +58,13 @@ public class AdminNewsController {
                 Logger.getLogger(AdminNewsController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        newsDao.create(news);
+        newsService.save(news);
         return "redirect:/admin/news";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
-        News news = newsDao.findById(Long.parseLong(id));
+        News news = newsService.findById(Long.parseLong(id));
         model.addAttribute("title", "Редактирование новости");
         model.addAttribute("news", news);
         model.addAttribute("callback", "edit");
@@ -89,16 +89,16 @@ public class AdminNewsController {
                 Logger.getLogger(AdminNewsController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        newsDao.update(news);
+        newsService.save(news);
         return "redirect:/admin/news";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable String id) {
-        News news = newsDao.findById(Long.parseLong(id));
+        News news = newsService.findById(Long.parseLong(id));
         if (news != null) {
             imageControl.removeFile(news.getFilename());
-            newsDao.delete(news.getId());
+            newsService.delete(news);
         }
         return "redirect:/admin/news";
     }

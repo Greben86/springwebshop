@@ -5,8 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import shop.service.CustomerService;
 import shop.service.GoodService;
+import shop.service.NewsService;
 import shop.service.impl.CustomerServiceImpl;
 import shop.service.impl.GoodServiceImpl;
+import shop.service.impl.NewsServiceImpl;
 
 @Configuration
 public class ServiceConfig {
@@ -21,6 +23,12 @@ public class ServiceConfig {
     @Scope("singleton")
     public GoodService goodService() {
         return new GoodServiceImpl();
+    }
+    
+    @Bean("newsService")
+    @Scope("singleton") 
+    public NewsService newsService() {
+        return new NewsServiceImpl();
     }
     
 }
