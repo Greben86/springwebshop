@@ -158,22 +158,25 @@ public class GoodDaoImpl implements GoodDao {
             ps.execute();
 
         } catch (SQLException e) {
-            
+            LOG.error("something going wrong " + e);
         }
     }
 
+    @Deprecated
     @Override
     public void create(Good entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
+    @Deprecated
     @Override
     public void update(Good entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Deprecated
     @Override
     public List<Good> getList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

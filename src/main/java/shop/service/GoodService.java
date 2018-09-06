@@ -24,7 +24,7 @@ public interface GoodService {
      * @param good - entuty good
      * @return 
      */
-    Boolean delete(Good good);
+    void delete(Good good);
 
     /**
      * Method returning list of folders good

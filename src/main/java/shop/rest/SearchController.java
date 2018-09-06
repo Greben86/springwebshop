@@ -4,10 +4,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import shop.entity.Good;
 import shop.model.Search;
@@ -22,14 +21,12 @@ public class SearchController {
     @Resource(name = "search")
     private Search search;
 
-    @RequestMapping(value = "/createindex", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    @ResponseBody
+    @GetMapping(value = "/createindex", produces = MediaType.TEXT_PLAIN_VALUE)
     public String createIndex() {
         return search.createIndex(goodService.getList(new Long(-1)));
     }
 
-    @RequestMapping(value = "/goods", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping(value = "/goods", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Good> searchGood(
             @RequestParam(value = "query", required = true) String query) {
         return search.search(query);

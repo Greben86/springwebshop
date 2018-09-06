@@ -1,6 +1,7 @@
 package shop.rest;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,11 +30,7 @@ public class CustomerController {
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Customer> getList(@RequestParam(value = "key", required = false) String key) {
-        if (verificationRequest.verify(key)) {
-            return customerService.getList();
-        } else {
-            return null;
-        }
+        return verificationRequest.verify(key) ? customerService.getList() : null;
     }
 
     @GetMapping("/update")
@@ -41,14 +38,17 @@ public class CustomerController {
         return "GET not supported for update customer";
     }
 
-    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String update(@RequestParam(value = "key", required = false) String key,
-            @RequestBody Customer customer) {
-        if (verificationRequest.verify(key)) {
-            return "Update customer " + customer + (customerService.updateOrInsert(customer) ? " is Ok" : " is Fail");
-        } else {
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
+            produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public String update(@RequestBody Customer customer,
+            @RequestParam(value = "key", required = false) String key) {
+        if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
+        return Optional.ofNullable(customer)
+                .map(customerService::updateOrInsert)
+                .map(result -> "Update customer " + (result ? " is Ok" : " is Fail"))
+                .orElse("Update customer is Fail");
     }
 
     @GetMapping("/updatelist")
@@ -56,37 +56,40 @@ public class CustomerController {
         return "GET not supported for update customer";
     }
 
-    @PostMapping(value = "/updatelist", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String updateList(@RequestParam(value = "key", required = false) String key, @RequestBody List<Customer> list) {
-        if (verificationRequest.verify(key)) {
-            return "Uploaded " + list.size() + " customers " + (customerService.updateList(list) ? "succesful" : "unsuccesful");
-        } else {
+    @PostMapping(value = "/updatelist", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
+            produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public String updateList(@RequestBody List<Customer> list,
+            @RequestParam(value = "key", required = false) String key) {
+        if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
+        return Optional.ofNullable(list)
+                .map(customerService::updateList)
+                .map(result -> "Uploaded customers " + (result ? "succesful" : "unsuccesful"))
+                .orElse("Customers is not uploaded");
     }
 
     @GetMapping(value = "/delete/{ref}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String deleteById(@PathVariable(value = "ref") String ref,
             @RequestParam(value = "key", required = false) String key) {
-        if (verificationRequest.verify(key)) {
-            Customer customer = customerService.getByRef(ref);
-            if (customerService.delete(customer)) {
-                return "Delete customer " + customer + " is Ok";
-            } else {
-                return "Delete customer is Fail";
-            }
-        } else {
+        if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
+        return Optional.ofNullable(customerService.getByRef(ref))
+                .map(customerService::delete)
+                .map(result -> "Delete customer " + (result ? "is Ok" : "is Fail"))
+                .orElse("Delete customer is Fail");
     }
 
     @GetMapping(value = "/search", produces = MediaType.TEXT_PLAIN_VALUE)
-    public Customer search(@RequestParam("login") String login, @RequestParam("pass") String pass) {
+    public Customer search(@RequestParam("login") String login, 
+            @RequestParam("pass") String pass) {
         return customerService.search(login, pass);
     }
     
     @GetMapping(value = "/checkpass", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String checkPass(@RequestParam("login") String login, @RequestParam("pass") String pass) {
+    public String checkPass(@RequestParam("login") String login, 
+            @RequestParam("pass") String pass) {
         return customerService.checkPass(login, pass)?"Ok":"Fail";
     }
 

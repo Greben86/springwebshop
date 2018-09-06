@@ -32,13 +32,8 @@ public class GoodServiceImpl implements GoodService {
 
     @CacheEvict(value = "folders", key = "#good.id")
     @Override
-    public Boolean delete(Good good) {
-        if (good != null) {
-            goodDao.delete(good.getId());
-            return true;
-        } else {
-            return false;
-        }
+    public void delete(Good good) {
+        goodDao.delete(good.getId());
     }
 
     @Cacheable("folders")

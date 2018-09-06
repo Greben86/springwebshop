@@ -1,6 +1,7 @@
 package shop.rest;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +26,13 @@ public class TalesController {
         return taleDao.getList();
     }
     
-    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, 
+        MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     public byte[] getImage(@PathVariable("id") String id) {
-        Tale tale = taleDao.findById(Long.parseLong(id));
-        if (tale != null) {
-            return imageControl.readFile(tale.getFilename(), "noimagegood.png");
-        } else {
-            return null;
-        }
+        return Optional.ofNullable(taleDao.findById(Long.parseLong(id)))
+                .map(tale -> imageControl.readFile(
+                        tale.getFilename(), "noimagegood.png"))
+                .orElse(new byte[0]);
     }
     
 }

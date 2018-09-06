@@ -2,10 +2,18 @@ package shop.model;
 
 import java.io.File;
 import java.io.InputStream;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageControl {
 
     File getDirectory(String subfolder);
+    
+    /**
+     * Save image into hard-disk
+     * @param filename - name file
+     * @param file - file input multipartfile
+     */
+    Boolean saveFile(String filename, MultipartFile file);
     
     /**
      * Save image into hard-disk
