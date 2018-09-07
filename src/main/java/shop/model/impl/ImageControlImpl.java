@@ -8,11 +8,12 @@ import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Optional;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
+
+import static java.util.Optional.ofNullable;
 
 public class ImageControlImpl implements ImageControl {
 
@@ -30,33 +31,25 @@ public class ImageControlImpl implements ImageControl {
     public File getDirectory(String subfolder) {
         return new File(path + subfolder);
     }
+    
+    private File getFile(String filename) {
+        return new File(path + filename);
+    }
 
     @Override
     public Boolean saveFile(String filename, MultipartFile file) {
-        return Optional.ofNullable(file)
-                .map(f -> {
-                    try (InputStream is = f.getInputStream();) {
-                        return saveFile(filename, is);
-                    } catch (IOException e) {
-                        LOG.error("something going wrong " + e);
-                        return false;
-                    }
-                })
+        return ofNullable(file)
+                .map(f -> saveFile(getFile(filename), f))
                 .orElse(Boolean.FALSE);
     }
 
     @Override
-    public Boolean saveFile(String filename, InputStream stream) {
-        File file = new File(path + filename);
-        return saveFile(file, stream);
-    }
-
-    @Override
-    public Boolean saveFile(File file, InputStream stream) {
-        try (FileOutputStream fos = new FileOutputStream(file);) {
+    public Boolean saveFile(File newfile, MultipartFile file) {
+        try (FileOutputStream fos = new FileOutputStream(newfile);
+                InputStream is = file.getInputStream();) {
             byte[] bytes = new byte[1024];
             int read = 0;
-            while ((read = stream.read(bytes)) != -1) {
+            while ((read = is.read(bytes)) != -1) {
                 fos.write(bytes, 0, read);
             }
             return true;
@@ -67,17 +60,11 @@ public class ImageControlImpl implements ImageControl {
     }
 
     private File getFile(String filename, String filedefault) {
-        File f = new File(path + filename);
-        if (!f.exists() || !f.isFile()) {
-            Resource resource = new ClassPathResource("/images/" + filedefault);
-            try {
-                return resource.getFile();
-            } catch (IOException e) {
-                LOG.error("something going wrong " + e);
-                return null;
-            }
+        File file = getFile(filename);
+        if (!file.exists() || !file.isFile()) {
+            return getResourceFile(filedefault);
         } else {
-            return f;
+            return file;
         }
     }
 
@@ -97,8 +84,18 @@ public class ImageControlImpl implements ImageControl {
 
     @Override
     public Boolean removeFile(String filename) {
-        File file = new File(path + filename);
+        File file = getFile(filename);
         return (file.exists() && file.isFile()) ? file.delete() : false;
+    }
+
+    private File getResourceFile(String filedefault) {
+        Resource resource = new ClassPathResource(filedefault);
+        try {
+            return resource.getFile();
+        } catch (IOException e) {
+            LOG.error("something going wrong " + e);
+            return null;
+        }
     }
 
 }

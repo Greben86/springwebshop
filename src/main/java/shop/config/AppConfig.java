@@ -1,18 +1,9 @@
 package shop.config;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import shop.model.*;
 import shop.model.impl.*;
-import shop.dao.*;
-import shop.dao.impl.*;
-import shop.service.*;
-import shop.service.impl.*;
-import shop.entity.factory.impl.*;
 
 import java.util.Properties;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.CacheManager;
@@ -65,13 +56,18 @@ public class AppConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public DriverManagerDataSource dataSource() {
         Properties properties = new Properties();
-        properties.setProperty("user", enviroment.getRequiredProperty("database.user"));
-        properties.setProperty("password", enviroment.getRequiredProperty("database.password"));
-        properties.setProperty("useUnicode", enviroment.getRequiredProperty("database.useUnicode"));
-        properties.setProperty("characterEncoding", enviroment.getRequiredProperty("database.characterEncoding"));
+        properties.setProperty("user", 
+                enviroment.getRequiredProperty("database.user"));
+        properties.setProperty("password", 
+                enviroment.getRequiredProperty("database.password"));
+        properties.setProperty("useUnicode", 
+                enviroment.getRequiredProperty("database.useUnicode"));
+        properties.setProperty("characterEncoding", 
+                enviroment.getRequiredProperty("database.characterEncoding"));
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(enviroment.getRequiredProperty("database.driver"));
+        dataSource.setDriverClassName(
+                enviroment.getRequiredProperty("database.driver"));
         dataSource.setUrl(enviroment.getRequiredProperty("database.url"));
         dataSource.setConnectionProperties(properties);
 
@@ -86,7 +82,8 @@ public class AppConfig {
 
     @Bean
     public PlatformTransactionManager transactionManager() {
-        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        DataSourceTransactionManager transactionManager = 
+                new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource());
         return transactionManager;
     }
@@ -99,18 +96,22 @@ public class AppConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public VerificationRequest verificationRequest() {
-        return new VerificationRequestImpl(enviroment.getRequiredProperty("verification.key"));
+        return new VerificationRequestImpl(
+                enviroment.getRequiredProperty("verification.key"));
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public ImageControl imageControl() {
-        return new ImageControlImpl(enviroment.getRequiredProperty("save.directory"));
+        return new ImageControlImpl(
+                enviroment.getRequiredProperty("save.directory"));
     }
 
     @Bean
-    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    @Scope(value = WebApplicationContext.SCOPE_REQUEST, 
+            proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Search search() {
-        return new SearchGoodImpl(enviroment.getRequiredProperty("search.index.directory"));
+        return new SearchGoodImpl(
+                enviroment.getRequiredProperty("search.index.directory"));
     }
 }

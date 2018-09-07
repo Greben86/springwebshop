@@ -1,7 +1,6 @@
 package shop.rest;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +15,9 @@ import shop.entity.Good;
 import shop.model.VerificationRequest;
 import shop.model.ImageControl;
 import shop.service.GoodService;
+
+import static java.util.Optional.ofNullable;
+import shop.ResourceImages;
 
 @RestController
 @RequestMapping("/goods")
@@ -44,7 +46,7 @@ public class GoodController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(goodService.getById(Long.parseLong(id)))
+        return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> imageControl.saveFile(good.getFilename(), file))
                 .map(result -> "Upload file for good " + id + (result ? " is success" : " is fail"))
                 .orElse("Save image is fail, good (" + id + ") not exist");
@@ -56,7 +58,7 @@ public class GoodController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(goodService.getById(Long.parseLong(id)))
+        return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> good.getFilename())
                 .map(imageControl::removeFile)
                 .map(result -> "Clear image " + (result ? " is Ok" : " is Fail"))
@@ -75,7 +77,7 @@ public class GoodController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(good)
+        return ofNullable(good)
                 .map(goodService::updateOrInsert)
                 .map(result -> "Update good " + (result ? " is Ok" : " is Fail"))
                 .orElse("Update good is fail");
@@ -93,7 +95,7 @@ public class GoodController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(list)
+        return ofNullable(list)
                 .map(goodService::updateList)
                 .map(result -> "Uploaded goods " + (result ? "succesful" : "unsuccesful"))
                 .orElse("Uploaded goods fail");
@@ -105,7 +107,7 @@ public class GoodController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(goodService.getById(Long.parseLong(id)))
+        return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> {
                     goodService.delete(good);
                     imageControl.removeFile(good.getFilename());
@@ -132,9 +134,10 @@ public class GoodController {
     @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_JPEG_VALUE,
         MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
     public byte[] getImage(@PathVariable("id") String id) {
-        return Optional.ofNullable(goodService.getById(Long.parseLong(id)))
+        return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> imageControl.readFile(good.getFilename(),
-                        good.getFolder() ? "noimagefolder.png" : "noimagegood.png"))
+                        good.getFolder() ? ResourceImages.DEFAULT_IMAGE_FOLDER 
+                                : ResourceImages.DEFAULT_IMAGE))
                 .orElse(new byte[0]);
     }
 }

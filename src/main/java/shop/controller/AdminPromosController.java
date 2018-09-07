@@ -2,7 +2,6 @@ package shop.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +49,7 @@ public class AdminPromosController {
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
                 File tempFile = File.createTempFile("promo", ext, imageControl.getDirectory("promo/"));
 
-                InputStream is = file.getInputStream();
-                if (imageControl.saveFile(tempFile, is)) {
+                if (imageControl.saveFile(tempFile, file)) {
                     promo.setFilename(tempFile.getName());
                 }
             } catch (IOException ex) {
@@ -81,8 +79,7 @@ public class AdminPromosController {
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
                 File tempFile = File.createTempFile("promo", ext, imageControl.getDirectory("promo/"));
 
-                InputStream is = file.getInputStream();
-                if (imageControl.saveFile(tempFile, is)) {
+                if (imageControl.saveFile(tempFile, file)) {
                     promo.setFilename(tempFile.getName());
                 }
             } catch (IOException ex) {

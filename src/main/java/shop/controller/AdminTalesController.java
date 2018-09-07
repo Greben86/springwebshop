@@ -2,11 +2,9 @@ package shop.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import shop.dao.TaleDao;
 import shop.entity.Tale;
@@ -52,8 +49,7 @@ public class AdminTalesController {
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
                 File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory(""));
 
-                InputStream is = file.getInputStream();
-                if (imageControl.saveFile(tempFile, is)) {
+                if (imageControl.saveFile(tempFile, file)) {
                     tale.setFilename(tempFile.getName());
                 }
             } catch (IOException ex) {
@@ -83,8 +79,7 @@ public class AdminTalesController {
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
                 File tempFile = File.createTempFile("tale", ext, imageControl.getDirectory(""));
 
-                InputStream is = file.getInputStream();
-                if (imageControl.saveFile(tempFile, is)) {
+                if (imageControl.saveFile(tempFile, file)) {
                     tale.setFilename(tempFile.getName());
                 }
             } catch (IOException ex) {

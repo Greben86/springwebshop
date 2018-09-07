@@ -23,7 +23,7 @@ public class SearchController {
 
     @GetMapping(value = "/createindex", produces = MediaType.TEXT_PLAIN_VALUE)
     public String createIndex() {
-        return search.createIndex(goodService.getList(new Long(-1)));
+        return search.createIndex(goodService.getList(-1L));
     }
 
     @GetMapping(value = "/goods", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

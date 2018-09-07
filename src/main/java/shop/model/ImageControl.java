@@ -1,7 +1,6 @@
 package shop.model;
 
 import java.io.File;
-import java.io.InputStream;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageControl {
@@ -17,17 +16,10 @@ public interface ImageControl {
     
     /**
      * Save image into hard-disk
-     * @param filename - name file
-     * @param stream - file input stream
+     * @param newfile - file object
+     * @param file - file input multipartfile
      */
-    Boolean saveFile(String filename, InputStream stream);
-    
-    /**
-     * Save image into hard-disk
-     * @param file - file object
-     * @param stream - file input stream
-     */
-    Boolean saveFile(File file, InputStream stream);
+    Boolean saveFile(File newfile, MultipartFile file);
 
     /**
      * Read image for hard-disk

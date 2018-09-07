@@ -1,7 +1,6 @@
 package shop.rest;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import shop.entity.Customer;
 import shop.model.VerificationRequest;
 import shop.service.CustomerService;
+
+import static java.util.Optional.ofNullable;
 
 @RestController
 @RequestMapping("/customers")
@@ -45,7 +46,7 @@ public class CustomerController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(customer)
+        return ofNullable(customer)
                 .map(customerService::updateOrInsert)
                 .map(result -> "Update customer " + (result ? " is Ok" : " is Fail"))
                 .orElse("Update customer is Fail");
@@ -63,7 +64,7 @@ public class CustomerController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(list)
+        return ofNullable(list)
                 .map(customerService::updateList)
                 .map(result -> "Uploaded customers " + (result ? "succesful" : "unsuccesful"))
                 .orElse("Customers is not uploaded");
@@ -75,7 +76,7 @@ public class CustomerController {
         if (!verificationRequest.verify(key)) {
             return "Acces denied";
         }
-        return Optional.ofNullable(customerService.getByRef(ref))
+        return ofNullable(customerService.getByRef(ref))
                 .map(customerService::delete)
                 .map(result -> "Delete customer " + (result ? "is Ok" : "is Fail"))
                 .orElse("Delete customer is Fail");
