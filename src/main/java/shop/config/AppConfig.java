@@ -107,7 +107,7 @@ public class AppConfig {
                 enviroment.getRequiredProperty("save.directory"));
     }
 
-    @Bean
+    @Bean("search")
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, 
             proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Search search() {

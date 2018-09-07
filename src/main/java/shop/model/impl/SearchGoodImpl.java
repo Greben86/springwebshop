@@ -26,11 +26,9 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.springframework.stereotype.Component;
 import shop.entity.Good;
 import shop.model.Search;
 
-@Component
 public class SearchGoodImpl implements Search<Good> {
 
     private List<Good> result;

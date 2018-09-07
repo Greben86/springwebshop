@@ -39,14 +39,16 @@ public class GoodServiceImpl implements GoodService {
     @Cacheable("folders")
     @Override
     public List<Good> getFolders(Long owner) {
-        List<Good> list = goodDao.getList("(`FOLDER`='T')" + ((owner >= 0) ? " AND (`OWNER`=" + owner + ")" : ""));
+        List<Good> list = goodDao.getList("(`FOLDER`='T')" 
+                + ((owner >= 0) ? " AND (`OWNER`=" + owner + ")" : ""));
         checkFolders(list);
         return list;
     }
 
     @Override
     public List<Good> getList(Long owner) {
-        List<Good> list = goodDao.getList((owner >= 0) ? "(`OWNER`=" + owner + ")" : "");
+        List<Good> list = goodDao.getList(
+                (owner >= 0) ? "(`OWNER`=" + owner + ")" : "");
         if (list != null) {
             checkFolders(list);
         }

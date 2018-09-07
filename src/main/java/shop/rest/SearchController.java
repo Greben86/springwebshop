@@ -1,7 +1,6 @@
 package shop.rest;
 
 import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,8 @@ public class SearchController {
 
     @Autowired
     private GoodService goodService;
-    @Resource(name = "search")
+//    @Resource(name = "search")
+    @Autowired
     private Search search;
 
     @GetMapping(value = "/createindex", produces = MediaType.TEXT_PLAIN_VALUE)
