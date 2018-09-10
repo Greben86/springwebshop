@@ -19,6 +19,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.context.WebApplicationContext;
@@ -50,6 +55,20 @@ public class AppConfig {
         MultipartFilter multipartFilter = new MultipartFilter();
         multipartFilter.setMultipartResolverBeanName("multipartResolver");
         return multipartFilter;
+    }
+    
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) 
+                    throws UsernameNotFoundException {
+                return new User("admin", "qwerty123",
+                        true, true, true, true,
+                        AuthorityUtils.createAuthorityList("ADMIN"));
+            }
+        };
     }
 
     @Bean

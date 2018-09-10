@@ -8,11 +8,20 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    
+    @Autowired
+    public UserDetailsService userDetailsService;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,15 +58,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable();
 
-        http.addFilterBefore(tokenAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(tokenAuthenticationFilter(),
+//                UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Bean(name = "tokenAuthenticationFilter")
-    public Filter tokenAuthenticationFilter() {
-        TokenAuthenticationFilter filter = new TokenAuthenticationFilter("/goods/**");
-        filter.setAuthenticationManager(new TokenAuthenticationManager());
-        return new TokenAuthenticationFilter("/goods/**");
-    }
+//    @Bean(name = "tokenAuthenticationFilter")
+//    public Filter tokenAuthenticationFilter() {
+////        TokenAuthenticationFilter filter = new TokenAuthenticationFilter("/goods/**");
+////        filter.setAuthenticationManager(new TokenAuthenticationManager());
+////        filter.setUserDetailsService(userDetailsService());
+//        return new TokenAuthenticationFilter("/goods/**");
+//    }
 
 }
