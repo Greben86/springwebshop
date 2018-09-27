@@ -1,24 +1,23 @@
 package shop.config;
 
-import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@PropertySource(value = {"classpath:verification.properties"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    
+    @Autowired
+    private Environment enviroment;
     
     @Autowired
     public UserDetailsService userDetailsService;
@@ -58,16 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable();
 
-//        http.addFilterBefore(tokenAuthenticationFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new TokenAuthenticationFilter(enviroment.getRequiredProperty("verification.key"))
+                .setURL("/goods/**")
+                .setURL("/customers/**"),
+                BasicAuthenticationFilter.class);
     }
-
-//    @Bean(name = "tokenAuthenticationFilter")
-//    public Filter tokenAuthenticationFilter() {
-////        TokenAuthenticationFilter filter = new TokenAuthenticationFilter("/goods/**");
-////        filter.setAuthenticationManager(new TokenAuthenticationManager());
-////        filter.setUserDetailsService(userDetailsService());
-//        return new TokenAuthenticationFilter("/goods/**");
-//    }
 
 }

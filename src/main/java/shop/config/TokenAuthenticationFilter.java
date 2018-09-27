@@ -1,33 +1,59 @@
 package shop.config;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.web.filter.GenericFilterBean;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+//import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static java.util.Optional.ofNullable;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 
-public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class TokenAuthenticationFilter extends GenericFilterBean {
 
-    public TokenAuthenticationFilter(String defaultFilterProcessesUrl) {
-        super(defaultFilterProcessesUrl);
+    private List<RequestMatcher> matches = new LinkedList<>();
+    private final String key;
+
+    public TokenAuthenticationFilter(String key) {
+        this.key = key;
+    }
+    
+    public TokenAuthenticationFilter setURL(String url) {
+        matches.add(new AntPathRequestMatcher(url));
+        return this;
+    }
+
+    protected boolean requiresAuthentication(HttpServletRequest request) {
+        for (RequestMatcher matcher : matches) {
+            if (matcher.matches(request)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-            HttpServletResponse response) throws AuthenticationException,
-            IOException, ServletException {
-        System.out.println("key: " + request.getParameter("key"));
-        return ofNullable(request.getParameter("key"))
-                .map(key -> {
-                    TokenAuthentication authentication = new TokenAuthentication();
-                    authentication.setAuthenticated(true);
-                    return authentication;
-                })
-                .orElseGet(TokenAuthentication::new);
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain) throws IOException, ServletException {
+        if (requiresAuthentication((HttpServletRequest) request)) {
+            if (!ofNullable(request.getParameter("key"))
+                    .map(key -> this.key.equals(key))
+                    .orElse(Boolean.FALSE)) {
+                HttpServletResponse httpresponse = (HttpServletResponse) response;
+                httpresponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+                return;
+            }
+        }
+
+        chain.doFilter(request, response);
     }
 
 }

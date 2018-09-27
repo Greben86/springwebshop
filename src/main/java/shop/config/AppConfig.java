@@ -114,13 +114,6 @@ public class AppConfig {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public VerificationRequest verificationRequest() {
-        return new VerificationRequestImpl(
-                enviroment.getRequiredProperty("verification.key"));
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public ImageControl imageControl() {
         return new ImageControlImpl(
                 enviroment.getRequiredProperty("save.directory"));

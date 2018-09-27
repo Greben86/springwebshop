@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.entity.Customer;
-import shop.model.VerificationRequest;
 import shop.service.CustomerService;
 
 import static java.util.Optional.ofNullable;
@@ -21,8 +20,6 @@ import static java.util.Optional.ofNullable;
 public class CustomerController {
 
     final private CustomerService customerService;
-    @Autowired
-    private VerificationRequest verificationRequest;
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -30,8 +27,8 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Customer> getList(@RequestParam(value = "key", required = false) String key) {
-        return verificationRequest.verify(key) ? customerService.getList() : null;
+    public List<Customer> getList() {
+        return customerService.getList();
     }
 
     @GetMapping("/update")
@@ -41,11 +38,7 @@ public class CustomerController {
 
     @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
             produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String update(@RequestBody Customer customer,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String update(@RequestBody Customer customer) {
         return ofNullable(customer)
                 .map(customerService::updateOrInsert)
                 .map(result -> "Update customer " + (result ? " is Ok" : " is Fail"))
@@ -59,11 +52,7 @@ public class CustomerController {
 
     @PostMapping(value = "/updatelist", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
             produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String updateList(@RequestBody List<Customer> list,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String updateList(@RequestBody List<Customer> list) {
         return ofNullable(list)
                 .map(customerService::updateList)
                 .map(result -> "Uploaded customers " + (result ? "succesful" : "unsuccesful"))
@@ -71,11 +60,7 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/delete/{ref}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String deleteById(@PathVariable(value = "ref") String ref,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String deleteById(@PathVariable(value = "ref") String ref) {
         return ofNullable(customerService.getByRef(ref))
                 .map(customerService::delete)
                 .map(result -> "Delete customer " + (result ? "is Ok" : "is Fail"))

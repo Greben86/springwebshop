@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.entity.Good;
-import shop.model.VerificationRequest;
 import shop.model.ImageControl;
 import shop.service.GoodService;
 
@@ -24,8 +23,6 @@ import shop.ResourceImages;
 public class GoodController {
 
     final private GoodService goodService;
-    @Autowired
-    private VerificationRequest verificationRequest;
     @Autowired
     private ImageControl imageControl;
 
@@ -41,11 +38,7 @@ public class GoodController {
 
     @PostMapping(value = "/uploadimg/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String uploadImg(@PathVariable("id") String id,
-            @RequestParam(value = "key", required = false) String key,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+            @RequestParam("file") MultipartFile file) {
         return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> imageControl.saveFile(good.getFilename(), file))
                 .map(result -> "Upload file for good " + id + (result ? " is success" : " is fail"))
@@ -53,11 +46,7 @@ public class GoodController {
     }
 
     @GetMapping(value = "/clearimg/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String clearImg(@PathVariable("id") String id,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String clearImg(@PathVariable("id") String id) {
         return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> good.getFilename())
                 .map(imageControl::removeFile)
@@ -72,11 +61,7 @@ public class GoodController {
 
     @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String update(@RequestBody Good good,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String update(@RequestBody Good good) {
         return ofNullable(good)
                 .map(goodService::updateOrInsert)
                 .map(result -> "Update good " + (result ? " is Ok" : " is Fail"))
@@ -90,11 +75,7 @@ public class GoodController {
 
     @PostMapping(value = "/updatelist", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE)
-    public String updateList(@RequestBody List<Good> list,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String updateList(@RequestBody List<Good> list) {
         return ofNullable(list)
                 .map(goodService::updateList)
                 .map(result -> "Uploaded goods " + (result ? "succesful" : "unsuccesful"))
@@ -102,11 +83,7 @@ public class GoodController {
     }
 
     @GetMapping(value = "/delete/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String deleteById(@PathVariable("id") String id,
-            @RequestParam(value = "key", required = false) String key) {
-        if (!verificationRequest.verify(key)) {
-            return "Acces denied";
-        }
+    public String deleteById(@PathVariable("id") String id) {
         return ofNullable(goodService.getById(Long.parseLong(id)))
                 .map(good -> {
                     goodService.delete(good);
