@@ -1,33 +1,34 @@
 package shop.config;
 
+import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @PropertySource(value = {"classpath:verification.properties"})
+@PropertySource(value = {"classpath:authentication.properties"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    
+
     @Autowired
     private Environment enviroment;
-    
-    @Autowired
-    public UserDetailsService userDetailsService;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         // создаем пользователя в heap'е JVM
         auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password("qwerty123")
+                .withUser(enviroment.getRequiredProperty("authentication.username"))
+                .password(enviroment.getRequiredProperty("authentication.password"))
                 .roles("ADMIN");
     }
 
@@ -57,10 +58,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable();
 
-        http.addFilterBefore(new TokenAuthenticationFilter(enviroment.getRequiredProperty("verification.key"))
-                .setURL("/goods/**")
-                .setURL("/customers/**"),
-                BasicAuthenticationFilter.class);
+        // добавляем дополнительный фильтр для проверки простого API-ключа
+        http.addFilterBefore(tokenFilter(), BasicAuthenticationFilter.class);
+    }
+
+    @Bean("tokenFilter")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public Filter tokenFilter() {
+        return new TokenAuthenticationFilter(enviroment.getRequiredProperty("verification.key"))
+                .setURL("/goods/uploadimg/**")
+                .setURL("/goods/clearimg/**")
+                .setURL("/goods/update")
+                .setURL("/goods/updatelist")
+                .setURL("/goods/delete/**")                
+                .setURL("/customers/list")
+                .setURL("/customers/update")
+                .setURL("/customers/updatelist")
+                .setURL("/customers/delete/**");
     }
 
 }

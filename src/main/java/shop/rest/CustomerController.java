@@ -17,16 +17,13 @@ import static java.util.Optional.ofNullable;
 
 @RestController
 @RequestMapping("/customers")
-public class CustomerController {
-
-    final private CustomerService customerService;
+public final class CustomerController {
 
     @Autowired
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    private CustomerService customerService;
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/list", 
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Customer> getList() {
         return customerService.getList();
     }
@@ -36,7 +33,8 @@ public class CustomerController {
         return "GET not supported for update customer";
     }
 
-    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
+    @PostMapping(value = "/update", 
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
             produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String update(@RequestBody Customer customer) {
         return ofNullable(customer)
@@ -50,7 +48,8 @@ public class CustomerController {
         return "GET not supported for update customer";
     }
 
-    @PostMapping(value = "/updatelist", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
+    @PostMapping(value = "/updatelist", 
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
             produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String updateList(@RequestBody List<Customer> list) {
         return ofNullable(list)
@@ -59,7 +58,8 @@ public class CustomerController {
                 .orElse("Customers is not uploaded");
     }
 
-    @GetMapping(value = "/delete/{ref}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    @GetMapping(value = "/delete/{ref}", 
+            produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public String deleteById(@PathVariable(value = "ref") String ref) {
         return ofNullable(customerService.getByRef(ref))
                 .map(customerService::delete)
@@ -67,7 +67,8 @@ public class CustomerController {
                 .orElse("Delete customer is Fail");
     }
 
-    @GetMapping(value = "/search", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/search", 
+            produces = MediaType.TEXT_PLAIN_VALUE)
     public Customer search(@RequestParam("login") String login, 
             @RequestParam("pass") String pass) {
         return customerService.search(login, pass);
@@ -79,7 +80,8 @@ public class CustomerController {
         return customerService.checkPass(login, pass)?"Ok":"Fail";
     }
 
-    @GetMapping(value = "/get/{ref}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/get/{ref}", 
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Customer getCustomerById(@PathVariable("ref") String ref) {
         return customerService.getByRef(ref);
     }

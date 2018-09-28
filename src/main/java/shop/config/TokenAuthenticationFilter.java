@@ -9,18 +9,29 @@ import org.springframework.web.filter.GenericFilterBean;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-//import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import static java.util.Optional.ofNullable;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import static java.util.Optional.ofNullable;
 
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
-    private List<RequestMatcher> matches = new LinkedList<>();
+    final private static String PARAMETER_NAME;
+    private List<RequestMatcher> matches;
     private final String key;
+    
+    static {
+        PARAMETER_NAME = "key";
+    }
+    
+    {
+        matches = new LinkedList<>();
+    }
+    
+    private TokenAuthenticationFilter() {
+        throw new AssertionError("No instances without key!");
+    }
 
     public TokenAuthenticationFilter(String key) {
         this.key = key;
@@ -44,7 +55,7 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         if (requiresAuthentication((HttpServletRequest) request)) {
-            if (!ofNullable(request.getParameter("key"))
+            if (!ofNullable(request.getParameter(PARAMETER_NAME))
                     .map(key -> this.key.equals(key))
                     .orElse(Boolean.FALSE)) {
                 HttpServletResponse httpresponse = (HttpServletResponse) response;

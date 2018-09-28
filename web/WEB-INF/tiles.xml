@@ -5,6 +5,11 @@
         
 <tiles-definitions>
     
+    <!-- Error define -->
+    <definition name="error.definition" template="/WEB-INF/layouts/error.jsp">
+        <put-attribute name="body" value="/WEB-INF/views/_error.jsp"/>
+    </definition>
+    
     <!--Auth define-->
     <definition name="auth.definition" template="/WEB-INF/layouts/auth.jsp">
         <put-attribute name="title" value="" />
