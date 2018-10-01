@@ -48,7 +48,7 @@ public class ImageControlImpl implements ImageControl {
         try (FileOutputStream fos = new FileOutputStream(newfile);
                 InputStream is = file.getInputStream();) {
             byte[] bytes = new byte[1024];
-            int read = 0;
+            int read;
             while ((read = is.read(bytes)) != -1) {
                 fos.write(bytes, 0, read);
             }

@@ -9,7 +9,9 @@ public interface NewsService {
     
     News findById(Long id);
     
-    void save(News news);
+    void create(News news);
+    
+    void update(News news);
     
     void delete(News news);    
 }

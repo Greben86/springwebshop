@@ -23,13 +23,17 @@ public interface CustomerService {
     Boolean delete(Customer customer);
     
     /**
-     * Checking pass for customer
+     * Searching customer by login
      * @param login - number or email of customer
-     * @param pass - checking password
      */
-    Customer search(String login, String pass);
+    Customer search(String login);
     
-    Boolean checkPass(String login, String pass);
+    /**
+     * Checking pass for customer
+     * @param customer - checked customer
+     * @param pass - checked password
+     */    
+    Boolean checkPass(Customer customer, String pass);
 
     /**
      * Method returning list of customers

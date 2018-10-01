@@ -49,32 +49,17 @@ public class CustomerDaoImpl implements CustomerDao {
 
     private void readPayDetail(Customer customer) {
         customer.setPayList1(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=1 and `customer_id`=?",
-                        new RowMapper<Date>() {
-                    @Override
-                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return rs.getDate("date_pay");
-                    }
-                }, customer.getId()
-                ));
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=1 and `customer_id`=?", 
+                        (ResultSet rs, int rowNum) -> rs.getDate("date_pay"), 
+                        customer.getId()));
         customer.setPayList3(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=3 and `customer_id`=?",
-                        new RowMapper<Date>() {
-                    @Override
-                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return rs.getDate("date_pay");
-                    }
-                }, customer.getId()
-                ));
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=3 and `customer_id`=?", 
+                        (ResultSet rs, int rowNum) -> rs.getDate("date_pay"), 
+                        customer.getId()));
         customer.setPayList4(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=4 and `customer_id`=?",
-                        new RowMapper<Date>() {
-                    @Override
-                    public Date mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return rs.getDate("date_pay");
-                    }
-                }, customer.getId()
-                ));
+                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=4 and `customer_id`=?", 
+                        (ResultSet rs, int rowNum) -> rs.getDate("date_pay"), 
+                        customer.getId()));
     }
 
     @Override
@@ -179,8 +164,8 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;", id);
+    public void delete(Customer entity) {
+        jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;", entity.getId());
     }
 
     @Override

@@ -112,15 +112,8 @@ public class SearchGoodImpl implements Search<Good> {
 
     public void multiSearch(final String... queries) throws IOException, 
             ParseException {
-        StringBuffer query = new StringBuffer();
-        for (String item : queries) {
-            query.append("+name:");
-            query.append(item);
-            query.append(" ");
-        }
         try (IndexReader reader = DirectoryReader.open(index)) {
-            Query q = new QueryParser("name", new RussianAnalyzer())
-                    .parse(query.toString());
+            Query q = createQueryForName(queries);
 
             int hitsPerPage = 10;
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -131,6 +124,14 @@ public class SearchGoodImpl implements Search<Good> {
             List<ScoreDoc> list = Arrays.asList(collector.topDocs().scoreDocs);
             buildList(list, searcher);
         }
+    }
+    
+    private Query createQueryForName(final String... queries) throws ParseException {
+        StringBuilder sb = new StringBuilder();
+        Arrays.asList(queries)
+                .forEach(item -> sb.append("+name:").append(item).append(" "));
+        return new QueryParser("name", new RussianAnalyzer())
+                    .parse(sb.toString());
     }
 
     private void buildList(List<ScoreDoc> list, IndexSearcher search) {

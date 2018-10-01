@@ -95,7 +95,7 @@ public class AdminPromosController {
         Promo promo = promoDao.findById(Long.parseLong(id));
         if (promo != null) {
             imageControl.removeFile(promo.getFilename());
-            promoDao.delete(promo.getId());
+            promoDao.delete(promo);
         }
         return "redirect:/admin/promos";
     }    

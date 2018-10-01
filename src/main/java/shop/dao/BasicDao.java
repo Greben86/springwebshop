@@ -37,5 +37,5 @@ public interface BasicDao<T> {
      *
      * @param id - primary key entity
      */
-    void delete(Long id);
+    void delete(T entity);
 }

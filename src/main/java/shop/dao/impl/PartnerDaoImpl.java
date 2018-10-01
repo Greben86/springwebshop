@@ -54,8 +54,8 @@ public class PartnerDaoImpl implements PartnerDao {
     }
 
     @Override
-    public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `partner_list` WHERE `id`=?;", id);
+    public void delete(Partner entity) {
+        jdbcTemplate.update("DELETE FROM `partner_list` WHERE `id`=?;", entity.getId());
     }
 
 }

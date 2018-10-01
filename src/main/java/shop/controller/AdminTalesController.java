@@ -95,7 +95,7 @@ public class AdminTalesController {
         Tale tale = taleDao.findById(Long.parseLong(id));
         if (tale != null) {
             imageControl.removeFile(tale.getFilename());
-            taleDao.delete(tale.getId());
+            taleDao.delete(tale);
         }
         return "redirect:/admin/tales";
     }

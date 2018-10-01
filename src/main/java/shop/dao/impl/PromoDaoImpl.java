@@ -47,8 +47,8 @@ public class PromoDaoImpl implements PromoDao {
     }
 
     @Override
-    public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `promo_list` WHERE `id`=?;", id);
+    public void delete(Promo entity) {
+        jdbcTemplate.update("DELETE FROM `promo_list` WHERE `id`=?;", entity.getId());
     }
 
 }

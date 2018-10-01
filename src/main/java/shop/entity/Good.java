@@ -2,7 +2,6 @@ package shop.entity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,18 +21,18 @@ public class Good {
 
     {
         owner = new Long(0);
-        folder = new Boolean(false);
-        name = new String("");
-        description = new String("");
-        article = new String("");
+        folder = false;
+        name = "";
+        description = "";
+        article = "";
         price = new Float(0.0);
         instock = new Float(0.0);
-        haschild = new Boolean(false);
-        childcount = new Integer(0);
+        haschild = false;
+        childcount = 0;
     }
 
     public Good() {
-        id = new Long(0);        
+        id = 0L;        
     }
 
     public Good(Long id) {
@@ -57,7 +56,7 @@ public class Good {
     }
 
     public void setFolder(boolean folder) {
-        this.folder = new Boolean(folder);
+        this.folder = folder;
     }
 
     public Boolean getFolder() {

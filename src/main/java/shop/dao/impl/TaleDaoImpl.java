@@ -54,8 +54,8 @@ public class TaleDaoImpl implements TaleDao {
     }
 
     @Override
-    public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `tale_list` WHERE `id`=?;", id);
+    public void delete(Tale entity) {
+        jdbcTemplate.update("DELETE FROM `tale_list` WHERE `id`=?;", entity.getId());
     }
     
 }

@@ -1,6 +1,5 @@
 package shop.service.impl;
 
-import java.sql.ResultSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import shop.entity.News;
 import shop.service.NewsService;
 
 @Service("newsService")
-@Transactional
+@Transactional(readOnly = true)
 public class NewsServiceImpl implements NewsService {
     
     @Autowired
@@ -30,18 +29,20 @@ public class NewsServiceImpl implements NewsService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void save(News news) {
-        if (news.getId()>0) {
-            newsDao.update(news);
-        } else {
-            newsDao.create(news);
-        }
+    public void create(News news) {
+        newsDao.create(news);
+    }
+    
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public void update(News news) {
+        newsDao.update(news);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
     @Override
     public void delete(News news) {
-        newsDao.delete(news.getId());
+        newsDao.delete(news);
     }
     
 }

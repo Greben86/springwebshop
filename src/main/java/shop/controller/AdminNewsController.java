@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import shop.entity.News;
 import shop.model.ImageControl;
 import shop.service.NewsService;
+import static java.util.Optional.ofNullable;
 
 @Controller
 @RequestMapping("/admin/news")
@@ -56,7 +57,7 @@ public class AdminNewsController {
                 Logger.getLogger(AdminNewsController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        newsService.save(news);
+        newsService.create(news);
         return "redirect:/admin/news";
     }
 
@@ -86,17 +87,17 @@ public class AdminNewsController {
                 Logger.getLogger(AdminNewsController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        newsService.save(news);
+        newsService.update(news);
         return "redirect:/admin/news";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable String id) {
-        News news = newsService.findById(Long.parseLong(id));
-        if (news != null) {
-            imageControl.removeFile(news.getFilename());
-            newsService.delete(news);
-        }
+        ofNullable(newsService.findById(Long.parseLong(id)))
+                .ifPresent(news -> {
+                    imageControl.removeFile(news.getFilename());
+                    newsService.delete(news);
+                });
         return "redirect:/admin/news";
     }
 

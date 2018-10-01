@@ -50,8 +50,9 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `requests` WHERE `id`=?;", id);
+    public void delete(RequestToAppend entity) {
+        throw new UnsupportedOperationException("Not supported yet.");
+//        jdbcTemplate.update("DELETE FROM `requests` WHERE `id`=?;", id);
     }
 
 }

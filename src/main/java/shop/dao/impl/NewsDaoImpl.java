@@ -54,8 +54,8 @@ public class NewsDaoImpl implements NewsDao {
     }
 
     @Override
-    public void delete(Long id) {
-        jdbcTemplate.update("DELETE FROM `news` WHERE `id`=?;", id);
+    public void delete(News entity) {
+        jdbcTemplate.update("DELETE FROM `news` WHERE `id`=?;", entity.getId());
     }
 
 }

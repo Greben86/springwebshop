@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.entity.Customer;
 import shop.service.CustomerService;
-
 import static java.util.Optional.ofNullable;
 
 @RestController
@@ -71,13 +70,18 @@ public final class CustomerController {
             produces = MediaType.TEXT_PLAIN_VALUE)
     public Customer search(@RequestParam("login") String login, 
             @RequestParam("pass") String pass) {
-        return customerService.search(login, pass);
+        return ofNullable(customerService.search(login))
+                .filter(customer -> customerService.checkPass(customer, pass))
+                .get();
     }
     
     @GetMapping(value = "/checkpass", produces = MediaType.TEXT_PLAIN_VALUE)
     public String checkPass(@RequestParam("login") String login, 
             @RequestParam("pass") String pass) {
-        return customerService.checkPass(login, pass)?"Ok":"Fail";
+        return ofNullable(customerService.search(login))
+                .map(customer -> customerService.checkPass(customer, pass))
+                .map(result -> result ? "Ok" : "Fail")
+                .orElse("Fail");
     }
 
     @GetMapping(value = "/get/{ref}", 

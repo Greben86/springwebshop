@@ -95,7 +95,7 @@ public class AdminPartnersController {
         Partner partner = partnersDao.findById(Long.parseLong(id));
         if (partner != null) {
             imageControl.removeFile(partner.getFilename());
-            partnersDao.delete(partner.getId());
+            partnersDao.delete(partner);
         }
         return "redirect:/admin/partners";
     }
