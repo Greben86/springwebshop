@@ -13,7 +13,7 @@ import shop.dao.CustomerDao;
 import static java.util.Optional.ofNullable;
 
 @Service("customerService")
-@Transactional
+@Transactional(readOnly = true)
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
@@ -21,7 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> getList() {
-        return customerDao.getList();
+        List<Customer> result = customerDao.getList();
+        result.stream().forEach(item -> customerDao.readDetail(item));
+        return result;
     }
 
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
@@ -80,6 +82,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getByRef(String ref) {
-        return customerDao.findByRef(ref);
+        Customer customer = customerDao.findByRef(ref);
+        customerDao.readDetail(customer);
+        return customer;
     }
 }

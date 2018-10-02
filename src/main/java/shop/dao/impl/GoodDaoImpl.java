@@ -4,7 +4,6 @@ import shop.dao.GoodDao;
 import shop.entity.Good;
 import shop.entity.factory.BasicFactory;
 import java.util.List;
-import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -31,22 +30,23 @@ public class GoodDaoImpl implements GoodDao {
         return jdbcTemplate.query("SELECT * FROM `goods` " 
                 + (filter.isEmpty() ? "" : "WHERE " + filter + " ") 
                 + "ORDER BY `name` ASC;", 
-                (ResultSet rs, int rowNum) -> basicFactory.factory(rs));
+                (rs, rowNum) -> basicFactory.factory(rs));
     }
 
     @Override
     public Good findById(Long id) {
         return jdbcTemplate.queryForObject("SELECT * FROM `goods` WHERE `id`=?;", 
-                (ResultSet rs, int rowNum) -> basicFactory.factory(rs), 
+                (rs, rowNum) -> basicFactory.factory(rs), 
                 id);
     }
 
     @Override
     public void updateOrInsert(Good entity) {
-        jdbcTemplate.update("INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`, `deletionmark`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'F') "
+        jdbcTemplate.update(
+                "INSERT INTO `goods` (`id`, `owner`, `folder`, `name`, `description`, `article`, `price`, `instock`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) "
                 + "ON DUPLICATE KEY UPDATE "
-                + "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?, `deletionmark`='F';", 
+                + "`owner`=?, `name`=?, `description`=?, `article`=?, `price`=?, `instock`=?;", 
                 entity.getId(),
                 entity.getOwner(),
                 entity.getFolder() ? "T" : "F",

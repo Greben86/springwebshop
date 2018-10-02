@@ -26,9 +26,9 @@ public class SearchController {
         return search.createIndex(goodService.getList(-1L));
     }
 
-    @GetMapping(value = "/goods", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Good> searchGood(
-            @RequestParam(value = "query", required = true) String query) {
+    @GetMapping(value = "/goods", 
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Good> searchGood(@RequestParam("query") String query) {
         return search.search(query);
     }
 }

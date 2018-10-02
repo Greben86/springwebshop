@@ -19,4 +19,8 @@ public interface CustomerDao extends BasicDao<Customer> {
      * @return - message
      */
     String updateList(List<Customer> list);
+    
+    void readDetail(Customer customer);
+    
+    void saveDetail(Customer customer);
 }

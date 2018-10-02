@@ -23,7 +23,8 @@ public class NewsController {
     @Autowired
     private ImageControl imageControl;
     
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/list", 
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<News> getList() {
         return newsDao.getList();
     }
@@ -34,7 +35,7 @@ public class NewsController {
         return ofNullable(newsDao.findById(Long.parseLong(id)))
                 .map(news -> imageControl.readFile(news.getFilename(), 
                         ResourceImages.DEFAULT_IMAGE))
-                .get();
+                .orElse(new byte[0]);
     }
     
 }

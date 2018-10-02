@@ -23,7 +23,8 @@ public class PartnersController {
     @Autowired
     private ImageControl imageControl;
     
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/list", 
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Partner> getList() {
         return partnersDao.getList();
     }

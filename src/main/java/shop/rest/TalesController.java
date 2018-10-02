@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import shop.entity.Tale;
 import shop.dao.TaleDao;
 import shop.model.ImageControl;
-
-import static java.util.Optional.ofNullable;
 import shop.ResourceImages;
+import static java.util.Optional.ofNullable;
 
 @RestController
 @RequestMapping("/tales")
@@ -23,7 +22,8 @@ public class TalesController {
     @Autowired
     private ImageControl imageControl;
     
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/list", 
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Tale> getList() {
         return taleDao.getList();
     }

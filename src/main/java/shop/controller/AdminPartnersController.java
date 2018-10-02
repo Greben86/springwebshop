@@ -2,6 +2,7 @@ package shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import shop.dao.PartnerDao;
 import shop.entity.Partner;
 import shop.model.ImageControl;
+import static java.util.Optional.ofNullable;
 
 @Controller
 @RequestMapping("/admin/partners")
@@ -34,16 +36,16 @@ public class AdminPartnersController {
 
     @GetMapping("/add")
     public String getAddPage(Model model) {
-        model.addAttribute("title", "Новый партнер");
-        model.addAttribute("partner", new Partner());
-        model.addAttribute("callback", "add");
+        model.addAttribute("title", "Новый партнер")
+                .addAttribute("partner", new Partner())
+                .addAttribute("callback", "add");
         return "admin.partner.edit";
     }
 
     @PostMapping("/add")
     public String add(Partner partner,
             @RequestParam(value = "file", required = false) MultipartFile file) {
-        if (file != null) {
+        if (Objects.nonNull(file)) {
             try {
                 int index = file.getOriginalFilename().indexOf(".");
                 String ext = index != -1 ? file.getOriginalFilename().substring(index) : "";
@@ -62,17 +64,17 @@ public class AdminPartnersController {
 
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable("id") String id, Model model) {
-        Partner partner = partnersDao.findById(Long.parseLong(id));
-        model.addAttribute("title", "Редактирование партнера");
-        model.addAttribute("partner", partner);
-        model.addAttribute("callback", "edit");
+        model.addAttribute("title", "Редактирование партнера")
+                .addAttribute("callback", "edit");
+        ofNullable(partnersDao.findById(Long.parseLong(id)))
+                .ifPresent(partner -> model.addAttribute("partner", partner));
         return "admin.partner.edit";
     }
 
     @PostMapping("/edit")
     public String update(Partner partner,
             @RequestParam(value = "file", required = false) MultipartFile file) {
-        if (file != null) {
+        if (Objects.nonNull(file)) {
             imageControl.removeFile(partner.getFilename());
             try {
                 int index = file.getOriginalFilename().indexOf(".");
@@ -92,11 +94,11 @@ public class AdminPartnersController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable String id) {
-        Partner partner = partnersDao.findById(Long.parseLong(id));
-        if (partner != null) {
-            imageControl.removeFile(partner.getFilename());
-            partnersDao.delete(partner);
-        }
+        ofNullable(partnersDao.findById(Long.parseLong(id)))
+                .ifPresent(partner -> {
+                    imageControl.removeFile(partner.getFilename());
+                    partnersDao.delete(partner);
+                });
         return "redirect:/admin/partners";
     }
 }
