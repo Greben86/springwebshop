@@ -23,4 +23,6 @@ public interface CustomerDao extends BasicDao<Customer> {
     void readDetail(Customer customer);
     
     void saveDetail(Customer customer);
+    
+    void clearDetail(Customer customer);
 }

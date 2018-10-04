@@ -4,14 +4,15 @@ import shop.dao.CustomerDao;
 import shop.entity.Customer;
 import shop.entity.factory.BasicFactory;
 import java.util.List;
-import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import static java.util.Optional.ofNullable;
+import org.springframework.stereotype.Repository;
 
+@Repository("customerDao")
 public class CustomerDaoImpl implements CustomerDao {
 
     private static final Logger LOG = Logger.getLogger(CustomerDaoImpl.class);
@@ -46,15 +47,18 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void readDetail(Customer customer) {
         customer.setPayList1(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=1 and `customer_id`=?",
+                jdbcTemplate.query(
+                        "SELECT * FROM `pay_detail` WHERE `program_id`=1 and `customer_id`=?",
                         (rs, rowNum) -> rs.getDate("date_pay"),
                         customer.getId()));
         customer.setPayList3(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=3 and `customer_id`=?",
+                jdbcTemplate.query(
+                        "SELECT * FROM `pay_detail` WHERE `program_id`=3 and `customer_id`=?",
                         (rs, rowNum) -> rs.getDate("date_pay"),
                         customer.getId()));
         customer.setPayList4(
-                jdbcTemplate.query("SELECT * FROM `pay_detail` WHERE `program_id`=4 and `customer_id`=?",
+                jdbcTemplate.query(
+                        "SELECT * FROM `pay_detail` WHERE `program_id`=4 and `customer_id`=?",
                         (rs, rowNum) -> rs.getDate("date_pay"),
                         customer.getId()));
     }
@@ -159,13 +163,18 @@ public class CustomerDaoImpl implements CustomerDao {
     public void delete(Customer entity) {
         jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;", entity.getId());
     }
+    
+    @Override
+    public void clearDetail(Customer customer) {
+        
+    }
 
     @Override
     public Customer findByNumber(String number) {
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM `customers` WHERE `number`=?;",
-                    (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                    (rs, rowNum) -> basicFactory.factory(rs),
                     number);
         } catch (DataAccessException e) {
             return null;
@@ -177,7 +186,7 @@ public class CustomerDaoImpl implements CustomerDao {
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM `customers` WHERE `email`=?;",
-                    (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                    (rs, rowNum) -> basicFactory.factory(rs),
                     email);
         } catch (DataAccessException e) {
             return null;
@@ -189,7 +198,7 @@ public class CustomerDaoImpl implements CustomerDao {
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM `customers` WHERE `ref`=?;",
-                    (ResultSet rs, int rowNum) -> basicFactory.factory(rs),
+                    (rs, rowNum) -> basicFactory.factory(rs),
                     ref);
         } catch (DataAccessException e) {
             return null;

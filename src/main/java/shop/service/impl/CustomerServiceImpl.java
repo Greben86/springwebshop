@@ -26,16 +26,21 @@ public class CustomerServiceImpl implements CustomerService {
         return result;
     }
 
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+    private Customer findFromRepository(Customer customer) {
+        return ofNullable(customerDao.findByRef(customer.getRef()))
+                .filter(c -> !c.getEmail().isEmpty())
+                .orElse(customerDao.findByEmail(customer.getEmail()));
+    }
+
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, 
+            propagation = Propagation.REQUIRED)
     @Override
     public Boolean updateOrInsert(Customer customer) {
         if (customer.getRef().isEmpty()) {
             return false;
         }
 
-        Customer buff = ofNullable(customerDao.findByRef(customer.getRef()))
-                .filter(c -> !c.getEmail().isEmpty())
-                .orElse(customerDao.findByEmail(customer.getEmail()));
+        Customer buff = findFromRepository(customer);
 
         if (Objects.nonNull(buff)) {
             customer.setId(buff.getId());
@@ -45,26 +50,29 @@ public class CustomerServiceImpl implements CustomerService {
             }
         } else {
             customerDao.create(customer);
+            ofNullable(customerDao.findByEmail(customer.getEmail()))
+                    .ifPresent(c -> customer.setId(c.getId()));
         }
+        customerDao.saveDetail(customer);
+
         return true;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.READ_COMMITTED, 
+            propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean updateList(List<Customer> list) {
-        list.stream().forEach(customer -> updateOrInsert(customer));
+        list.stream()
+                .forEach(customer -> updateOrInsert(customer));
         return true;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.READ_COMMITTED, 
+            propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Boolean delete(Customer customer) {
-        if (Objects.isNull(customer)) {
-            return false;
-        }
-        
-        customerDao.delete(customer);
-        return true;
+    public void delete(Customer customer) {
+        ofNullable(customer)
+                .ifPresent(customerDao::delete);
     }
 
     @Override
@@ -72,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
         return ofNullable(customerDao.findByNumber(login))
                 .orElse(customerDao.findByEmail(login));
     }
-    
+
     @Override
     public Boolean checkPass(Customer customer, String pass) {
         return ofNullable(customer)

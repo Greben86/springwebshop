@@ -59,11 +59,10 @@ public final class CustomerController {
 
     @GetMapping(value = "/delete/{ref}", 
             produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public String deleteById(@PathVariable(value = "ref") String ref) {
-        return ofNullable(customerService.getByRef(ref))
-                .map(customerService::delete)
-                .map(result -> "Delete customer " + (result ? "is Ok" : "is Fail"))
-                .orElse("Delete customer is Fail");
+    public String deleteById(@PathVariable("ref") String ref) {
+        ofNullable(customerService.getByRef(ref))
+                .ifPresent(customerService::delete);
+        return "Delete customer is Ok";
     }
 
     @GetMapping(value = "/search", 

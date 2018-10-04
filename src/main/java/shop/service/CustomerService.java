@@ -20,7 +20,7 @@ public interface CustomerService {
      * Delete customer of database
      * @param customer - entuty customer
      */
-    Boolean delete(Customer customer);
+    void delete(Customer customer);
     
     /**
      * Searching customer by login

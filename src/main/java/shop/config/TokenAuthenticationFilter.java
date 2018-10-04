@@ -28,10 +28,6 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     {
         matches = new LinkedList<>();
     }
-    
-    private TokenAuthenticationFilter() {
-        throw new AssertionError("No instances without key!");
-    }
 
     public TokenAuthenticationFilter(String key) {
         this.key = key;
