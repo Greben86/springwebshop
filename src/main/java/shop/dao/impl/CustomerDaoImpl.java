@@ -163,9 +163,12 @@ public class CustomerDaoImpl implements CustomerDao {
     public void delete(Customer entity) {
         jdbcTemplate.update("DELETE FROM `customers` WHERE `id_ext`=?;", entity.getId());
     }
-    
+
     @Override
     public void clearDetail(Customer customer) {
+        jdbcTemplate.update(
+                "DELETE FROM `pay_detail` WHERE `customer_id`=?",
+                customer.getId());
         
     }
 
